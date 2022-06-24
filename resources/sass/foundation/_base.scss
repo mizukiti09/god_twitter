@@ -1,0 +1,39 @@
+// ==============================
+// 変数
+// ==============================
+$font-color_default: #666;
+$baseColor: rgb(76, 77, 80);
+$baseColorHover:rgb(2, 171, 171);
+$errColor: rgb(151, 31, 31);
+$font-size_s: 12px;
+$font-size_m: 14px;
+$font-size_default: 16px;
+$font-size_x: 18px;
+$font-size_xl: 20px;
+$font-size_xxl: 24px;
+$font-size_xxxl: 30px;
+$font-size_2l: 32px;
+$font-size_3l: 48px;
+$space_5: 5px;
+$space_10: 10px;
+$space_15: 15px;
+$space_20: 20px;
+$space_30: 30px;
+$space_40: 40px;
+$space_80: 80px;
+$font-family_corp: 'Amatic SC',
+cursive;
+// セクションのmargin
+.f-section {
+    margin-top: 150px;
+}
+
+// ヘッダー高さ
+$headerHeight: 60px;
+body {
+    font-size: $font-size_default;
+    font-family: serif;
+    background: #f5f5f5;
+}
+
+.f-inner {}

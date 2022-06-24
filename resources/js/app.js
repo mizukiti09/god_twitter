@@ -5,6 +5,9 @@
  */
 
 require('./bootstrap');
+require('./device_sp');
+require('./fade');
+require('./wave');
 
 window.Vue = require('vue');
 

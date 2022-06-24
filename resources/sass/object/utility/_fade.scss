@@ -1,0 +1,99 @@
+.u-fade {
+    &-up,
+    &-down,
+    &-right {
+        opacity: 0;
+    }
+    &-up {
+        &.active {
+            animation: u-fade-up 1s cubic-bezier(0.33, 1, 0.68, 1) 1 forwards;
+        }
+    }
+    &-down {
+        &-header {
+            animation: u-fade-down-header 2.5s cubic-bezier(0.33, 1, 0.68, 1) 1 forwards;
+        }
+        &.active {
+            animation: u-fade-down 1s cubic-bezier(0.33, 1, 0.68, 1) 1 forwards;
+        }
+    }
+    &-right.active {
+        animation: u-fade-right 1s cubic-bezier(0.33, 1, 0.68, 1) 1 forwards;
+    }
+}
+
+.u-ex {
+    transition: all 1000ms;
+}
+
+.other-link a:hover .icon-hover-right {
+    transition: 1s;
+    animation: icon-hover-right 1s cubic-bezier(0.33, 1, 0.68, 1) 1 forwards;
+}
+
+@keyframes u-fade-up {
+    0% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes u-fade-down {
+    0% {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes u-fade-right {
+    0% {
+        transform: translateX(-50px);
+        opacity: 0;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes u-fade-down-header {
+    0% {
+        transform: translateY(-200px);
+        opacity: 0;
+    }
+    80% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes icon-hover-right {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(5px);
+    }
+}

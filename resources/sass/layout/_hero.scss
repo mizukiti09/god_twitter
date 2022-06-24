@@ -1,0 +1,13 @@
+.l-hero {
+    height: 100vh;
+    background-image: url(./../../images/top.jpg);
+    background-position: center;
+    background-size: cover;
+    margin-bottom: 250px;
+    &__title {
+        padding: 300px 0;
+        text-align: center;
+        font-size: 60px;
+        color: #fff;
+    }
+}

@@ -1,0 +1,10 @@
+.c-link {
+    display: block;
+    color: $baseColor !important;
+    transition: .3s;
+}
+
+.c-link:hover {
+    transition: .3s;
+    color: $baseColorHover !important;
+}

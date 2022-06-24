@@ -1,0 +1,31 @@
+#u-device__sp {
+    display: none;
+    & .c-nav__item a {
+        color: $baseColor;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #u-device__desc {
+        display: none;
+    }
+    #u-device__sp {
+        display: block;
+    }
+    .u-blockNone {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 481px) {
+    .u-inner {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+    .u-br {
+        display: block;
+    }
+    .p-problem__description {
+        width: 80%;
+    }
+}
