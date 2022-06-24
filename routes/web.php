@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,3 +17,31 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::namespace('Auth')->group(function () {
+    //パスワードリセット
+    Route::get(
+        'password/reset',
+        'ForgotPasswordController@showLinkRequestForm'
+    )->name('password.request');
+    Route::post(
+        'password/email',
+        'ForgotPasswordController@sendResetLinkEmail'
+    )->name('password.email');
+    Route::get(
+        'password/reset/{token}',
+        'ResetPasswordController@showResetForm'
+    )->name('password.reset');
+    Route::post(
+        'password/reset',
+        'ResetPasswordController@reset'
+    )->name('password.resetPost');
+});
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
