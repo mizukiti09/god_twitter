@@ -5,9 +5,15 @@
     background-size: cover;
     margin-bottom: 250px;
     &__title {
-        padding: 300px 0;
+        padding: 300px 0 80px;
         text-align: center;
         font-size: 60px;
         color: #fff;
+    }
+}
+
+@media screen and (max-width: 481px) {
+    .l-hero {
+        margin-bottom: 122px;
     }
 }

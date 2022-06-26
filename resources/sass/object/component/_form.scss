@@ -1,0 +1,34 @@
+.c-form {
+    &__container {
+        margin-bottom: 100px;
+    }
+    &__list {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    &__label {
+        display: block;
+        font-size: $font-size_xl;
+        margin-bottom: 10px;
+    }
+    &__item {
+        margin-bottom: 30px;
+    }
+    &__input {
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        font-size: $font-size_xl;
+        padding: 0 10px;
+        box-sizing: border-box;
+        &--feedback {
+            color: $errColor;
+        }
+    }
+    &__button {
+        width: 100%;
+        height: 40px;
+        font-size: $font-size_xl;
+        margin-bottom: 20px;
+    }
+}

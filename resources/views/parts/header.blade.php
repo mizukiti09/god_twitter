@@ -11,7 +11,7 @@
                     @endif @if (Route::has('register'))
                         <li class="c-nav__item"><a href="{{ route('register') }}">{{ __('Register') }}</a></li>
                     @endif @else
-                        <li class="c-nav__item"><a href="{{ route('twitter.follow') }}">{{ __('Twitter_Follow') }}</a></li>
+                    <li class="c-nav__item"><a href="{{ route('myPage') }}">{{ __('MyPage') }}</a></li>
                         <li class="c-nav__item"><a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
 
@@ -44,18 +44,12 @@
                             <li class="c-nav__item"><a href="{{ route('register') }}">{{ __('Register') }}</a></li>
                         @endif 
                         @else
-                            <li class="c-nav__item"><a href="{{ route('twitter.follow') }}">{{ __('Twitter_Follow') }}</a></li>
+                            <li class="c-nav__item"><a href="{{ route('myPage') }}">{{ __('myPage') }}</a></li>
                             <li class="c-nav__item"><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
                             </li>
-                            @if ($user->twitter === 1)
-                                <li class="c-nav__item"><a href="https://twitter.com/{{$user->nickname}}">{{$user->nickname}}</a></li>
-                                <li class="c-nav__item"><a href="{{ route('logout.twitter') }}">認証解除</a></li>
-                            @endif 
-                            <li class="c-nav__item"><a href="{{ route('twitter.coin_trend') }}">トレンド</a></li>
-                            <li class="c-nav__item"><a href="{{ route('google.news') }}">Googleニュース</a></li>
                         @endguest
                     </ul>
                 </div>

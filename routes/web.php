@@ -37,3 +37,9 @@ Route::namespace('Auth')->group(function () {
         'ResetPasswordController@reset'
     )->name('password.resetPost');
 });
+
+Route::get('/myPage', 'MyPageController@index')->name('myPage')->middleware('auth');
+
+
+Route::namespace('Twitter')->group(function () {
+});

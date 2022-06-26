@@ -1,0 +1,47 @@
+// セクション
+.c-section {
+    &__title {
+        text-align: center;
+        font-weight: bolder;
+        font-size: $font-size_2l;
+        margin-bottom: $space_80;
+        &::before {
+            content: "";
+            display: block;
+            height: 2px;
+            width: 200px;
+            margin: 0 auto 30px;
+            background-color: $baseColor;
+        }
+    }
+    &__description {
+        text-align: center;
+        margin-bottom: 80px;
+        & h2 {
+            font-size: $font-size_xl;
+            line-height: 30px;
+        }
+    }
+    &__container {
+        margin-top: 80px;
+        margin-bottom: 80px;
+    }
+    &__item {
+        background: gainsboro;
+        margin-bottom: 30px;
+        padding: 20px;
+        line-height: 25px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .c-section {
+        &__description {
+            & h2 {
+                font-size: $font-size_x;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 481px) {}

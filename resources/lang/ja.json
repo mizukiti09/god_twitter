@@ -1,0 +1,19 @@
+{
+    "Name": "名前",
+    "Kana": "カナ",
+    "Tel": "電話番号",
+    "E-Mail Address": "メールアドレス",
+    "Password": "パスワード",
+    "Confirm Password": "パスワード(再確認)",
+    "UserRegister": "ユーザー登録",
+    "UserEdit": "ユーザー編集",
+    "Register": "登録",
+    "Remember Me": "ログイン保持",
+    "Reset Password": "パスワード変更",
+    "Forgot Your Password": " パスワードを忘れた方はこちら",
+    "Send Password Reset Link": "送信",
+    "Edit": "編集",
+    "Twitter_Follow": "自動フォロー",
+    "MyTwitterAccount": "MyTwitterAccount",
+    "Forgot Your Password?": "パスワードをお忘れの方はこちら"
+}

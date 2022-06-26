@@ -39,6 +39,4 @@
     </div>  
     
     <script src="http://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/move02/5-15/js/5-15.js"></script>
-
-
 @endsection
