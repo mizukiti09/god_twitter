@@ -1,4 +1,5 @@
 .p-myPage {
+    width: 1200px;
     &__container {
         display: flex;
         justify-content: space-between;
@@ -11,16 +12,70 @@
         padding: 30px 15px;
         &__panel {
             background: lightgray;
-            width: 48%;
-            height: 235px;
+            height: 270px;
             margin-bottom: 20px;
+            position: relative;
+            display: flex;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 8px;
+            &--active {
+                border: 3px solid deeppink;
+            }
+            &__status {
+                position: absolute;
+                top: -34px;
+                right: 38px;
+                border-radius: 4px;
+                padding: 6px;
+                background: lightgray;
+            }
+            &__upDatedAt {
+                margin-top: 8px;
+                position: absolute;
+                top: 0;
+            }
+            &__rightInfo {
+                padding: 6px;
+                width: calc(100% - 120px);
+                display: flex;
+                flex-wrap: wrap;
+                margin-top: 12px;
+            }
+            &__leftInfo {
+                margin-top: 25px;
+            }
+            &__item {
+                padding: 10px;
+                margin-bottom: 10px;
+                background: #fff;
+                border-radius: 5px;
+                width: 29%;
+                margin: 3px;
+            }
+            &__photo {
+                width: 120px;
+                height: 120px;
+                background: #fff;
+                border-radius: 100%;
+                & img {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 100%;
+                }
+            }
+            &__name {}
+            &__info {
+                background: lightgray;
+                padding: 5px;
+                box-sizing: border-box;
+                margin: 5px auto 3px;
+                border-radius: 7px;
+            }
             &__group {
                 width: 100%;
                 box-sizing: border-box;
                 padding: 30px 0;
-                display: flex;
-                justify-content: space-between;
-                flex-wrap: wrap;
             }
         }
         &__title {
@@ -40,6 +95,7 @@
             border-radius: 5px;
             &__head {
                 font-size: $font-size_xl;
+                margin-bottom: 12px;
             }
             &__info {
                 background: #fff;
@@ -54,6 +110,7 @@
 
 @media screen and (max-width: 768px) {
     .p-myPage {
+        width: initial;
         &__container {
             display: block;
         }
@@ -61,6 +118,10 @@
             width: 100%;
             &__panel {
                 width: 100%;
+                height: 730px;
+                &__item {
+                    width: 100%;
+                }
                 &__group {
                     display: block;
                 }

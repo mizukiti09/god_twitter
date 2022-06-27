@@ -51,36 +51,98 @@
     }
 }
 
-.button04 {
-    display: inline-block;
+.c-appBtn {
+    width: 100%;
+    margin-bottom: 10px;
+    margin-right: 10px;
     & a {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin: 0 auto;
         padding: 0.5em 1em;
-        width: 222px;
-        color: #2285b1;
         font-size: 18px;
         font-weight: 700;
-        border: 3px solid #a0c4d3;
         border-radius: 10px;
         &::after {
             content: '';
             width: 5px;
             height: 5px;
-            border-top: 3px solid #2285b1;
-            border-right: 3px solid #2285b1;
             transform: rotate(45deg);
+            margin-left: 20px;
         }
         &:hover {
             color: #333333;
             text-decoration: none;
-            background-color: #a0c4d3;
             &::after {
                 border-top: 3px solid #333333;
                 border-right: 3px solid #333333;
             }
         }
+    }
+    &--auth {
+        color: #2285b1;
+        border: 3px solid #a0c4d3;
+        background: #fff;
+        &::after {
+            border-top: 3px solid #2285b1;
+            border-right: 3px solid #2285b1;
+        }
+        &:hover {
+            background-color: #cae8f5;
+        }
+    }
+    &--logout {
+        color: #bc351a;
+        border: 3px solid #d3a4a0;
+        background: #fff;
+        &::after {
+            border-top: 3px solid #bc351a;
+            border-right: 3px solid #bc351a;
+        }
+        &:hover {
+            background-color: #d3a4a0;
+        }
+    }
+    &--auto {
+        color: #0f7425;
+        border: 3px solid #00c26c;
+        animation: bg-color 5s infinite;
+        ;
+        &::after {
+            border-top: 3px solid #10de3d;
+            border-right: 3px solid #10de3d;
+        }
+        &:hover {
+            background-color: rgb(248, 248, 248);
+            ;
+            animation: none;
+            ;
+            border: 3px solid #b2b2b2;
+        }
+    }
+    &--none {
+        color: black;
+        border: 3px solid #b2b2b2;
+        background: #fff;
+        &::after {
+            border-top: 3px solid #b2b2b2;
+            border-right: 3px solid #b2b2b2;
+        }
+        &:hover {
+            border: 3px solid #10de3d;
+        }
+    }
+}
+
+@keyframes bg-color {
+    0% {
+        background: rgb(255, 255, 255);
+    }
+    50% {
+        background: rgb(0, 255, 0);
+    }
+    100% {
+        background: rgb(255, 255, 255);
     }
 }

@@ -42,4 +42,12 @@ Route::get('/myPage', 'MyPageController@index')->name('myPage')->middleware('aut
 
 
 Route::namespace('Twitter')->group(function () {
+    // Twitter認証====================
+    // ログイン
+    Route::get('login/twitter', 'TwitterLoginController@twitterLogin')->name('login.twitter');
+    Route::get('login/twitter/callback', 'TwitterLoginController@twitterCallback')->name('login.twitter.callback');
+
+    // ログアウト
+    Route::get('logout/twitter', 'TwitterLogoutController@handle')->name('logout.twitter');
+    // ================================
 });
