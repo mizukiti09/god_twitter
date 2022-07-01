@@ -3,7 +3,9 @@
 namespace packages\Infrastructure\User;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use packages\Domain\Domain\User\UserTwitterAccountsRepositoryInterface;
 
 class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInterface
@@ -14,7 +16,17 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
     public function save($account)
     {
         // ログインしているユーザーが登録しているTwitterアカウントが10より下の場合
-        if ($this->upperAccountsSave()) {
+
+        $result = DB::table('user_twitter_accounts')
+            ->where('user_id', Auth::id())
+            ->count();
+
+        $result2 = DB::table('user_twitter_accounts')
+            ->where('screen_name', $account->screen_name)
+            ->get()
+            ->first();
+
+        if ($result < 10 || ($result <= 10 && !empty($result2))) {
             DB::table('user_twitter_accounts')
                 ->updateOrInsert(
                     [
@@ -28,12 +40,14 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
                         'auth_flg'           => true
                     ]
                 );
+        } else {
+            session()->flash('flash_message', '10まで');
         }
     }
 
     public function find()
     {
-        DB::table('user_twitter_accounts')
+        $accounts = DB::table('user_twitter_accounts')
             ->where('user_id', Auth::id())
             ->select([
                 'screen_name',
@@ -46,9 +60,13 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
                 'like_count',
                 'like_count_get',
                 'tweet_count',
-                'updated_at'
+                'updated_at',
+                'auth_flg'
             ])
+            ->latest('updated_at')
             ->get();
+
+        return $accounts;
     }
 
     public function userTwitterAuthLogout()
@@ -70,17 +88,10 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
             ]);
     }
 
-    // 登録しているTwitterアカウントの数を上限10としてチェック
-    private function upperAccountsSave()
+    public function deleteAccount($screen_name)
     {
-        $result = DB::table('user_twitter_accounts')
-            ->where('user_id', Auth::id())
-            ->count();
-
-        if ($result < 10) {
-            return true;
-        } else {
-            return false;
-        }
+        DB::table('user_twitter_accounts')
+            ->where('screen_name', $screen_name)
+            ->delete();
     }
 }

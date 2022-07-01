@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use packages\Domain\Application\Twitter\TwitterAuthInteractor;
+use packages\Domain\Application\Twitter\UserTwitterAccountInteractor;
 use packages\UseCase\Twitter\Auth\TwitterAuthUseCaseInterface;
 use packages\Infrastructure\User\UserTwitterAccountsRepository;
 use packages\Domain\Domain\User\UserTwitterAccountsRepositoryInterface;
+use packages\UseCase\Twitter\UserTwitterAccountUseCaseInterface;
 
 class TwitterServiceProvider extends ServiceProvider
 {
@@ -42,6 +44,7 @@ class TwitterServiceProvider extends ServiceProvider
      */
     public $bindings = [
         UserTwitterAccountsRepositoryInterface::class => UserTwitterAccountsRepository::class,
+        UserTwitterAccountUseCaseInterface::class => UserTwitterAccountInteractor::class,
         TwitterAuthUseCaseInterface::class => TwitterAuthInteractor::class,
     ];
 }

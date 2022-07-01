@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Twitter;
 
-use App\Facades\Twitter;
 use App\Http\Controllers\Controller;
 use packages\UseCase\Twitter\Auth\TwitterAuthUseCaseInterface;
 

@@ -9,9 +9,8 @@
 
     <title>@yield('title')</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('dist/js/app.js') }}" defer></script>
-    <script src="http://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/move02/5-15/js/5-15.js"></script>
+    
+    {{-- <script src="http://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/move02/5-15/js/5-15.js"></script> --}}
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href='https://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>
@@ -28,5 +27,7 @@
         @include('parts.header') @yield('content') @include('parts.footer')
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <!-- Scripts -->
+    <script src="{{ asset('dist/js/app.js') }}" defer></script>
 </body>
 </html>

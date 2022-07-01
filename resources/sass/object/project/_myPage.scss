@@ -9,19 +9,16 @@
         width: 73%;
         background-color: #fff;
         box-sizing: border-box;
-        padding: 30px 15px;
+        padding: 30px 15px 0;
         &__panel {
             background: lightgray;
-            height: 270px;
+            height: 280px;
             margin-bottom: 20px;
             position: relative;
             display: flex;
             padding: 10px;
             box-sizing: border-box;
             border-radius: 8px;
-            &--active {
-                border: 3px solid deeppink;
-            }
             &__status {
                 position: absolute;
                 top: -34px;
@@ -40,7 +37,7 @@
                 width: calc(100% - 120px);
                 display: flex;
                 flex-wrap: wrap;
-                margin-top: 12px;
+                margin-top: 22px;
             }
             &__leftInfo {
                 margin-top: 25px;
@@ -84,6 +81,7 @@
     }
     &__aside {
         width: 25%;
+        height: 605px;
         background: #fff;
         padding: 30px 15px;
         box-sizing: border-box;
@@ -93,6 +91,10 @@
             margin-bottom: 10px;
             background: lightgray;
             border-radius: 5px;
+            &__attention {
+                font-size: $font-size_m;
+                margin-bottom: 20px;
+            }
             &__head {
                 font-size: $font-size_xl;
                 margin-bottom: 12px;
@@ -106,6 +108,12 @@
             }
         }
     }
+    &__trash {
+        position: absolute;
+        right: 33px;
+        font-size: 21px;
+        color: red;
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -118,18 +126,33 @@
             width: 100%;
             &__panel {
                 width: 100%;
-                height: 730px;
+                height: 850px;
+                display: block;
+                &__photo {
+                    width: 100px;
+                    height: 100px;
+                }
                 &__item {
                     width: 100%;
                 }
                 &__group {
                     display: block;
                 }
+                &__rightInfo {
+                    width: initial;
+                }
             }
         }
         &__aside {
             width: 100%;
+            height: initial;
             margin-bottom: 20px;
         }
     }
+}
+
+// myPageで使われるvue用のclass
+// ユーザー認証されている時に付与されるclass
+.authFlgActive {
+    border: 3px solid deeppink;
 }

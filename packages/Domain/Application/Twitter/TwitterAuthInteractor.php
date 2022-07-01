@@ -41,8 +41,7 @@ class TwitterAuthInteractor implements TwitterAuthUseCaseInterface
         $account = Twitter::getConnection()->get('users/lookup', array(
             'screen_name' => $twitterAuth->getNickname(),
         ));
-        dd($account);
-        $this->twitterAccountsRepository->save($account);
+        $this->twitterAccountsRepository->save($account[0]);
 
 
         Auth::login(Auth::user());

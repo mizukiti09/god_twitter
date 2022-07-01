@@ -14,4 +14,9 @@ interface UserTwitterAccountsRepositoryInterface
     public function userTwitterAuthLogout();
 
     public function logout();
+
+    /**
+     * @param $screen_name
+     */
+    public function deleteAccount($screen_name);
 }
