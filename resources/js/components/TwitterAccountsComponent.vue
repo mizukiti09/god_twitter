@@ -76,7 +76,6 @@ export default {
         deleteAccount: function(screen_name) {
             this.deleteAction = true;
             this.deleteName = screen_name;
-
         },
         deleteCancel: function() {
             this.deleteAction = false;

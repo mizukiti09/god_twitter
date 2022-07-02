@@ -209,7 +209,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 32px 40px;
+    padding: 32px 13px;
     margin: 0 auto;
     max-width: 1200px; }
   .l-header__logo {
@@ -249,13 +249,18 @@ body {
   /*　画面の中央に要素を表示させる設定　*/
   display: flex;
   align-items: center;
-  justify-content: center; }
+  justify-content: center;
+  transition: .3s; }
+  .c-overlay__ttl {
+    text-align: center; }
   .c-overlay__contents {
     background: #fff;
     padding: 40px 40px 8px;
     border-radius: 12px; }
   .c-overlay__btnContainer {
     padding: 25px; }
+    .c-overlay__btnContainer--auto {
+      width: 400px; }
     .c-overlay__btnContainer .c-appBtn {
       border: 3px solid #777879;
       background: #fff;
@@ -264,6 +269,38 @@ body {
       padding: 6px; }
       .c-overlay__btnContainer .c-appBtn:hover {
         background-color: #d1e1ec; }
+
+.c-search {
+  position: relative;
+  width: 100%;
+  margin: 0 0 20px; }
+  .c-search input[type='text'] {
+    font: 15px/24px sans-serif;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.3em;
+    transition: 0.3s;
+    letter-spacing: 1px;
+    color: #3f3f3f;
+    border: 5px solid #1b2538;
+    border-radius: 4px; }
+  .c-search__submit {
+    color: #3f3f3f;
+    border: 5px solid #ffc500;
+    background: #fff;
+    font-weight: bold;
+    border-radius: 4px; }
+  .c-search__keywords > li {
+    list-style: inside;
+    padding: 3px 0; }
+
+.ef {
+  display: flex; }
+  .ef input[type='text']:focus {
+    border: 5px solid #c21500;
+    border-image: linear-gradient(to right, #c21500 0%, #ffc500 100%);
+    border-image-slice: 1;
+    outline: none; }
 
 .button {
   font-size: 10px; }
@@ -524,6 +561,14 @@ body {
   padding: 10px;
   background: #fff; }
 
+@media screen and (max-width: 768px) {
+  .c-currentPage__title {
+    font-size: 20px; } }
+
+@media screen and (max-width: 481px) {
+  .c-currentPage__title {
+    font-size: 16px; } }
+
 .p-home__title {
   text-align: center;
   font-size: 48px;
@@ -777,8 +822,8 @@ body {
 
 .u-inner, .c-contents, .p-home {
   margin: 0 auto;
-  padding-left: 40px;
-  padding-right: 40px; }
+  padding-left: 13px;
+  padding-right: 13px; }
 
 #u-device__sp {
   display: none; }

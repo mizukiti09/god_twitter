@@ -11,8 +11,10 @@ require('./fade');
 
 import Vue from 'vue';
 import axios from 'axios';
+import vueCookies from 'vue-cookies'
 
 Vue.prototype.$axios = axios;
+Vue.prototype.$vueCookies = vueCookies;
 
 /**
  * The following block of code may be used to automatically register your
@@ -27,6 +29,7 @@ Vue.prototype.$axios = axios;
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('twitter-accounts', require('./components/TwitterAccountsComponent.vue').default);
+Vue.component('twitter-auto-action', require('./components/TwitterAutoActionComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

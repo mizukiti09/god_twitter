@@ -12,6 +12,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: .3s;
+    &__ttl {
+        text-align: center;
+    }
     &__contents {
         background: #fff;
         padding: 40px 40px 8px;
@@ -19,6 +23,9 @@
     }
     &__btnContainer {
         padding: 25px;
+        &--auto {
+            width: 400px;
+        }
         & .c-appBtn {
             border: 3px solid #777879;
             background: #fff;
@@ -29,5 +36,45 @@
                 background-color: #d1e1ec;
             }
         }
+    }
+}
+
+.c-search {
+    position: relative;
+    width: 100%;
+    margin: 0 0 20px;
+    & input[type='text'] {
+        font: 15px/24px sans-serif;
+        box-sizing: border-box;
+        width: 100%;
+        padding: 0.3em;
+        transition: 0.3s;
+        letter-spacing: 1px;
+        color: #3f3f3f;
+        border: 5px solid #1b2538;
+        border-radius: 4px;
+    }
+    &__submit {
+        color: #3f3f3f;
+        border: 5px solid #ffc500;
+        background: #fff;
+        font-weight: bold;
+        border-radius: 4px;
+    }
+    &__keywords {
+        &>li {
+            list-style: inside;
+            padding: 3px 0;
+        }
+    }
+}
+
+.ef {
+    display: flex;
+    & input[type='text']:focus {
+        border: 5px solid #c21500;
+        border-image: linear-gradient(to right, #c21500 0%, #ffc500 100%);
+        border-image-slice: 1;
+        outline: none;
     }
 }

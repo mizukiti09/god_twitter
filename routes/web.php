@@ -50,4 +50,8 @@ Route::namespace('Twitter')->group(function () {
     // ログアウト
     Route::get('logout/twitter', 'TwitterLogoutController@handle')->name('logout.twitter');
     // ================================
+
+    Route::prefix('twitter')->group(function () {
+        Route::get('/follow', 'TwitterFollowController@index')->name('twitter.follow')->middleware('auth');
+    });
 });
