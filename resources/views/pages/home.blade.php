@@ -1,6 +1,6 @@
 @section('title', 'God Twitter / TOP')@extends('app') @section('content')
 @include('parts.hero')
-<div class="p-home">
+<div class="p-home c-section">
     <div class="p-home__wave">
         <p class="p-home__title">コンテンツが入ります。</p>
         <ul class="p-home__list">

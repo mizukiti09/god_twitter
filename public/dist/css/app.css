@@ -253,14 +253,16 @@ body {
   transition: .3s; }
   .c-overlay__ttl {
     text-align: center; }
+  .c-overlay__description {
+    font-size: 13px;
+    text-align: center;
+    margin: 12px; }
   .c-overlay__contents {
     background: #fff;
     padding: 40px 40px 8px;
     border-radius: 12px; }
   .c-overlay__btnContainer {
     padding: 25px; }
-    .c-overlay__btnContainer--auto {
-      width: 400px; }
     .c-overlay__btnContainer .c-appBtn {
       border: 3px solid #777879;
       background: #fff;
@@ -283,13 +285,21 @@ body {
     letter-spacing: 1px;
     color: #3f3f3f;
     border: 5px solid #1b2538;
-    border-radius: 4px; }
+    border-radius: 4px;
+    z-index: 10; }
   .c-search__submit {
     color: #3f3f3f;
-    border: 5px solid #ffc500;
+    border: 5px solid #00ffb7;
     background: #fff;
     font-weight: bold;
-    border-radius: 4px; }
+    border-radius: 4px;
+    transition: .2s; }
+    .c-search__submit:hover {
+      background: #91ffe0;
+      transition: .2s; }
+    .c-search__submit:active {
+      background: rgba(3, 194, 0, 0.4);
+      transition: .2s; }
   .c-search__keywords > li {
     list-style: inside;
     padding: 3px 0; }
@@ -297,10 +307,107 @@ body {
 .ef {
   display: flex; }
   .ef input[type='text']:focus {
-    border: 5px solid #c21500;
-    border-image: linear-gradient(to right, #c21500 0%, #ffc500 100%);
+    border: 5px solid #03c200;
+    border-image: linear-gradient(to right, #03c200 0%, #00ffb7 100%);
     border-image-slice: 1;
     outline: none; }
+
+.c-solidMenu {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  width: 100%; }
+  .c-solidMenu .c-search__submit {
+    border: 5px solid #ff4d00; }
+    .c-solidMenu .c-search__submit:hover {
+      background: #ff8956;
+      transition: .2s; }
+    .c-solidMenu .c-search__submit:active {
+      background: rgba(194, 0, 0, 0.4);
+      transition: .2s; }
+  .c-solidMenu > ul {
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
+    list-style: none;
+    width: 100%;
+    margin: 0;
+    margin-left: 0.5em;
+    padding: 0.2em; }
+    .c-solidMenu > ul > li {
+      box-sizing: border-box;
+      display: flex;
+      width: 100%;
+      margin: 0.1em;
+      /* 隙間を埋めるなら0 */
+      padding: 0;
+      position: relative; }
+      .c-solidMenu > ul > li > a {
+        position: relative;
+        box-sizing: border-box;
+        display: block;
+        width: 12.5em;
+        height: 2em;
+        background: #000;
+        text-decoration: none;
+        padding: 0.3em;
+        margin: 0;
+        transform: translate(0, 0);
+        border: none;
+        top: 0; }
+        .c-solidMenu > ul > li > a > span {
+          font-size: 1em;
+          color: #DDD; }
+        .c-solidMenu > ul > li > a:hover {
+          transform: translate(0.25em, -0.25em);
+          transition: all 0.1s linear; }
+          .c-solidMenu > ul > li > a:hover::before {
+            width: 0.75em;
+            left: -0.75em;
+            top: 0.375em;
+            transform: skew(0deg, -45deg);
+            transition: all 0.1s linear; }
+          .c-solidMenu > ul > li > a:hover::after {
+            height: 0.75em;
+            left: -0.375em;
+            transform: skew(-45deg, 0deg);
+            transition: all 0.1s linear; }
+        .c-solidMenu > ul > li > a:active {
+          transform: translate(0em, 0em);
+          transition: all 0.1s linear; }
+          .c-solidMenu > ul > li > a:active::before {
+            width: 0.5em;
+            left: -0.5em;
+            top: 0.25em;
+            transform: skew(0deg, -45deg);
+            transition: all 0.1s linear; }
+          .c-solidMenu > ul > li > a:active::after {
+            height: 0.5em;
+            left: -0.25em;
+            transform: skew(-45deg, 0deg);
+            transition: all 0.1s linear; }
+        .c-solidMenu > ul > li > a::before {
+          box-sizing: border-box;
+          content: "";
+          position: absolute;
+          background: #666;
+          width: 0.5em;
+          height: 2em;
+          left: -0.5em;
+          top: 0.25em;
+          border-style: none;
+          transform: skew(0deg, -45deg); }
+        .c-solidMenu > ul > li > a::after {
+          box-sizing: border-box;
+          content: "";
+          position: absolute;
+          background: #333;
+          top: 100%;
+          left: -0.25em;
+          width: 12.5em;
+          height: 0.5em;
+          border: none;
+          transform: skew(-45deg, 0deg); }
 
 .button {
   font-size: 10px; }
@@ -521,35 +628,34 @@ body {
   font-size: 20px;
   margin-bottom: 20px; }
 
-.c-section__title {
-  text-align: center;
-  font-weight: bolder;
-  font-size: 32px;
-  margin-bottom: 80px; }
-  .c-section__title::before {
-    content: "";
-    display: block;
-    height: 2px;
-    width: 200px;
-    margin: 0 auto 30px;
-    background-color: #4c4d50; }
-
-.c-section__description {
-  text-align: center;
-  margin-bottom: 80px; }
-  .c-section__description h2 {
-    font-size: 20px;
-    line-height: 30px; }
-
-.c-section__container {
-  margin-top: 80px;
-  margin-bottom: 80px; }
-
-.c-section__item {
-  background: gainsboro;
-  margin-bottom: 30px;
-  padding: 20px;
-  line-height: 25px; }
+.c-section {
+  max-width: 1200px; }
+  .c-section__title {
+    text-align: center;
+    font-weight: bolder;
+    font-size: 32px;
+    margin-bottom: 80px; }
+    .c-section__title::before {
+      content: "";
+      display: block;
+      height: 2px;
+      width: 200px;
+      margin: 0 auto 30px;
+      background-color: #4c4d50; }
+  .c-section__description {
+    text-align: center;
+    margin-bottom: 80px; }
+    .c-section__description h2 {
+      font-size: 20px;
+      line-height: 30px; }
+  .c-section__container {
+    margin-top: 80px;
+    margin-bottom: 80px; }
+  .c-section__item {
+    background: gainsboro;
+    margin-bottom: 30px;
+    padding: 20px;
+    line-height: 25px; }
 
 @media screen and (max-width: 768px) {
   .c-section__description h2 {
@@ -839,9 +945,6 @@ body {
     display: none; } }
 
 @media screen and (max-width: 481px) {
-  .u-inner, .c-contents, .p-home {
-    padding-left: 24px;
-    padding-right: 24px; }
   .u-br {
     display: block; }
   .p-problem__description {
@@ -850,6 +953,9 @@ body {
 .u-m__contents {
   margin-top: 220px;
   margin-bottom: 100px; }
+
+.u-red {
+  color: red; }
 
 
 /*# sourceMappingURL=app.css.map*/
