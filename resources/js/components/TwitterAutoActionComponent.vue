@@ -4,7 +4,7 @@
             <div class="c-overlay">
                 <div class="c-overlay__contents">
                     <div class="c-overlay__ttl">{{ autoTarget }}&nbsp;Search Keyword</div>
-                    <div class="c-overlay__description"><span class="u-red">*</span>追加したKeywordをもとにフォローします</div>
+                    <div class="c-overlay__description"><span class="u-red">*</span>Keywordを入力するとそのKeywordをもとにフォローします。<br>何も入力しないとKeywordなしでフォローします。</div>
                     <div class="c-overlay__btnContainer c-overlay__btnContainer--auto">
                         <div class="c-search">
                             <label class="ef">
@@ -24,7 +24,7 @@
                             <div v-if="getCookie()" class="c-search__keywords">
                                 <nav class="c-solidMenu">
                                     <ul>
-                                        <li v-for="(keyword, i) in getCookie()" :key="i" :id="keyword"><a href="javascript:void(0)"><span>{{keyword}}</span></a><input
+                                        <li v-for="(keyword, i) in getCookie()" :key="i" :id="keyword"><a href="javascript:void(0)" id="cookiesDom"><span>{{keyword}}</span></a><input
                                         class="c-search__submit"
                                         type="submit"
                                         value="削除"
@@ -35,7 +35,7 @@
                                 </nav>
                             </div>
                         </div>
-                        <button class="c-appBtn" v-on:click="autoCancel()">追加せずに自動フォロー</button>
+                        <button class="c-appBtn" v-on:click="searchAutoFollow()">自動フォロー</button>
                         <button class="c-appBtn" v-on:click="autoCancel()">閉じる</button>
     
                     </div>
@@ -58,7 +58,7 @@ export default {
             autoTarget: '',
             add_keyword: '',
             keywords: '',
-            cookiesData: this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name)
+            cookiesData: this.getCookie()
         }
     },
     computed: {
@@ -75,10 +75,8 @@ export default {
         },
         addSearchTextDB: function() {
             if (this.add_keyword) {
-                if ( this.$vueCookies.isKey('SearchText' + this.user_id + this.auth_screen_name)) {
+                if (this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name)) {
                     var cookieData = this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name);
-                    console.log(cookieData);
-                    
                     var arrayCookieData = cookieData.split( ',' );
                 
                     // 既にあるクッキーの中に入力した値があったら追加しない、なければ追加
@@ -87,49 +85,63 @@ export default {
                         this.add_keyword = '';
                     } else {
                         arrayCookieData.push(this.add_keyword);
-                        this.keywords = arrayCookieData.push(this.add_keyword);
+                        this.keywords = arrayCookieData;
                         this.add_keyword = '';
                         this.$vueCookies.set('SearchText' + this.user_id + this.auth_screen_name, arrayCookieData);
+                        console.log(this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name));
                     }
                 } else {
                     this.$vueCookies.config(60 * 60 * 24 * 30,'');
                     this.keywords = this.add_keyword;
                     this.$vueCookies.set('SearchText' + this.user_id + this.auth_screen_name, this.add_keyword);
                     this.add_keyword = '';
+                    console.log(this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name));
                 }
             }
         },
         deleteSearchTextCookie: function(keyword) {
             var cookieData = this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name);
-            console.log(cookieData);
             var arrayCookieData = cookieData.split( ',' );
-            console.log(arrayCookieData);
             var index = arrayCookieData.indexOf(keyword);
             arrayCookieData.splice(index, 1);
-            console.log(arrayCookieData);
+            this.keywords = arrayCookieData;
             this.$vueCookies.set('SearchText' + this.user_id + this.auth_screen_name, arrayCookieData);
-            this.keywords = this.$vueCookies.set('SearchText' + this.user_id + this.auth_screen_name, arrayCookieData);
+            console.log(this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name));
             const keywordDom = document.getElementById(keyword);
             keywordDom.remove();
-
-
 
             if (this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name) == null) {
                 $cookies.remove('SearchText' + this.user_id + this.auth_screen_name);
             }
         },
-        getCookie: function(){
+        getCookie: function() {
            if ( this.$vueCookies.isKey('SearchText' + this.user_id + this.auth_screen_name)) {
             var cookieData = this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name);
-                
             var arrayCookieData = cookieData.split( ',' );
-
             return arrayCookieData;
            } else {
             return ;
            }
-    
         },
+        searchAutoFollow: function() {
+            var cookieData = this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name);
+            var arrayCookieData = cookieData.split( ',' );
+
+            const formData = new FormData()
+            formData.append('user_id', this.user_id)
+            formData.append('screen_name', this.auth_screen_name)
+            formData.append('array_search_text', arrayCookieData)
+
+            this.$axios.post('/api/twitter/autoFollow', formData)
+                .then((res) => {
+                    console.log(res)
+                    window.location.reload(false)
+                })
+                .catch((error) => {
+                    console.log('searchAutoFollowは正常に起動していません。')
+                    console.log(error)
+                })
+        }
     },
 }
 </script>

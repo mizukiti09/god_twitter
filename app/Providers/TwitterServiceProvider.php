@@ -4,11 +4,13 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use packages\Domain\Application\Twitter\TwitterAuthInteractor;
-use packages\Domain\Application\Twitter\UserTwitterAccountInteractor;
 use packages\UseCase\Twitter\Auth\TwitterAuthUseCaseInterface;
 use packages\Infrastructure\User\UserTwitterAccountsRepository;
-use packages\Domain\Domain\User\UserTwitterAccountsRepositoryInterface;
+use packages\Domain\Application\Twitter\TwitterFollowInteractor;
 use packages\UseCase\Twitter\UserTwitterAccountUseCaseInterface;
+use packages\Domain\Application\Twitter\UserTwitterAccountInteractor;
+use packages\UseCase\Twitter\Follow\TwitterAutoFollowUseCaseInterface;
+use packages\Domain\Domain\User\UserTwitterAccountsRepositoryInterface;
 
 class TwitterServiceProvider extends ServiceProvider
 {
@@ -46,5 +48,6 @@ class TwitterServiceProvider extends ServiceProvider
         UserTwitterAccountsRepositoryInterface::class => UserTwitterAccountsRepository::class,
         UserTwitterAccountUseCaseInterface::class => UserTwitterAccountInteractor::class,
         TwitterAuthUseCaseInterface::class => TwitterAuthInteractor::class,
+        TwitterAutoFollowUseCaseInterface::class => TwitterFollowInteractor::class,
     ];
 }

@@ -20,4 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::namespace('Twitter')->group(function () {
     Route::post('twitter/account/delete', 'UserTwitterAccountController@delete')->name('twitter.deleteAccount');
+    Route::post('twitter/autoFollow', 'TwitterFollowController@autoFollow')->name('twitter.autoFollow');
 });

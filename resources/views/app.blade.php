@@ -15,9 +15,14 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href='https://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>
 
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="{{ asset('dist/js/app.js') }}" defer></script>
+    <script src="{{ asset('js/device.js') }}" defer></script>
     
     <!-- Styles -->
     <link href="{{ asset('dist/css/app.css') }}" rel="stylesheet">
+    
 
     <!-- フォントオーサム -->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
@@ -26,8 +31,5 @@
     <div id="app">
         @include('parts.header') @yield('content') @include('parts.footer')
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <!-- Scripts -->
-    <script src="{{ asset('dist/js/app.js') }}" defer></script>
 </body>
 </html>

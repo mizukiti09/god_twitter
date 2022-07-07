@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Twitter\Follow;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Middleware\CleanArchitectureMiddleware;
 
-class TwitterAutoFollowSearchController extends Controller
+class TwitterFollowController extends Controller
 {
-    public function index()
+    public function autoFollow(Request $request)
     {
-        CleanArchitectureMiddleware::$view = view('pages.follow');
+        $repository->autoFollowHandle(
+            $request->user_id, 
+            $request->screen_name, 
+            $request->array_search_text);
     }
 }

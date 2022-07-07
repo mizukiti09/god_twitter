@@ -34,10 +34,12 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
                         'screen_name' => $account->screen_name,
                     ],
                     [
-                        'profile_photo_path' => $account->profile_image_url,
-                        'follow'             => $account->friends_count,
-                        'follower'           => $account->followers_count,
-                        'auth_flg'           => true
+                        'profile_photo_path'  => $account->profile_image_url,
+                        'follow'              => $account->friends_count,
+                        'follower'            => $account->followers_count,
+                        'auth_flg'            => true,
+                        'access_token'        => $account->token,
+                        'access_token_secret' => $account->tokenSecret,
                     ]
                 );
         } else {
@@ -93,5 +95,97 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
         DB::table('user_twitter_accounts')
             ->where('screen_name', $screen_name)
             ->delete();
+    }
+
+    public function userFollowCountResetBy24HoursAgo($user_id, $screen_name)
+    {
+        // follow_countが１の時のUnixタイム
+        $result = DB::table('user_twitter_accounts')
+            ->where('id', $user_id)
+            ->where('screen_name', $screen_name)
+            ->select('follow_count_first_unix_time')
+            ->get()
+            ->first();
+        $followCountFirstUnixTime = $result->follow_count_first_unix_time;
+
+        // // 現在のUnixタイム
+        $currentTime = time();
+
+        if ($followCountFirstUnixTime !== null) {
+            // 86400 は 1日あたりのUnixタイム
+            if (($followCountFirstUnixTime + 86400) < $currentTime) {
+                DB::table('users')
+                    ->where('id', $user_id)
+                    ->where('screen_name', $screen_name)
+                    ->update([
+                        'follow_count' => 0,
+                        'follow_count_first_unix_time' => time(),
+                    ]);
+            }
+        } else {
+            //  ユーザーが初めてフォローする時は$followCountFirstUnixTime は nullになるので
+            // こちらの処理がされる
+            DB::table('users')
+                ->where('id', $user_id)
+                ->where('screen_name', $screen_name)
+                ->update([
+                    'follow_count_first_unix_time' => time(),
+                ]);
+        }
+    }
+
+    public function followCountUpperCheck($user_id, $screen_name)
+    {
+        $result = DB::table('user_twitter_accounts')
+            ->where('id', $user_id)
+            ->where('screen_name', $screen_name)
+            ->select('follow_count')
+            ->get()
+            ->first();
+        $followCount = $result->follow_count;
+
+        Log::info($followCount);
+
+        if ($followCount < 1000) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function followCountSave($user_id, $screen_name)
+    {
+        DB::table('user_twitter_accounts')
+            ->where('id', $user_id)
+            ->where('screen_name', $screen_name)
+            ->increment('follow_count');
+    }
+
+    public function getAccessToken($user_id, $screen_name)
+    {
+        $result =  DB::table('user_twitter_accounts')
+            ->where('id', $user_id)
+            ->where('screen_name', $screen_name)
+            ->select([
+                'access_token',
+            ])
+            ->get()
+            ->first();
+
+        return $result->access_token;
+    }
+
+    public function getAccessTokenSecret($user_id, $screen_name)
+    {
+        $result =  DB::table('user_twitter_accounts')
+            ->where('id', $user_id)
+            ->where('screen_name', $screen_name)
+            ->select([
+                'access_token_secret',
+            ])
+            ->get()
+            ->first();
+
+        return $result->access_token_secret;
     }
 }
