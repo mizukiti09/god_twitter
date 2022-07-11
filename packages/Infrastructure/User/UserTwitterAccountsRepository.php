@@ -13,7 +13,7 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
     /**
      * @param $twitterAuth
      */
-    public function save($account)
+    public function save($account, $token, $token_secret)
     {
         // ログインしているユーザーが登録しているTwitterアカウントが10より下の場合
 
@@ -38,8 +38,8 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
                         'follow'              => $account->friends_count,
                         'follower'            => $account->followers_count,
                         'auth_flg'            => true,
-                        'access_token'        => $account->token,
-                        'access_token_secret' => $account->tokenSecret,
+                        'access_token'        => $token,
+                        'access_token_secret' => $token_secret,
                     ]
                 );
         } else {
@@ -67,6 +67,34 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
             ])
             ->latest('updated_at')
             ->get();
+
+        return $accounts;
+    }
+
+    public function onAutoFollowFlg($user_id, $screen_name)
+    {
+        // ユーザーが自動モードを使用する際には一つのアカウントだけに
+        // 絞りたいためまずユーザーが保有しているアカウントの自動フラグを
+        // 全て0にしてからその後に、特定のアカウントのみ自動モードフラグを立てる
+        DB::table('user_twitter_accounts')
+            ->where('user_id', $user_id)
+            ->update([
+                'auto_follow_flg' => 0
+            ]);
+
+        DB::table('user_twitter_accounts')
+            ->where('user_id', $user_id)
+            ->where('screen_name', $screen_name)
+            ->update([
+                'auto_follow_flg' => 1
+            ]);
+    }
+
+    public function getOnAutoFollowAccounts()
+    {
+        $accounts = DB::table('user_twitter_accounts')
+            ->where('auto_follow_flg', 1)
+            ->pluck('id');
 
         return $accounts;
     }
@@ -103,15 +131,16 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
         $result = DB::table('user_twitter_accounts')
             ->where('id', $user_id)
             ->where('screen_name', $screen_name)
-            ->select('follow_count_first_unix_time')
             ->get()
             ->first();
+
+        Log::info($result);
         $followCountFirstUnixTime = $result->follow_count_first_unix_time;
 
         // // 現在のUnixタイム
         $currentTime = time();
 
-        if ($followCountFirstUnixTime !== null) {
+        if ($followCountFirstUnixTime) {
             // 86400 は 1日あたりのUnixタイム
             if (($followCountFirstUnixTime + 86400) < $currentTime) {
                 DB::table('users')
@@ -177,7 +206,7 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
 
     public function getAccessTokenSecret($user_id, $screen_name)
     {
-        $result =  DB::table('user_twitter_accounts')
+        $result = DB::table('user_twitter_accounts')
             ->where('id', $user_id)
             ->where('screen_name', $screen_name)
             ->select([
@@ -187,5 +216,38 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
             ->first();
 
         return $result->access_token_secret;
+    }
+
+    public function getAccount($id)
+    {
+        // $account = DB::table('user_twitter_accounts')
+        //     ->where('id', $id)
+        //     ->join('auto_follow_datas', 'user_twitter_accounts.id', '=', 'auto_follow_datas.user_twitter_account_id')
+        //     ->get();
+
+        $param = [
+            'id' => $id
+        ];
+
+        $account = DB::select(
+            "SELECT 
+                u.id,
+                u.user_id,
+                u.screen_name,
+                u.access_token,
+                u.access_token_secret,
+                a.cursor_count,
+                a.next_cursor,
+                a.search_text,
+                a.target_account
+            FROM
+                user_twitter_accounts as u
+            LEFT JOIN auto_follow_datas as a
+            ON u.id = a.user_twitter_account_id
+            WHERE u.id = :id",
+            $param
+        );
+
+        return $account[0];
     }
 }

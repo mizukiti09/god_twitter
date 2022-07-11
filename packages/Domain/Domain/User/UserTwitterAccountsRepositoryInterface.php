@@ -5,11 +5,18 @@ namespace packages\Domain\Domain\User;
 interface UserTwitterAccountsRepositoryInterface
 {
     /**
-     * @param $twitterAuth
+     * @param $twitterAuth, $token, $token_secret
      */
-    public function save($twitterAuth);
+    public function save($twitterAuth, $token, $token_secret);
 
     public function find();
+
+    /**
+     * @param $user_id, $screen_name
+     */
+    public function onAutoFollowFlg($user_id, $screen_name);
+
+    public function getOnAutoFollowAccounts();
 
     public function userTwitterAuthLogout();
 
@@ -46,4 +53,9 @@ interface UserTwitterAccountsRepositoryInterface
      * @param $user_id, $screen_name
      */
     public function getAccessTokenSecret($user_id, $screen_name);
+
+    /**
+     * @param $id
+     */
+    public function getAccount($id);
 }

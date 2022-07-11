@@ -9,8 +9,12 @@ use packages\Infrastructure\User\UserTwitterAccountsRepository;
 use packages\Domain\Application\Twitter\TwitterFollowInteractor;
 use packages\UseCase\Twitter\UserTwitterAccountUseCaseInterface;
 use packages\Domain\Application\Twitter\UserTwitterAccountInteractor;
+use packages\Domain\Domain\TargetAccountsRepositoryInterface;
+use packages\Domain\Domain\User\AutoFollowDatasRepositoryInterface;
 use packages\UseCase\Twitter\Follow\TwitterAutoFollowUseCaseInterface;
 use packages\Domain\Domain\User\UserTwitterAccountsRepositoryInterface;
+use packages\Infrastructure\TargetAccountsRepository;
+use packages\Infrastructure\User\AutoFollowDatasRepository;
 
 class TwitterServiceProvider extends ServiceProvider
 {
@@ -46,8 +50,10 @@ class TwitterServiceProvider extends ServiceProvider
      */
     public $bindings = [
         UserTwitterAccountsRepositoryInterface::class => UserTwitterAccountsRepository::class,
-        UserTwitterAccountUseCaseInterface::class => UserTwitterAccountInteractor::class,
-        TwitterAuthUseCaseInterface::class => TwitterAuthInteractor::class,
-        TwitterAutoFollowUseCaseInterface::class => TwitterFollowInteractor::class,
+        UserTwitterAccountUseCaseInterface::class     => UserTwitterAccountInteractor::class,
+        TwitterAuthUseCaseInterface::class            => TwitterAuthInteractor::class,
+        TwitterAutoFollowUseCaseInterface::class      => TwitterFollowInteractor::class,
+        TargetAccountsRepositoryInterface::class      => TargetAccountsRepository::class,
+        AutoFollowDatasRepositoryInterface::class     => AutoFollowDatasRepository::class,
     ];
 }

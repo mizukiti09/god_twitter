@@ -36,12 +36,14 @@ class TwitterAuthInteractor implements TwitterAuthUseCaseInterface
     public function loginHandleProviderCallback()
     {
         $twitterAuth = Twitter::connectUserAuth();
+
         Log::info('Twitterから取得しました。', ['user' => $twitterAuth]);
 
-        $account = Twitter::getConnection()->get('users/lookup', array(
+        $account = Twitter::getConnection(Auth::id(), $twitterAuth->getNickname())->get('users/lookup', array(
             'screen_name' => $twitterAuth->getNickname(),
         ));
-        $this->twitterAccountsRepository->save($account[0]);
+
+        $this->twitterAccountsRepository->save($account[0], $twitterAuth->token, $twitterAuth->tokenSecret);
 
 
         Auth::login(Auth::user());
