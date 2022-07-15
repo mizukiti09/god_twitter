@@ -192,30 +192,24 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
 
     public function getAccessToken($user_id, $screen_name)
     {
-        $result =  DB::table('user_twitter_accounts')
-            ->where('id', $user_id)
+        $result = DB::table('user_twitter_accounts')
+            ->where('user_id', $user_id)
             ->where('screen_name', $screen_name)
-            ->select([
-                'access_token',
-            ])
-            ->get()
+            ->pluck('access_token')
             ->first();
 
-        return $result->access_token;
+        return $result;
     }
 
     public function getAccessTokenSecret($user_id, $screen_name)
     {
         $result = DB::table('user_twitter_accounts')
-            ->where('id', $user_id)
+            ->where('user_id', $user_id)
             ->where('screen_name', $screen_name)
-            ->select([
-                'access_token_secret',
-            ])
-            ->get()
+            ->pluck('access_token_secret')
             ->first();
 
-        return $result->access_token_secret;
+        return $result;
     }
 
     public function getAccount($id)
@@ -239,7 +233,7 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
                 a.cursor_count,
                 a.next_cursor,
                 a.search_text,
-                a.target_account
+                a.target_account_id
             FROM
                 user_twitter_accounts as u
             LEFT JOIN auto_follow_datas as a
