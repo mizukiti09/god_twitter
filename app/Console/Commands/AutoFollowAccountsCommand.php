@@ -45,6 +45,10 @@ class AutoFollowAccountsCommand extends Command
         AutoFollowDatasRepositoryInterface $a_repository,
         FollowAccountsRepositoryInterface $f_repository
     ) {
+        Log::info('=============================');
+        Log::info('AutoFollowAccounts Start');
+        Log::info('=============================');
+
         $userTwitterAccountIds = $u_repository->getOnAutoFollowAccounts();
         if (!empty($userTwitterAccountIds)) {
             foreach ($userTwitterAccountIds as $user_twitter_account_id) {
@@ -78,7 +82,12 @@ class AutoFollowAccountsCommand extends Command
                 }
 
                 // 次のフォロワーリストがあったらnext_cursorをDBに保存
-                $a_repository->saveNextCursor($user_twitter_account_id, $followers_list->next_cursor);
+                if ($followers_list->next_cursor) {
+                    $a_repository->saveNextCursor($user_twitter_account_id, $followers_list->next_cursor);
+                } else {
+                    $a_repository->incrementTargetAccountId($user_twitter_account_id);
+                    Log::info('incrementTargetAccountIdされました。');
+                }
 
                 foreach ($followers_list->users as $user) {
 
@@ -104,5 +113,9 @@ class AutoFollowAccountsCommand extends Command
                 }
             }
         }
+
+        Log::info('=============================');
+        Log::info('AutoFollowAccounts End');
+        Log::info('=============================');
     }
 }

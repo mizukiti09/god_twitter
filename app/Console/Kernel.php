@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\AutoFollowAccountsCommand::class,
+        \App\Console\Commands\AutoFollowCommand::class,
     ];
 
     /**
@@ -26,12 +27,21 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('command:autoFollowAccounts')
-            ->everyMinute()
+            ->everyFiveMinutes()
             ->onSuccess(function () {
                 Log::debug('自動フォローアカウンツ保存:成功');
             })
             ->onFailure(function () {
                 Log::error('自動フォローアカウンツ保存:失敗');
+            });
+
+        $schedule->command('command:autoFollow')
+            ->everyTenMinutes()
+            ->onSuccess(function () {
+                Log::debug('自動フォロー:成功');
+            })
+            ->onFailure(function () {
+                Log::error('自動フォロー:失敗');
             });
     }
 

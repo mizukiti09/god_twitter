@@ -156,6 +156,7 @@ body {
   .l-footer__wrapper {
     padding-bottom: 56px;
     padding-top: 56px;
+    max-width: 1200px;
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between; }
@@ -844,7 +845,7 @@ body {
       width: 100%; }
       .p-myPage__article__panel {
         width: 100%;
-        height: 850px;
+        height: 870px;
         display: block; }
         .p-myPage__article__panel__photo {
           width: 100px;

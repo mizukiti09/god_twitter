@@ -10,6 +10,11 @@ interface AutoFollowDatasRepositoryInterface
     public function getTargetAccountScreenName($user_twitter_account_id);
 
     /**
+     * @param $user_twitter_account_id
+     */
+    public function incrementTargetAccountId($user_twitter_account_id);
+
+    /**
      * @param $user_id, $next_cursor, $search_text
      */
     public function saveArraySearchText($user_id, $screen_name, $array_search_text);

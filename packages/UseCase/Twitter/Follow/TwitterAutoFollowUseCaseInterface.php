@@ -9,5 +9,8 @@ interface TwitterAutoFollowUseCaseInterface
      */
     public function autoFollowSaveHandle($user_id, $screen_name, $array_search_text);
 
-    public function stopAutoFollowHandle();
+    /**
+     * @param $user_id
+     */
+    public function stopAutoFollowHandle($user_id);
 }

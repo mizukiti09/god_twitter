@@ -16,4 +16,31 @@ class FollowAccountsRepository implements FollowAccountsRepositoryInterface
                 'screen_name' => $screen_name,
             ]);
     }
+
+    public function getTenAccounts($user_twitter_account_id)
+    {
+        $param = [
+            'user_twitter_account_id' => $user_twitter_account_id
+        ];
+
+        $account = DB::select(
+            "SELECT 
+                id,
+                screen_name
+            FROM
+                follow_accounts
+            WHERE user_twitter_account_id = :user_twitter_account_id
+            LIMIT 0, 10",
+            $param
+        );
+
+        return $account;
+    }
+
+    public function deleteFollowAccount($id)
+    {
+        DB::table('follow_accounts')
+            ->where('id', $id)
+            ->delete();
+    }
 }

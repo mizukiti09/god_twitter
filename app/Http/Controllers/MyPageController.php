@@ -14,8 +14,6 @@ class MyPageController extends Controller
     {
         $accounts = $repository->find();
 
-
-        // if ($accounts) {
         foreach ($accounts as $account) {
             if ($account->auth_flg) {
                 $auth_screen_name = $account->screen_name;
@@ -23,9 +21,6 @@ class MyPageController extends Controller
                 $auth_screen_name = 'MyPage_auth_screen_name_null';
             }
         }
-
-        // }
-
         $user_id = Auth::id();
         CleanArchitectureMiddleware::$view = view('pages.myPage', compact('accounts', 'user_id', 'auth_screen_name'));
     }

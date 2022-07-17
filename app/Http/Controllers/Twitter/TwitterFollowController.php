@@ -17,4 +17,9 @@ class TwitterFollowController extends Controller
             $request->array_search_text
         );
     }
+
+    public function autoFollowStop(Request $request, TwitterAutoFollowUseCaseInterface $repository)
+    {
+        $repository->stopAutoFollowHandle($request->user_id);
+    }
 }

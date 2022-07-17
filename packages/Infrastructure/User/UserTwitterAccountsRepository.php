@@ -63,12 +63,38 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
                 'like_count_get',
                 'tweet_count',
                 'updated_at',
-                'auth_flg'
+                'auth_flg',
+                'auto_follow_flg'
             ])
             ->latest('updated_at')
             ->get();
 
         return $accounts;
+    }
+
+    public function cronFindUser($user_id, $screen_name)
+    {
+        $param = [
+            'user_id' => $user_id,
+            'screen_name' => $screen_name
+        ];
+
+        $account = DB::select(
+            "SELECT 
+                u.id,
+                u.name,
+                u.email,
+                t.screen_name
+            FROM
+                user_twitter_accounts as t
+            JOIN users as u
+            ON u.id = t.user_id
+            WHERE t.user_id = :user_id
+            AND t.screen_name = :screen_name",
+            $param
+        );
+
+        return $account[0];
     }
 
     public function onAutoFollowFlg($user_id, $screen_name)
@@ -104,7 +130,8 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
         DB::table('user_twitter_accounts')
             ->where('user_id', Auth::id())
             ->update([
-                'auth_flg' => 0
+                'auth_flg' => 0,
+                'auto_follow_flg' => 0,
             ]);
     }
 
@@ -125,16 +152,14 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
             ->delete();
     }
 
-    public function userFollowCountResetBy24HoursAgo($user_id, $screen_name)
+    public function userFollowCountResetBy24HoursAgo($id)
     {
         // follow_countが１の時のUnixタイム
         $result = DB::table('user_twitter_accounts')
-            ->where('id', $user_id)
-            ->where('screen_name', $screen_name)
+            ->where('id', $id)
             ->get()
             ->first();
 
-        Log::info($result);
         $followCountFirstUnixTime = $result->follow_count_first_unix_time;
 
         // // 現在のUnixタイム
@@ -143,9 +168,8 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
         if ($followCountFirstUnixTime) {
             // 86400 は 1日あたりのUnixタイム
             if (($followCountFirstUnixTime + 86400) < $currentTime) {
-                DB::table('users')
-                    ->where('id', $user_id)
-                    ->where('screen_name', $screen_name)
+                DB::table('user_twitter_accounts')
+                    ->where('id', $id)
                     ->update([
                         'follow_count' => 0,
                         'follow_count_first_unix_time' => time(),
@@ -154,39 +178,38 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
         } else {
             //  ユーザーが初めてフォローする時は$followCountFirstUnixTime は nullになるので
             // こちらの処理がされる
-            DB::table('users')
-                ->where('id', $user_id)
-                ->where('screen_name', $screen_name)
+            DB::table('user_twitter_accounts')
+                ->where('id', $id)
                 ->update([
                     'follow_count_first_unix_time' => time(),
                 ]);
         }
     }
 
-    public function followCountUpperCheck($user_id, $screen_name)
+    public function followCountUpperCheck($id)
     {
         $result = DB::table('user_twitter_accounts')
-            ->where('id', $user_id)
-            ->where('screen_name', $screen_name)
+            ->where('id', $id)
             ->select('follow_count')
             ->get()
             ->first();
         $followCount = $result->follow_count;
 
-        Log::info($followCount);
+        Log::info('現状のDBフォローカウント' . $followCount);
 
         if ($followCount < 1000) {
+            Log::info('現状のDBフォローカウントは1000件未満 OK');
             return true;
         } else {
+            Log::info('現状のDBフォローカウントは1000件以上');
             return false;
         }
     }
 
-    public function followCountSave($user_id, $screen_name)
+    public function followCountSave($id)
     {
         DB::table('user_twitter_accounts')
-            ->where('id', $user_id)
-            ->where('screen_name', $screen_name)
+            ->where('id', $id)
             ->increment('follow_count');
     }
 
@@ -214,11 +237,6 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
 
     public function getAccount($id)
     {
-        // $account = DB::table('user_twitter_accounts')
-        //     ->where('id', $id)
-        //     ->join('auto_follow_datas', 'user_twitter_accounts.id', '=', 'auto_follow_datas.user_twitter_account_id')
-        //     ->get();
-
         $param = [
             'id' => $id
         ];
@@ -243,5 +261,14 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
         );
 
         return $account[0];
+    }
+
+    public function offAutoFollowFlg($user_id)
+    {
+        DB::table('user_twitter_accounts')
+            ->where('user_id', $user_id)
+            ->update([
+                'auto_follow_flg' => 0,
+            ]);
     }
 }

@@ -21,7 +21,7 @@ class CreateAutoFollowDatasTable extends Migration
                 ->foreign('user_twitter_account_id')
                 ->references('id')
                 ->on('user_twitter_accounts');
-            $table->unsignedBigInteger('target_account_id');
+            $table->unsignedBigInteger('target_account_id')->default(1);
             $table
                 ->foreign('target_account_id')
                 ->references('id')

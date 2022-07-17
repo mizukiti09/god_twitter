@@ -28,6 +28,13 @@ class AutoFollowDatasRepository implements AutoFollowDatasRepositoryInterface
         return $account_screen_name[0]->screen_name;
     }
 
+    public function incrementTargetAccountId($user_twitter_account_id)
+    {
+        DB::table('auto_follow_datas')
+            ->where('user_twitter_account_id', $user_twitter_account_id)
+            ->increment('target_account_id');
+    }
+
     public function saveArraySearchText($user_id, $screen_name, $array_search_text)
     {
         $accountId = DB::table('user_twitter_accounts')
@@ -45,7 +52,9 @@ class AutoFollowDatasRepository implements AutoFollowDatasRepositoryInterface
                     'user_twitter_account_id' => $accountId->id
                 ],
                 [
-                    'search_text' => $array_search_text
+                    'search_text' => $array_search_text,
+                    'next_cursor' => 0,
+                    'target_account_id' => 1,
                 ]
             );
     }

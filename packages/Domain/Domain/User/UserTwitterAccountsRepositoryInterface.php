@@ -14,6 +14,11 @@ interface UserTwitterAccountsRepositoryInterface
     /**
      * @param $user_id, $screen_name
      */
+    public function cronFindUser($user_id, $screen_name);
+
+    /**
+     * @param $user_id, $screen_name
+     */
     public function onAutoFollowFlg($user_id, $screen_name);
 
     public function getOnAutoFollowAccounts();
@@ -28,19 +33,19 @@ interface UserTwitterAccountsRepositoryInterface
     public function deleteAccount($screen_name);
 
     /**
-     * @param $user_id, $screen_name
+     * @param $id
      */
-    public function userFollowCountResetBy24HoursAgo($user_id, $screen_name);
+    public function userFollowCountResetBy24HoursAgo($id);
+
+    /**
+     * @param $id
+     */
+    public function followCountUpperCheck($id);
 
     /**
      * @param $user_id, $screen_name
      */
-    public function followCountUpperCheck($user_id, $screen_name);
-
-    /**
-     * @param $user_id, $screen_name
-     */
-    public function followCountSave($user_id, $screen_name);
+    public function followCountSave($id);
 
     // ユーザーのアクセストークン取得
     /**
@@ -58,4 +63,9 @@ interface UserTwitterAccountsRepositoryInterface
      * @param $id
      */
     public function getAccount($id);
+
+    /**
+     * @param $user_id
+     */
+    public function offAutoFollowFlg($user_id);
 }

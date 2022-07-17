@@ -36,14 +36,14 @@
                             </div>
                         </div>
                         <button class="c-appBtn" v-on:click="searchAutoFollow()">自動フォロー</button>
+                        <button v-show="auto_follow_flg" class="c-appBtn" v-on:click="searchAutoFollowStop()">自動フォローストップ</button>
                         <button class="c-appBtn" v-on:click="autoCancel()">閉じる</button>
-    
                     </div>
                 </div>
             </div>
     
         </div>
-        <div class="c-appBtn"><a class="c-appBtn--auto" v-on:click="autoAction('自動フォロー')">自動フォロー中</a></div>
+        <div class="c-appBtn"><a class="c-appBtn--none" :class="{'c-appBtn--auto': auto_follow_flg}" v-on:click="autoAction('自動フォロー')">自動フォロー中</a></div>
         <div class="c-appBtn"><a class="c-appBtn--auto" v-on:click="autoAction('自動アンフォロー')">自動アンフォロー中</a></div>
         <div class="c-appBtn"><a class="c-appBtn--auto" v-on:click="autoAction('自動いいね')">自動いいね中</a></div>
         <div class="c-appBtn"><a class="c-appBtn--none" v-on:click="autoAction('自動ツイート')">自動ツイート</a></div>
@@ -52,7 +52,7 @@
 
 <script>
 export default {
-    props: ['user_id', 'auth_screen_name'],
+    props: ['user_id', 'auth_screen_name', 'auto_follow_flg'],
     data: function() {
         return {
             autoTarget: '',
@@ -127,10 +127,10 @@ export default {
             var cookieData = this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name);
             var arrayCookieData = cookieData.split( ',' );
 
-            const formData = new FormData()
-            formData.append('user_id', this.user_id)
-            formData.append('screen_name', this.auth_screen_name)
-            formData.append('array_search_text', arrayCookieData)
+            const formData = new FormData();
+            formData.append('user_id', this.user_id);
+            formData.append('screen_name', this.auth_screen_name);
+            formData.append('array_search_text', arrayCookieData);
 
             this.$axios.post('/api/twitter/autoFollow', formData)
                 .then((res) => {
@@ -141,7 +141,21 @@ export default {
                     console.log('searchAutoFollowは正常に起動していません。')
                     console.log(error)
                 })
-        }
+        },
+        searchAutoFollowStop: function() {
+            const formData = new FormData();
+            formData.append('user_id', this.user_id);
+
+            this.$axios.post('/api/twitter/autoFollowStop', formData)
+                .then((res) => {
+                    console.log(res)
+                    window.location.reload(false)
+                })
+                .catch((error) => {
+                    console.log('searchAutoFollowStopは正常に起動していません。')
+                    console.log(error)
+                })
+        },
     },
 }
 </script>

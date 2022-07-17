@@ -32,6 +32,7 @@
                                 <twitter-auto-action 
                                 :user_id="{{$user_id}}"
                                 :auth_screen_name="{{json_encode($accounts[0]->screen_name)}}"
+                                :auto_follow_flg="{{$account->auto_follow_flg}}"
                                 ></twitter-auto-action>
                         </div>
                     @endif
