@@ -50,6 +50,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "vue-cookies": "^1.8.1"
+        "vue-cookies": "^1.8.1",
+        "vue-ctk-date-time-picker": "^3.0.0-alpha.0"
     }
 }

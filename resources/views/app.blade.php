@@ -16,6 +16,9 @@
     <link href='https://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>
 
     <!-- Scripts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vue-ctk-date-time-picker@2.4.0/dist/vue-ctk-date-time-picker.css">
+<script src="https://cdn.jsdelivr.net/npm/vue-ctk-date-time-picker@2.4.0/dist/vue-ctk-date-time-picker.umd.min.js"></script>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="{{ asset('dist/js/app.js') }}" defer></script>
     <script src="{{ asset('js/device.js') }}" defer></script>

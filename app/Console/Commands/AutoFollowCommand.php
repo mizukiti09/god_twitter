@@ -49,13 +49,13 @@ class AutoFollowCommand extends Command
         Log::info('AutoFollowCommand Start');
         Log::info('=============================');
         $userTwitterAccountIds = $u_repository->getOnAutoFollowAccounts();
-        if (!empty($userTwitterAccountIds)) {
+        if (!empty($userTwitterAccountIds[0])) {
             Log::info('user_twitter_account 有り');
             foreach ($userTwitterAccountIds as $user_twitter_account_id) {
                 Log::info('user_twitter_account_id:' . $user_twitter_account_id);
 
-                $u_repository->userFollowCountResetBy24HoursAgo($user_twitter_account_id);
-                Log::info('userFollowCountResetBy24HoursAgo CheckOK');
+                $u_repository->resetCountBy24HoursAgo($user_twitter_account_id);
+                Log::info('resetCountBy24HoursAgo CheckOK');
                 if ($u_repository->followCountUpperCheck($user_twitter_account_id) == true) {
                     Log::info('followCountUpperCheck 1000件未満OK');
                     $account = $u_repository->getAccount($user_twitter_account_id);
@@ -66,7 +66,7 @@ class AutoFollowCommand extends Command
 
                     if (!empty($selectedTenAccounts)) {
                         Log::info('selectedTenAccounts 有り');
-                        foreach ($selectedTenAccounts as $selectedAccount) {
+                        foreach ($selectedTenAccounts as $key => $selectedAccount) {
                             $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->post('friendships/create', array(
                                 "screen_name" => $selectedAccount->screen_name,
                             ));
@@ -82,10 +82,12 @@ class AutoFollowCommand extends Command
                                 Log::info('=============================');
                                 Log::info('AutoFollowCommand End');
                                 Log::info('=============================');
-                                Log::info('=============================');
-                                Log::info('自動フォローアクション: メール通知');
-                                $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
-                                return Mail::to($user->email)->send(new AutoFollowMail($user));
+                                // if ($key === array_key_last($selectedTenAccounts)) {
+                                //     Log::info('=============================');
+                                //     Log::info('自動フォローアクション: メール通知');
+                                //     $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
+                                //     return Mail::to($user->email)->send(new AutoFollowMail($user));
+                                // }
                             }
                         }
                     }

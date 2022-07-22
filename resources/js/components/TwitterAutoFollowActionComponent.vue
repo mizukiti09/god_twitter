@@ -3,13 +3,14 @@
         <div id="jsModal" v-show="autoTarget">
             <div class="c-overlay">
                 <div class="c-overlay__contents">
-                    <div class="c-overlay__ttl">{{ autoTarget }}&nbsp;Search Keyword</div>
+                    <div class="c-overlay__ttl">{{ autoTarget }}</div>
                     <div class="c-overlay__description"><span class="u-red">*</span>Keywordを入力するとそのKeywordをもとにフォローします。<br>何も入力しないとKeywordなしでフォローします。</div>
                     <div class="c-overlay__btnContainer c-overlay__btnContainer--auto">
                         <div class="c-search">
                             <label class="ef">
                                     <input 
                                         type="text" 
+                                        class="c-search__input"
                                         name="keyword" 
                                         placeholder="Keyword"
                                         v-model="add_keyword"
@@ -43,10 +44,8 @@
             </div>
     
         </div>
-        <div class="c-appBtn"><a class="c-appBtn--none" :class="{'c-appBtn--auto': auto_follow_flg}" v-on:click="autoAction('自動フォロー')">自動フォロー中</a></div>
+        <div class="c-appBtn"><a class="c-appBtn--none" :class="{'c-appBtn--auto': auto_follow_flg}" v-on:click="autoAction('Auto Follow Search Keyword')"><span v-if="auto_follow_flg">自動フォロー中</span><span v-else>自動フォローする</span></a></div>
         <div class="c-appBtn"><a class="c-appBtn--auto" v-on:click="autoAction('自動アンフォロー')">自動アンフォロー中</a></div>
-        <div class="c-appBtn"><a class="c-appBtn--auto" v-on:click="autoAction('自動いいね')">自動いいね中</a></div>
-        <div class="c-appBtn"><a class="c-appBtn--none" v-on:click="autoAction('自動ツイート')">自動ツイート</a></div>
     </div>
 </template>
 
@@ -124,8 +123,15 @@ export default {
            }
         },
         searchAutoFollow: function() {
-            var cookieData = this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name);
-            var arrayCookieData = cookieData.split( ',' );
+            if (this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name)) {
+                // Keyword 有り
+                var cookieData = this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name);
+                var arrayCookieData = cookieData.split( ',' );
+            } else {
+                // Keyword 無し
+                var arrayCookieData = '';
+            }
+            console.log(arrayCookieData);
 
             const formData = new FormData();
             formData.append('user_id', this.user_id);

@@ -22,9 +22,11 @@
         margin: 12px;
     }
     &__contents {
+        overflow: scroll;
         background: #fff;
         padding: 40px 40px 8px;
         border-radius: 12px;
+        height: 100vh;
     }
     &__btnContainer {
         padding: 25px;
@@ -45,7 +47,7 @@
     position: relative;
     width: 100%;
     margin: 0 0 20px;
-    & input[type='text'] {
+    &__input {
         font: 15px/24px sans-serif;
         box-sizing: border-box;
         width: 100%;
@@ -53,7 +55,7 @@
         transition: 0.3s;
         letter-spacing: 1px;
         color: #3f3f3f;
-        border: 5px solid #1b2538;
+        border: 5px solid #787878 !important;
         border-radius: 4px;
         z-index: 10;
     }
@@ -96,6 +98,19 @@
     margin: 0;
     padding: 0;
     width: 99%;
+    &__textarea {
+        resize: none;
+        appearance: none;
+        border: none;
+        background: transparent;
+        color: white;
+        border-radius: 0;
+        font: inherit;
+        width: 98%;
+    }
+    &__date {
+        width: 268px;
+    }
     & .c-search__submit {
         border: 5px solid #ff4d00;
         &:hover {
@@ -107,7 +122,7 @@
             transition: .2s;
         }
     }
-    &>ul {
+    & ul {
         display: flex;
         flex-direction: column;
         align-content: stretch;
@@ -115,7 +130,7 @@
         width: 100%;
         margin: 0;
         padding: 0.2em;
-        &>li {
+        & li {
             box-sizing: border-box;
             display: flex;
             width: 100%;
@@ -123,12 +138,13 @@
             /* 隙間を埋めるなら0 */
             padding: 0;
             position: relative;
-            &>a {
+            & a {
+                word-wrap: break-word;
                 position: relative;
                 box-sizing: border-box;
                 display: block;
-                width: 100%;
-                height: 2em;
+                width: 268px;
+                height: auto;
                 background: #000;
                 text-decoration: none;
                 padding: 0.3em;
@@ -136,6 +152,7 @@
                 transform: translate(0, 0);
                 border: none;
                 top: 0;
+                z-index: 100;
                 &>span {
                     font-size: 1em;
                     color: #DDD;
@@ -180,7 +197,7 @@
                     position: absolute;
                     background: #666;
                     width: 0.5em;
-                    height: 2em;
+                    height: -webkit-fill-available;
                     left: -0.5em;
                     top: 0.25em;
                     border-style: none;
@@ -203,10 +220,77 @@
     }
 }
 
+// vueカレンダー
+.datepicker {
+    position: fixed !important;
+    top: 20% !important;
+    left: 50% !important;
+    transform: translateX(-50%);
+}
+
+.none {
+    display: none;
+}
+
+.date-time-picker {
+    &::before {
+        box-sizing: border-box;
+        content: "";
+        position: absolute;
+        background: #666;
+        width: 0.5em;
+        height: -webkit-fill-available;
+        left: -0.5em;
+        top: 0.25em;
+        border-style: none;
+        transform: skew(0deg, -45deg);
+    }
+    &::after {
+        box-sizing: border-box;
+        content: "";
+        position: absolute;
+        background: #333;
+        top: 100%;
+        left: -0.25em;
+        height: 0.5em;
+        border: none;
+        transform: skew(-45deg, 0deg);
+    }
+}
+
+.field-input {
+    border-radius: 0 !important;
+}
+
+@media screen and (max-width: 415px) {
+    .datepicker {
+        top: initial;
+        left: initial;
+        transform: initial;
+    }
+    .datepicker-buttons-container {
+        position: absolute;
+        bottom: 0;
+        width: 100vw;
+    }
+}
+
 @media screen and (max-width: 768px) {
     .c-overlay {
         &__contents {
-            width: 80vw;
+            width: 100vw;
+        }
+    }
+    .c-solidMenu {
+        &__date {
+            width: 80%;
+        }
+        & ul {
+            & li {
+                & a {
+                    width: 100%;
+                }
+            }
         }
     }
 }

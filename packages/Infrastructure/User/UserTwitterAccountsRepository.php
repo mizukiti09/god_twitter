@@ -152,9 +152,8 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
             ->delete();
     }
 
-    public function userFollowCountResetBy24HoursAgo($id)
+    public function resetCountBy24HoursAgo($id)
     {
-        // follow_countが１の時のUnixタイム
         $result = DB::table('user_twitter_accounts')
             ->where('id', $id)
             ->get()
@@ -171,7 +170,12 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
                 DB::table('user_twitter_accounts')
                     ->where('id', $id)
                     ->update([
-                        'follow_count' => 0,
+                        'follow_count'                 => 0,
+                        'follower_count'               => 0,
+                        'unFollow_count'               => 0,
+                        'like_count'                   => 0,
+                        'like_count_get'               => 0,
+                        'tweet_count'                  => 0,
                         'follow_count_first_unix_time' => time(),
                     ]);
             }
@@ -180,6 +184,47 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
             // こちらの処理がされる
             DB::table('user_twitter_accounts')
                 ->where('id', $id)
+                ->update([
+                    'follow_count_first_unix_time' => time(),
+                ]);
+        }
+    }
+
+    public function resetCountBy24HoursAgoParam2($user_id, $screen_name)
+    {
+        $result = DB::table('user_twitter_accounts')
+            ->where('user_id', $user_id)
+            ->where('screen_name', $screen_name)
+            ->get()
+            ->first();
+
+        $followCountFirstUnixTime = $result->follow_count_first_unix_time;
+
+        // // 現在のUnixタイム
+        $currentTime = time();
+
+        if ($followCountFirstUnixTime) {
+            // 86400 は 1日あたりのUnixタイム
+            if (($followCountFirstUnixTime + 86400) < $currentTime) {
+                DB::table('user_twitter_accounts')
+                    ->where('user_id', $user_id)
+                    ->where('screen_name', $screen_name)
+                    ->update([
+                        'follow_count'                 => 0,
+                        'follower_count'               => 0,
+                        'unFollow_count'               => 0,
+                        'like_count'                   => 0,
+                        'like_count_get'               => 0,
+                        'tweet_count'                  => 0,
+                        'follow_count_first_unix_time' => time(),
+                    ]);
+            }
+        } else {
+            //  ユーザーが初めてフォローする時は$followCountFirstUnixTime は nullになるので
+            // こちらの処理がされる
+            DB::table('user_twitter_accounts')
+                ->where('user_id', $user_id)
+                ->where('screen_name', $screen_name)
                 ->update([
                     'follow_count_first_unix_time' => time(),
                 ]);

@@ -11,7 +11,12 @@ require('./fade');
 
 import Vue from 'vue';
 import axios from 'axios';
-import vueCookies from 'vue-cookies'
+import vueCookies from 'vue-cookies';
+// import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
+// import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css';
+const VueCtkDateTimePicker = window['vue-ctk-date-time-picker'];
+
+Vue.component('vue-ctk-date-time-picker', VueCtkDateTimePicker);
 
 Vue.prototype.$axios = axios;
 Vue.prototype.$vueCookies = vueCookies;
@@ -29,7 +34,9 @@ Vue.prototype.$vueCookies = vueCookies;
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('twitter-accounts', require('./components/TwitterAccountsComponent.vue').default);
-Vue.component('twitter-auto-action', require('./components/TwitterAutoActionComponent.vue').default);
+Vue.component('twitter-auto-follow-action', require('./components/TwitterAutoFollowActionComponent.vue').default);
+Vue.component('twitter-auto-tweet-action', require('./components/TwitterAutoTweetActionComponent.vue').default);
+// Vue.component('vue-ctk-date-time-picker', VueCtkDateTimePicker);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

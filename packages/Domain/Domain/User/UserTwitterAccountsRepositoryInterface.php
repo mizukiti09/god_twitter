@@ -35,7 +35,12 @@ interface UserTwitterAccountsRepositoryInterface
     /**
      * @param $id
      */
-    public function userFollowCountResetBy24HoursAgo($id);
+    public function resetCountBy24HoursAgo($id);
+
+    /**
+     * @param $user_id, $screen_name
+     */
+    public function resetCountBy24HoursAgoParam2($user_id, $screen_name);
 
     /**
      * @param $id

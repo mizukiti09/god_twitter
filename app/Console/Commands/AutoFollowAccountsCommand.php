@@ -50,7 +50,7 @@ class AutoFollowAccountsCommand extends Command
         Log::info('=============================');
 
         $userTwitterAccountIds = $u_repository->getOnAutoFollowAccounts();
-        if (!empty($userTwitterAccountIds)) {
+        if (!empty($userTwitterAccountIds[0])) {
             foreach ($userTwitterAccountIds as $user_twitter_account_id) {
                 // ターゲットアカウントのスクリーンネーム
                 $target_account_screen_name = $a_repository->getTargetAccountScreenName($user_twitter_account_id);
@@ -63,20 +63,28 @@ class AutoFollowAccountsCommand extends Command
                 // user_twitter_account
                 $account = $u_repository->getAccount($user_twitter_account_id);
 
+                if (!empty($array_search_text[0])) {
+                    $listGetCount = 200;
+                } else {
+                    $listGetCount = 10;
+                }
+
                 Log::info($account->user_id);
                 Log::info($account->screen_name);
+
+
 
                 if (empty($next_cursor)) {
                     $followers_list = Twitter::getAuthConnection($account->user_id, $account->screen_name)
                         ->get('followers/list', array(
                             "screen_name" => $target_account_screen_name,
-                            "count"       => 200,
+                            "count"       => $listGetCount,
                         ));
                 } else {
                     $followers_list = Twitter::getAuthConnection($account->user_id, $account->screen_name)
                         ->get('followers/list', array(
                             "screen_name" => $target_account_screen_name,
-                            "count"       => 200,
+                            "count"       => $listGetCount,
                             "cursor" => $next_cursor,
                         ));
                 }
@@ -89,22 +97,27 @@ class AutoFollowAccountsCommand extends Command
                     Log::info('incrementTargetAccountIdされました。');
                 }
 
+
                 foreach ($followers_list->users as $user) {
 
-                    // プロフィールの中にフォロワーサーチキーワードが入っていたら
-                    // $check_countをインクリメントする。
-                    // $array_search_textの値の数とインクリメントされた$check_countが
-                    // 同じ数になればデータベースに保存する。
-                    $check_count = 0;
-                    if ($user->following == false) {
-                        foreach ($array_search_text as $text) {
-                            if (strpos($user->description, $text) !== false) {
-                                $check_count += 1;
-                            }
-                            if (count($array_search_text) == $check_count) {
-                                array_push($lists, $user->screen_name);
+                    if ($array_search_text !== null) {
+                        // プロフィールの中にフォロワーサーチキーワードが入っていたら
+                        // $check_countをインクリメントする。
+                        // $array_search_textの値の数とインクリメントされた$check_countが
+                        // 同じ数になればデータベースに保存する。
+                        $check_count = 0;
+                        if ($user->following == false) {
+                            foreach ($array_search_text as $text) {
+                                if (strpos($user->description, $text) !== false) {
+                                    $check_count += 1;
+                                }
+                                if (count($array_search_text) == $check_count) {
+                                    array_push($lists, $user->screen_name);
+                                }
                             }
                         }
+                    } else {
+                        array_push($lists, $user->screen_name);
                     }
                 }
 
