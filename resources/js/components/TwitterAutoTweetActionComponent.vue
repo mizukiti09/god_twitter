@@ -164,32 +164,20 @@ export default {
                 'data2': {'datetime': this.dateValues.dateValue2, 'text': arrayCookieData[2]}
             };
 
-            console.log(autoTweetDatas);
+            const formData = new FormData();
+            formData.append('user_id', this.user_id);
+            formData.append('screen_name', this.auth_screen_name);
+            formData.append('auto_tweet_datas', autoTweetDatas);
 
-            // if (this.$vueCookies.get('TweetText' + this.user_id + this.auth_screen_name)) {
-            //     // Keyword 有り
-            //     var cookieData = this.$vueCookies.get('TweetText' + this.user_id + this.auth_screen_name);
-            //     var arrayCookieData = cookieData.split( ',' );
-            // } else {
-            //     // Keyword 無し
-            //     var arrayCookieData = '';
-            // }
-            // console.log(arrayCookieData);
-
-            // const formData = new FormData();
-            // formData.append('user_id', this.user_id);
-            // formData.append('screen_name', this.auth_screen_name);
-            // formData.append('array_search_text', arrayCookieData);
-
-            // this.$axios.post('/api/twitter/autoTweet', formData)
-            //     .then((res) => {
-            //         console.log(res)
-            //         window.location.reload(false)
-            //     })
-            //     .catch((error) => {
-            //         console.log('autoTweetは正常に起動していません。')
-            //         console.log(error)
-            //     })
+            this.$axios.post('/api/twitter/autoTweet', formData)
+                .then((res) => {
+                    console.log(res)
+                    window.location.reload(false)
+                })
+                .catch((error) => {
+                    console.log('autoTweetは正常に起動していません。')
+                    console.log(error)
+                })
         },
         autoTweetStop: function() {
             const formData = new FormData();
