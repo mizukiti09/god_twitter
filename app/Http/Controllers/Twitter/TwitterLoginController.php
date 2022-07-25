@@ -12,15 +12,15 @@ class TwitterLoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function twitterLogin(TwitterAuthUseCaseInterface $interacor)
+    public function twitterLogin(TwitterAuthUseCaseInterface $useCase)
     {
-        return $interacor->loginRedirectProvider();
+        return $useCase->loginRedirectProvider();
     }
     /**
      * Twitterからユーザー情報を取得(Callback先)
      */
-    public function twitterCallback(TwitterAuthUseCaseInterface $interacor)
+    public function twitterCallback(TwitterAuthUseCaseInterface $useCase)
     {
-        return $interacor->loginHandleProviderCallback();
+        return $useCase->loginHandleProviderCallback();
     }
 }

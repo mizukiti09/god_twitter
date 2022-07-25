@@ -21,12 +21,8 @@ class CreateAutoTweetDatasTable extends Migration
                 ->foreign('user_twitter_account_id')
                 ->references('id')
                 ->on('user_twitter_accounts');
-            $table->string('tweetText0');
-            $table->string('tweetText1');
-            $table->string('tweetText2');
-            $table->integer('tweetTime0');
-            $table->integer('tweetTime1');
-            $table->integer('tweetTime2');
+            $table->string('tweetText');
+            $table->integer('tweetTime')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
         });

@@ -23,4 +23,6 @@ Route::namespace('Twitter')->group(function () {
     Route::post('twitter/autoFollow', 'TwitterFollowController@autoFollow')->name('twitter.autoFollow');
     Route::post('twitter/autoFollowStop', 'TwitterFollowController@autoFollowStop')->name('twitter.autoFollowStop');
     Route::post('twitter/autoTweet', 'TwitterTweetController@autoTweet')->name('twitter.autoTweet');
+    Route::post('twitter/autoTweetOn', 'TwitterTweetController@autoTweetOn')->name('twitter.autoTweetOn');
+    Route::post('twitter/autoTweetStop', 'TwitterTweetController@autoTweetStop')->name('twitter.autoTweetStop');
 });

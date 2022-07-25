@@ -262,8 +262,7 @@ body {
     overflow: scroll;
     background: #fff;
     padding: 40px 40px 8px;
-    border-radius: 12px;
-    height: 100vh; }
+    border-radius: 12px; }
   .c-overlay__btnContainer {
     padding: 25px; }
     .c-overlay__btnContainer .c-appBtn {
@@ -330,7 +329,9 @@ body {
     font: inherit;
     width: 98%; }
   .c-solidMenu__date {
-    width: 268px; }
+    width: 100%; }
+    .c-solidMenu__date__a {
+      width: 100% !important; }
   .c-solidMenu .c-search__submit {
     border: 5px solid #ff4d00; }
     .c-solidMenu .c-search__submit:hover {
@@ -425,8 +426,6 @@ body {
           transform: skew(-45deg, 0deg); }
 
 .datepicker {
-  position: fixed !important;
-  top: 20% !important;
   left: 50% !important;
   transform: translateX(-50%); }
 
@@ -471,15 +470,14 @@ body {
 
 @media screen and (max-width: 768px) {
   .c-overlay__contents {
-    width: 100vw; }
-  .c-solidMenu__date {
-    width: 80%; }
+    width: 66vw; }
   .c-solidMenu ul li a {
     width: 100%; } }
 
 @media screen and (max-width: 481px) {
   .c-overlay__contents {
-    padding: 40px 15px 8px; } }
+    padding: 40px 15px 8px;
+    width: 86vw; } }
 
 .button {
   font-size: 10px; }
@@ -872,7 +870,7 @@ body {
       font-size: 24px; }
   .p-myPage__aside {
     width: 25%;
-    height: 605px;
+    height: 645px;
     background: #fff;
     padding: 30px 15px;
     box-sizing: border-box;
@@ -885,6 +883,14 @@ body {
       .p-myPage__aside__item__attention {
         font-size: 14px;
         margin-bottom: 20px; }
+        .p-myPage__aside__item__attention a {
+          color: #80b1c5 !important;
+          position: relative; }
+          .p-myPage__aside__item__attention a:hover {
+            color: #2285b1 !important; }
+            .p-myPage__aside__item__attention a:hover .icon-hover-right {
+              transition: 1s;
+              animation: icon-hover-right 1s cubic-bezier(0.33, 1, 0.68, 1) 1 forwards; }
       .p-myPage__aside__item__head {
         font-size: 20px;
         margin-bottom: 12px; }
@@ -899,6 +905,21 @@ body {
     right: 33px;
     font-size: 21px;
     color: red; }
+
+.other-link-arrow {
+  position: absolute;
+  right: -18px; }
+
+.other-link-arrow .icon-hover-right {
+  transition: 1s;
+  animation: icon-hover-right 1s cubic-bezier(0.33, 1, 0.68, 1) 1 forwards; }
+
+@keyframes icon-hover-right {
+  0% {
+    transform: translateX(0); }
+  100% {
+    opacity: 1;
+    transform: translateX(5px); } }
 
 @media screen and (max-width: 768px) {
   .p-myPage {

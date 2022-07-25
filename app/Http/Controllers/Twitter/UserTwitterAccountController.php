@@ -9,8 +9,8 @@ use packages\UseCase\Twitter\UserTwitterAccountUseCaseInterface;
 class UserTwitterAccountController extends Controller
 {
     // このサービスに登録しているアカウント削除
-    public function delete(Request $request, UserTwitterAccountUseCaseInterface $interactor)
+    public function delete(Request $request, UserTwitterAccountUseCaseInterface $useCase)
     {
-        $interactor->deleteHandle($request->screen_name);
+        $useCase->deleteHandle($request->screen_name);
     }
 }

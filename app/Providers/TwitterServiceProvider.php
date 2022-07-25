@@ -7,16 +7,20 @@ use packages\Domain\Application\Twitter\TwitterAuthInteractor;
 use packages\UseCase\Twitter\Auth\TwitterAuthUseCaseInterface;
 use packages\Infrastructure\User\UserTwitterAccountsRepository;
 use packages\Domain\Application\Twitter\TwitterFollowInteractor;
+use packages\Domain\Application\Twitter\TwitterTweetInteractor;
 use packages\UseCase\Twitter\UserTwitterAccountUseCaseInterface;
 use packages\Domain\Application\Twitter\UserTwitterAccountInteractor;
 use packages\Domain\Domain\TargetAccountsRepositoryInterface;
 use packages\Domain\Domain\User\AutoFollowDatasRepositoryInterface;
+use packages\Domain\Domain\User\AutoTweetDatasRepositoryInterface;
 use packages\Domain\Domain\User\FollowAccountsRepositoryInterface;
 use packages\UseCase\Twitter\Follow\TwitterAutoFollowUseCaseInterface;
 use packages\Domain\Domain\User\UserTwitterAccountsRepositoryInterface;
 use packages\Infrastructure\TargetAccountsRepository;
 use packages\Infrastructure\User\AutoFollowDatasRepository;
+use packages\Infrastructure\User\AutoTweetDatasRepository;
 use packages\Infrastructure\User\FollowAccountsRepository;
+use packages\UseCase\Twitter\Tweet\TwitterAutoTweetUseCaseInterface;
 
 class TwitterServiceProvider extends ServiceProvider
 {
@@ -53,10 +57,12 @@ class TwitterServiceProvider extends ServiceProvider
     public $bindings = [
         UserTwitterAccountsRepositoryInterface::class => UserTwitterAccountsRepository::class,
         UserTwitterAccountUseCaseInterface::class     => UserTwitterAccountInteractor::class,
+        TwitterAutoTweetUseCaseInterface::class       => TwitterTweetInteractor::class,
         TwitterAuthUseCaseInterface::class            => TwitterAuthInteractor::class,
         TwitterAutoFollowUseCaseInterface::class      => TwitterFollowInteractor::class,
         TargetAccountsRepositoryInterface::class      => TargetAccountsRepository::class,
         AutoFollowDatasRepositoryInterface::class     => AutoFollowDatasRepository::class,
         FollowAccountsRepositoryInterface::class      => FollowAccountsRepository::class,
+        AutoTweetDatasRepositoryInterface::class      => AutoTweetDatasRepository::class,
     ];
 }

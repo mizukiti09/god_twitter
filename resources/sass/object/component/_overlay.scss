@@ -26,7 +26,6 @@
         background: #fff;
         padding: 40px 40px 8px;
         border-radius: 12px;
-        height: 100vh;
     }
     &__btnContainer {
         padding: 25px;
@@ -109,7 +108,10 @@
         width: 98%;
     }
     &__date {
-        width: 268px;
+        width: 100%;
+        &__a {
+            width: 100% !important;
+        }
     }
     & .c-search__submit {
         border: 5px solid #ff4d00;
@@ -222,8 +224,6 @@
 
 // vueカレンダー
 .datepicker {
-    position: fixed !important;
-    top: 20% !important;
     left: 50% !important;
     transform: translateX(-50%);
 }
@@ -278,13 +278,10 @@
 @media screen and (max-width: 768px) {
     .c-overlay {
         &__contents {
-            width: 100vw;
+            width: 66vw;
         }
     }
     .c-solidMenu {
-        &__date {
-            width: 80%;
-        }
         & ul {
             & li {
                 & a {
@@ -299,6 +296,7 @@
     .c-overlay {
         &__contents {
             padding: 40px 15px 8px;
+            width: 86vw;
         }
     }
 }

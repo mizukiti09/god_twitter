@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \App\Console\Commands\AutoFollowAccountsCommand::class,
         \App\Console\Commands\AutoFollowCommand::class,
+        \App\Console\Commands\AutoTweetCommand::class,
     ];
 
     /**
@@ -26,22 +27,31 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('command:autoFollowAccounts')
-            ->everyFiveMinutes()
-            ->onSuccess(function () {
-                Log::debug('自動フォローアカウンツ保存:成功');
-            })
-            ->onFailure(function () {
-                Log::error('自動フォローアカウンツ保存:失敗');
-            });
+        // $schedule->command('command:autoFollowAccounts')
+        //     ->everyFiveMinutes()
+        //     ->onSuccess(function () {
+        //         Log::debug('自動フォローアカウンツ保存:確認OK');
+        //     })
+        //     ->onFailure(function () {
+        //         Log::error('自動フォローアカウンツ保存:確認失敗');
+        //     });
 
-        $schedule->command('command:autoFollow')
-            ->everyTenMinutes()
+        // $schedule->command('command:autoFollow')
+        //     ->everyTenMinutes()
+        //     ->onSuccess(function () {
+        //         Log::debug('自動フォロー:確認成功');
+        //     })
+        //     ->onFailure(function () {
+        //         Log::error('自動フォロー:確認失敗');
+        //     });
+
+        $schedule->command('command:autoTweet')
+            ->everyMinute()
             ->onSuccess(function () {
-                Log::debug('自動フォロー:成功');
+                Log::debug('自動ツイート:確認OK');
             })
             ->onFailure(function () {
-                Log::error('自動フォロー:失敗');
+                Log::error('自動ツイート:確認失敗');
             });
     }
 

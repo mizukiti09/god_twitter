@@ -64,7 +64,10 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
                 'tweet_count',
                 'updated_at',
                 'auth_flg',
-                'auto_follow_flg'
+                'auto_follow_flg',
+                'auto_unFollow_flg',
+                'auto_tweet_flg',
+                'auto_like_flg'
             ])
             ->latest('updated_at')
             ->get();
@@ -116,10 +119,56 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
             ]);
     }
 
+    public function offAutoFollowFlg($user_id)
+    {
+        DB::table('user_twitter_accounts')
+            ->where('user_id', $user_id)
+            ->update([
+                'auto_follow_flg' => 0,
+            ]);
+    }
+
+    public function onAutoTweetFlg($user_id, $screen_name)
+    {
+        // ユーザーが自動モードを使用する際には一つのアカウントだけに
+        // 絞りたいためまずユーザーが保有しているアカウントの自動フラグを
+        // 全て0にしてからその後に、特定のアカウントのみ自動モードフラグを立てる
+        DB::table('user_twitter_accounts')
+            ->where('user_id', $user_id)
+            ->update([
+                'auto_tweet_flg' => 0
+            ]);
+
+        DB::table('user_twitter_accounts')
+            ->where('user_id', $user_id)
+            ->where('screen_name', $screen_name)
+            ->update([
+                'auto_tweet_flg' => 1
+            ]);
+    }
+
+    public function offAutoTweetFlg($user_id)
+    {
+        DB::table('user_twitter_accounts')
+            ->where('user_id', $user_id)
+            ->update([
+                'auto_tweet_flg' => 0,
+            ]);
+    }
+
     public function getOnAutoFollowAccounts()
     {
         $accounts = DB::table('user_twitter_accounts')
             ->where('auto_follow_flg', 1)
+            ->pluck('id');
+
+        return $accounts;
+    }
+
+    public function getOnAutoTweetAccounts()
+    {
+        $accounts = DB::table('user_twitter_accounts')
+            ->where('auto_tweet_flg', 1)
             ->pluck('id');
 
         return $accounts;
@@ -258,6 +307,13 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
             ->increment('follow_count');
     }
 
+    public function tweetCountSave($id)
+    {
+        DB::table('user_twitter_accounts')
+            ->where('id', $id)
+            ->increment('tweet_count');
+    }
+
     public function getAccessToken($user_id, $screen_name)
     {
         $result = DB::table('user_twitter_accounts')
@@ -306,14 +362,5 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
         );
 
         return $account[0];
-    }
-
-    public function offAutoFollowFlg($user_id)
-    {
-        DB::table('user_twitter_accounts')
-            ->where('user_id', $user_id)
-            ->update([
-                'auto_follow_flg' => 0,
-            ]);
     }
 }

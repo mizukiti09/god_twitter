@@ -29,11 +29,12 @@
                                 ></twitter-auto-follow-action>
                         </div>
                         <div class="p-myPage__aside__item">
+                            <div class="p-myPage__aside__item__attention"><a href="">現在のツイート予定一覧 <span id="other-link-arrow"><i class="fas fa-arrow-circle-right icon-hover-right"></i></span></a></div>
                             <div class="p-myPage__aside__item__head">ツイートモード</div>
                             <twitter-auto-tweet-action 
                                 :user_id="{{$user_id}}"
                                 :auth_screen_name="{{json_encode($accounts[0]->screen_name)}}"
-                                :auto_follow_flg="{{$account->auto_follow_flg}}"
+                                :auto_tweet_flg="{{$account->auto_tweet_flg}}"
                                 ></twitter-auto-tweet-action>
                         </div>
                     @endif

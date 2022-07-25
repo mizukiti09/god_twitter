@@ -2,13 +2,29 @@
 
 namespace App\Http\Controllers\Twitter;
 
-use Abraham\TwitterOAuth\Request;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use packages\UseCase\Twitter\Tweet\TwitterAutoTweetUseCaseInterface;
 
-class TwitterLogoutController extends Controller
+class TwitterTweetController extends Controller
 {
-    public function autoTweet(Request $request)
+    public function autoTweet(Request $request, TwitterAutoTweetUseCaseInterface $useCase)
     {
-        
+        $useCase->autoTweetSaveHandle(
+            $request->user_id,
+            $request->screen_name,
+            $request->tweet_text,
+            $request->date_value
+        );
+    }
+
+    public function autoTweetOn(Request $request, TwitterAutoTweetUseCaseInterface $useCase)
+    {
+        $useCase->onAutoTweetHandle($request->user_id, $request->screen_name);
+    }
+
+    public function autoTweetStop(Request $request, TwitterAutoTweetUseCaseInterface $useCase)
+    {
+        $useCase->stopAutoTweetHandle($request->user_id);
     }
 }

@@ -8,9 +8,9 @@ use packages\UseCase\Twitter\Auth\TwitterAuthUseCaseInterface;
 class TwitterLogoutController extends Controller
 {
     // twitterアカウントの認証解除
-    public function handle(TwitterAuthUseCaseInterface $interactor)
+    public function handle(TwitterAuthUseCaseInterface $useCase)
     {
-        $interactor->logoutHandle();
+        $useCase->logoutHandle();
         return redirect('https://twitter.com/logout');
     }
 }

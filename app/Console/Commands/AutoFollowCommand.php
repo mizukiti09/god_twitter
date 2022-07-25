@@ -82,12 +82,12 @@ class AutoFollowCommand extends Command
                                 Log::info('=============================');
                                 Log::info('AutoFollowCommand End');
                                 Log::info('=============================');
-                                // if ($key === array_key_last($selectedTenAccounts)) {
-                                //     Log::info('=============================');
-                                //     Log::info('自動フォローアクション: メール通知');
-                                //     $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
-                                //     return Mail::to($user->email)->send(new AutoFollowMail($user));
-                                // }
+                                if ($key === array_key_last($selectedTenAccounts)) {
+                                    Log::info('=============================');
+                                    Log::info('自動フォローアクション: メール通知');
+                                    $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
+                                    Mail::to($user->email)->send(new AutoFollowMail($user));
+                                }
                             }
                         }
                     }

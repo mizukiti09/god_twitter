@@ -4,7 +4,6 @@ namespace packages\Domain\Application\Twitter;
 
 use App\Facades\Twitter;
 use Illuminate\Support\Facades\Log;
-// use packages\Domain\Domain\User\AutoFollowDatasRepositoryInterface;
 use packages\Domain\Domain\User\AutoFollowDatasRepositoryInterface;
 use packages\UseCase\Twitter\Follow\TwitterAutoFollowUseCaseInterface;
 use packages\Domain\Domain\User\UserTwitterAccountsRepositoryInterface;

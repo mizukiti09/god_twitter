@@ -81,7 +81,7 @@
     }
     &__aside {
         width: 25%;
-        height: 605px;
+        height: 645px;
         background: #fff;
         padding: 30px 15px;
         box-sizing: border-box;
@@ -94,6 +94,17 @@
             &__attention {
                 font-size: $font-size_m;
                 margin-bottom: 20px;
+                & a {
+                    color: #80b1c5 !important;
+                    position: relative;
+                    &:hover {
+                        color: #2285b1 !important;
+                        & .icon-hover-right {
+                            transition: 1s;
+                            animation: icon-hover-right 1s cubic-bezier(0.33, 1, 0.68, 1) 1 forwards;
+                        }
+                    }
+                }
             }
             &__head {
                 font-size: $font-size_xl;
@@ -113,6 +124,26 @@
         right: 33px;
         font-size: 21px;
         color: red;
+    }
+}
+
+.other-link-arrow {
+    position: absolute;
+    right: -18px;
+}
+
+.other-link-arrow .icon-hover-right {
+    transition: 1s;
+    animation: icon-hover-right 1s cubic-bezier(0.33, 1, 0.68, 1) 1 forwards;
+}
+
+@keyframes icon-hover-right {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(5px);
     }
 }
 
