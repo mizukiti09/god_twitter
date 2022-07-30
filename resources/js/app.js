@@ -36,7 +36,8 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('twitter-accounts', require('./components/TwitterAccountsComponent.vue').default);
 Vue.component('twitter-auto-follow-action', require('./components/TwitterAutoFollowActionComponent.vue').default);
 Vue.component('twitter-auto-tweet-action', require('./components/TwitterAutoTweetActionComponent.vue').default);
-// Vue.component('vue-ctk-date-time-picker', VueCtkDateTimePicker);
+Vue.component('twitter-auto-tweet-edit-action', require('./components/TwitterAutoTweetEditActionComponent.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -23,4 +23,18 @@ interface TwitterAutoTweetUseCaseInterface
      * @param $user_id
      */
     public function stopAutoTweetHandle($user_id);
+
+    /**
+     * @param $id
+     */
+    public function tweetDeleteHandle($id);
+
+    /**
+     * @param $id, $text, $time
+     */
+    public function tweetEditHandle(
+        $id,
+        $text,
+        $time
+    );
 }

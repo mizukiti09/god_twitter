@@ -12,7 +12,7 @@
                                 <ul>
                                     <li>
                                         <div class="c-solidMenu__date">
-                                            <vue-ctk-date-time-picker :enabledDates="enabledDates" v-model="dateValue" label="日時を選択"></vue-ctk-date-time-picker>
+                                            <vue-ctk-date-time-picker v-model="dateValue" label="日時を選択"></vue-ctk-date-time-picker>
                                             <a class="c-solidMenu__date__a" href="javascript:void(0)" id="cookiesDom">
                                                 <textarea placeholder="tweet内容" v-on:blur="editCookieValue()" id="textarea" class="c-solidMenu__textarea" name="" cols="30" rows="8">{{ tweetText }}</textarea>
                                             </a>
@@ -30,7 +30,7 @@
             </div>
         </div>
     </div>
-    <div class="c-appBtn"><a class="c-appBtn--none" :class="{'c-appBtn--auto': auto_tweet_flg}" v-on:click="autoAction('Auto Tweet')"><span v-if="auto_tweet_flg">自動ツイート中</span><span v-else>自動ツイートする</span></a></div>
+    <div class="c-appBtn"><a class="c-appBtn--none" id="js-tweet-btn" :class="{'c-appBtn--auto': auto_tweet_flg}" v-on:click="autoAction('Auto Tweet')"><span v-if="auto_tweet_flg">自動ツイート中</span><span v-else>自動ツイートする</span></a></div>
 </div>
 </template>
 
@@ -40,7 +40,7 @@ export default {
     data: function () {
         return {
             autoTarget: '',
-            add_keyword: '',
+            add_keyword: 0,
             keywords: '',
             enabledDates: [
                 this.formatDate(new Date(), 0),
@@ -72,6 +72,10 @@ export default {
         },
         autoCancel: function () {
             this.autoTarget = '';
+            var url = $(location).attr('href');
+            if (url.indexOf("twitter/tweetList") >= 0 && this.add_keyword > 0) {
+                window.location.reload(false)
+            } 
         },
         getCookie: function () {
             if (this.$vueCookies.isKey('TweetText' + this.user_id + this.auth_screen_name)) {
@@ -84,7 +88,7 @@ export default {
             }
         },
         autoTweet: function () {
-            if ($('#textarea').val().length <= 140) {
+            if (($('#textarea').val().length <= 140) && ($('#textarea').val().length > 0)) {
                 var cookieData = this.$vueCookies.get('TweetText' + this.user_id + this.auth_screen_name);
 
                 const formData = new FormData();
@@ -97,6 +101,7 @@ export default {
                 this.$axios.post('/api/twitter/autoTweet', formData)
                     .then((res) => {
                         console.log(res)
+                        this.add_keyword = this.add_keyword + 1;
                         $cookies.remove('TweetText' + this.user_id + this.auth_screen_name);
                         this.dateValue = '';
                         $('#textarea').val('');
@@ -106,8 +111,10 @@ export default {
                         console.log('autoTweetは正常に起動していません。')
                         console.log(error)
                     })
-            } else {
+            } else if ($('#textarea').val().length > 140) {
                 alert('tweet内容は140文字以下でご入力ください');
+            } else if($('#textarea').val().length == 0) {
+                alert('textareaが空です');
             }
         },
         autoTweetOn: function () {

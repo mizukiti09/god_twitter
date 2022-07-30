@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFollowAccountsTable extends Migration
+class CreateAutoFollowDatasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,14 +14,22 @@ class CreateFollowAccountsTable extends Migration
      */
     public function up()
     {
-        Schema::create('follow_accounts', function (Blueprint $table) {
+        Schema::create('auto_follow_datas', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_twitter_account_id');
             $table
                 ->foreign('user_twitter_account_id')
                 ->references('id')
-                ->on('user_twitter_accounts');
-            $table->string('screen_name')->nullable();
+                ->on('user_twitter_accounts')
+                ->onDelete('cascade');
+            $table->unsignedBigInteger('target_account_id')->default(1);
+            $table
+                ->foreign('target_account_id')
+                ->references('id')
+                ->on('target_accounts');
+            $table->integer('cursor_count')->default(0);
+            $table->bigInteger('next_cursor')->default(0);
+            $table->string('search_text')->nullable()->default(null);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
         });
@@ -34,6 +42,6 @@ class CreateFollowAccountsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('follow_accounts');
+        Schema::dropIfExists('auto_follow_datas');
     }
 }

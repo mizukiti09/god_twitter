@@ -52,6 +52,7 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
         $accounts = DB::table('user_twitter_accounts')
             ->where('user_id', Auth::id())
             ->select([
+                'id',
                 'screen_name',
                 'profile_photo_path',
                 'follow',

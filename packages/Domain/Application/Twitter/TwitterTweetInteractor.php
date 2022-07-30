@@ -72,4 +72,34 @@ class TwitterTweetInteractor implements TwitterAutoTweetUseCaseInterface
 
         $this->u_repository->offAutoTweetFlg($user_id);
     }
+
+    public function tweetDeleteHandle($id)
+    {
+        Log::debug('tweetDeleteHandle Start (VueからのPOST API)');
+
+        $this->t_repository->deleteAutoTweetData($id);
+    }
+
+    public function tweetEditHandle($id, $text, $time)
+    {
+        Log::debug('tweetEditHandle Start (VueからのPOST API)');
+        Log::debug('id:' . $id);
+        Log::debug('text:' . $text);
+        Log::debug('time:' . $time);
+
+        $halfDayUnixTime = 0;
+        if (!empty($time)) {
+            if (strpos($time, '午後') !== false) {
+                $halfDayUnixTime = 43200;
+            }
+            $result = substr($time, 0, 16);
+            $date = new DateTime($result);
+            $unixTime = $date->format('U');
+            $unixTime = $unixTime + $halfDayUnixTime;
+        } else {
+            $unixTime = time();
+        }
+
+        $this->t_repository->editAutoTweetData($id, $text, $unixTime);
+    }
 }

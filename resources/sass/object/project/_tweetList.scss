@@ -1,0 +1,51 @@
+.p-tweetList {
+    padding: 30px 0;
+    position: relative;
+    &__item {
+        position: relative;
+        line-height: 1.5;
+        padding: 1em 3em 2em;
+        list-style-type: none!important;
+        background: -webkit-linear-gradient(top, skyblue 0%, #5aade6 100%);
+        /*グラデーション*/
+        background: linear-gradient(to bottom, skyblue 0%, #5aade6 100%);
+        /*グラデーション*/
+        color: #fff;
+        margin-bottom: 10px;
+        border-radius: 6px;
+        & .c-solidMenu__textarea {
+            height: 76px;
+        }
+        &__datePlan {
+            margin-bottom: 20px;
+        }
+        &__trash {
+            position: absolute;
+            right: 16px;
+            bottom: 16px;
+        }
+    }
+    &__btn {
+        text-align: center;
+        background: salmon;
+        color: #fff;
+        padding: 16px 40px;
+        text-decoration: none;
+        border-radius: 30px;
+        transition-property: opacity;
+        -webkit-transition-property: opacity;
+        transition-duration: .5s;
+        -webkit-transition-duration: .5s;
+        transition: .2s;
+        &:hover {
+            background: rgb(255, 84, 65);
+            transition: .2s;
+        }
+    }
+}
+
+.exceed-time {
+    background: -webkit-linear-gradient(top, rgb(235, 135, 135) 0%, #e65a5a 100%) !important;
+    /*グラデーション*/
+    background: linear-gradient(to bottom, rgb(235, 135, 135) 0%, #e65a5a 100%) !important;
+}

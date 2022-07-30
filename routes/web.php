@@ -53,5 +53,6 @@ Route::namespace('Twitter')->group(function () {
 
     Route::prefix('twitter')->group(function () {
         Route::get('/follow', 'TwitterFollowController@index')->name('twitter.follow')->middleware('auth');
+        Route::get('/tweetList', 'TwitterTweetController@list')->name('twitter.tweetList')->middleware('auth');
     });
 });

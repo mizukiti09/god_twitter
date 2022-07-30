@@ -1,0 +1,187 @@
+.c-structure {
+    width: 1200px;
+    &__container {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row-reverse;
+    }
+    &__article {
+        width: 73%;
+        background-color: #fff;
+        box-sizing: border-box;
+        padding: 30px 15px;
+        &__panel {
+            background: lightgray;
+            height: 280px;
+            margin-bottom: 20px;
+            position: relative;
+            display: flex;
+            padding: 10px 20px;
+            box-sizing: border-box;
+            border-radius: 8px;
+            &__status {
+                position: absolute;
+                top: -34px;
+                right: 38px;
+                border-radius: 4px;
+                padding: 6px;
+                background: lightgray;
+            }
+            &__upDatedAt {
+                margin-top: 8px;
+                position: absolute;
+                top: 0;
+            }
+            &__rightInfo {
+                padding: 6px;
+                width: calc(100% - 120px);
+                display: flex;
+                flex-wrap: wrap;
+                margin-top: 22px;
+            }
+            &__leftInfo {
+                margin-top: 25px;
+            }
+            &__item {
+                padding: 10px;
+                margin-bottom: 10px;
+                background: #fff;
+                border-radius: 5px;
+                width: 29%;
+                margin: 3px;
+            }
+            &__photo {
+                width: 120px;
+                height: 120px;
+                background: #fff;
+                border-radius: 100%;
+                & img {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 100%;
+                }
+            }
+            &__name {}
+            &__info {
+                background: lightgray;
+                padding: 5px;
+                box-sizing: border-box;
+                margin: 5px auto 3px;
+                border-radius: 7px;
+            }
+            &__group {
+                width: 100%;
+                box-sizing: border-box;
+                padding: 30px 0;
+            }
+        }
+        &__title {
+            font-size: $font-size_xxl;
+        }
+    }
+    &__aside {
+        width: 25%;
+        background: #fff;
+        padding: 30px 15px;
+        box-sizing: border-box;
+        border: 2px lightgray solid;
+        &__item {
+            padding: 10px;
+            margin-bottom: 10px;
+            background: lightgray;
+            border-radius: 5px;
+            &__attention {
+                font-size: $font-size_m;
+                margin-bottom: 20px;
+                & a {
+                    color: #80b1c5 !important;
+                    position: relative;
+                    &:hover {
+                        color: #2285b1 !important;
+                        & .icon-hover-right {
+                            transition: 1s;
+                            animation: icon-hover-right 1s cubic-bezier(0.33, 1, 0.68, 1) 1 forwards;
+                        }
+                    }
+                }
+            }
+            &__head {
+                font-size: $font-size_xl;
+                margin-bottom: 12px;
+            }
+            &__info {
+                background: #fff;
+                padding: 5px;
+                box-sizing: border-box;
+                margin: 12px auto 3px;
+                border-radius: 7px;
+            }
+        }
+    }
+    &__trash {
+        position: absolute;
+        right: 10px;
+        bottom: 8px;
+    }
+}
+
+.other-link-arrow {
+    position: absolute;
+    right: -18px;
+}
+
+.other-link-arrow .icon-hover-right {
+    transition: 1s;
+    animation: icon-hover-right 1s cubic-bezier(0.33, 1, 0.68, 1) 1 forwards;
+}
+
+@keyframes icon-hover-right {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(5px);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .c-structure {
+        width: initial;
+        &__container {
+            display: block;
+        }
+        &__article {
+            width: 100%;
+            &__panel {
+                width: 100%;
+                height: 890px;
+                display: block;
+                &__photo {
+                    width: 100px;
+                    height: 100px;
+                }
+                &__item {
+                    width: 100%;
+                }
+                &__group {
+                    display: block;
+                }
+                &__rightInfo {
+                    width: initial;
+                }
+            }
+        }
+        &__aside {
+            width: 100%;
+            height: initial;
+            margin-bottom: 20px;
+        }
+    }
+}
+
+// myPageで使われるvue用のclass
+// ユーザー認証されている時に付与されるclass
+.authFlgActive {
+    border: 3px solid deeppink;
+}

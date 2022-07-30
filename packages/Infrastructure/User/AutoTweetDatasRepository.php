@@ -57,6 +57,16 @@ class AutoTweetDatasRepository implements AutoTweetDatasRepositoryInterface
             ->delete();
     }
 
+    public function editAutoTweetData($id, $text, $time)
+    {
+        DB::table('auto_tweet_datas')
+            ->where('id', $id)
+            ->update([
+                'tweetText' => $text,
+                'tweetTime' => $time
+            ]);
+    }
+
     public function notExistDataResetAutoFlg($user_twitter_account_id)
     {
         $results = DB::table('auto_tweet_datas')
@@ -78,5 +88,25 @@ class AutoTweetDatasRepository implements AutoTweetDatasRepositoryInterface
         } else {
             return false;
         }
+    }
+
+    public function getAllUserTweets($user_twitter_account_id)
+    {
+        $results = DB::table('auto_tweet_datas')
+            ->where('user_twitter_account_id', $user_twitter_account_id)
+            ->select([
+                'id',
+                'tweetText',
+                'tweetTime'
+            ])
+            ->orderBy('tweetTime', 'asc')
+            ->get();
+
+
+        foreach ($results as $key => $result) {
+            $result->tweetTime = date("Y-m-d H:i", $result->tweetTime);
+        }
+
+        return $results;
     }
 }

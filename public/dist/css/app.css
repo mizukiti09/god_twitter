@@ -237,6 +237,152 @@ body {
   .l-hero {
     margin-bottom: 122px; } }
 
+.c-structure {
+  width: 1200px; }
+  .c-structure__container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse; }
+  .c-structure__article {
+    width: 73%;
+    background-color: #fff;
+    box-sizing: border-box;
+    padding: 30px 15px; }
+    .c-structure__article__panel {
+      background: lightgray;
+      height: 280px;
+      margin-bottom: 20px;
+      position: relative;
+      display: flex;
+      padding: 10px 20px;
+      box-sizing: border-box;
+      border-radius: 8px; }
+      .c-structure__article__panel__status {
+        position: absolute;
+        top: -34px;
+        right: 38px;
+        border-radius: 4px;
+        padding: 6px;
+        background: lightgray; }
+      .c-structure__article__panel__upDatedAt {
+        margin-top: 8px;
+        position: absolute;
+        top: 0; }
+      .c-structure__article__panel__rightInfo {
+        padding: 6px;
+        width: calc(100% - 120px);
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 22px; }
+      .c-structure__article__panel__leftInfo {
+        margin-top: 25px; }
+      .c-structure__article__panel__item {
+        padding: 10px;
+        margin-bottom: 10px;
+        background: #fff;
+        border-radius: 5px;
+        width: 29%;
+        margin: 3px; }
+      .c-structure__article__panel__photo {
+        width: 120px;
+        height: 120px;
+        background: #fff;
+        border-radius: 100%; }
+        .c-structure__article__panel__photo img {
+          width: 100%;
+          height: 100%;
+          border-radius: 100%; }
+      .c-structure__article__panel__info {
+        background: lightgray;
+        padding: 5px;
+        box-sizing: border-box;
+        margin: 5px auto 3px;
+        border-radius: 7px; }
+      .c-structure__article__panel__group {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 30px 0; }
+    .c-structure__article__title {
+      font-size: 24px; }
+  .c-structure__aside {
+    width: 25%;
+    background: #fff;
+    padding: 30px 15px;
+    box-sizing: border-box;
+    border: 2px lightgray solid; }
+    .c-structure__aside__item {
+      padding: 10px;
+      margin-bottom: 10px;
+      background: lightgray;
+      border-radius: 5px; }
+      .c-structure__aside__item__attention {
+        font-size: 14px;
+        margin-bottom: 20px; }
+        .c-structure__aside__item__attention a {
+          color: #80b1c5 !important;
+          position: relative; }
+          .c-structure__aside__item__attention a:hover {
+            color: #2285b1 !important; }
+            .c-structure__aside__item__attention a:hover .icon-hover-right {
+              transition: 1s;
+              animation: icon-hover-right 1s cubic-bezier(0.33, 1, 0.68, 1) 1 forwards; }
+      .c-structure__aside__item__head {
+        font-size: 20px;
+        margin-bottom: 12px; }
+      .c-structure__aside__item__info {
+        background: #fff;
+        padding: 5px;
+        box-sizing: border-box;
+        margin: 12px auto 3px;
+        border-radius: 7px; }
+  .c-structure__trash {
+    position: absolute;
+    right: 10px;
+    bottom: 8px; }
+
+.other-link-arrow {
+  position: absolute;
+  right: -18px; }
+
+.other-link-arrow .icon-hover-right {
+  transition: 1s;
+  animation: icon-hover-right 1s cubic-bezier(0.33, 1, 0.68, 1) 1 forwards; }
+
+@keyframes icon-hover-right {
+  0% {
+    transform: translateX(0); }
+  100% {
+    opacity: 1;
+    transform: translateX(5px); } }
+
+@media screen and (max-width: 768px) {
+  .c-structure {
+    width: initial; }
+    .c-structure__container {
+      display: block; }
+    .c-structure__article {
+      width: 100%; }
+      .c-structure__article__panel {
+        width: 100%;
+        height: 890px;
+        display: block; }
+        .c-structure__article__panel__photo {
+          width: 100px;
+          height: 100px; }
+        .c-structure__article__panel__item {
+          width: 100%; }
+        .c-structure__article__panel__group {
+          display: block; }
+        .c-structure__article__panel__rightInfo {
+          width: initial; }
+    .c-structure__aside {
+      width: 100%;
+      height: initial;
+      margin-bottom: 20px; } }
+
+.authFlgActive {
+  border: 3px solid deeppink; }
+
 .c-overlay {
   /*　要素を重ねた時の順番　*/
   z-index: 100;
@@ -801,153 +947,49 @@ body {
   .p-home__list {
     padding: 75px 0 30px; } }
 
-.p-myPage {
-  width: 1200px; }
-  .p-myPage__container {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row-reverse; }
-  .p-myPage__article {
-    width: 73%;
-    background-color: #fff;
-    box-sizing: border-box;
-    padding: 30px 15px 0; }
-    .p-myPage__article__panel {
-      background: lightgray;
-      height: 280px;
-      margin-bottom: 20px;
-      position: relative;
-      display: flex;
-      padding: 10px;
-      box-sizing: border-box;
-      border-radius: 8px; }
-      .p-myPage__article__panel__status {
-        position: absolute;
-        top: -34px;
-        right: 38px;
-        border-radius: 4px;
-        padding: 6px;
-        background: lightgray; }
-      .p-myPage__article__panel__upDatedAt {
-        margin-top: 8px;
-        position: absolute;
-        top: 0; }
-      .p-myPage__article__panel__rightInfo {
-        padding: 6px;
-        width: calc(100% - 120px);
-        display: flex;
-        flex-wrap: wrap;
-        margin-top: 22px; }
-      .p-myPage__article__panel__leftInfo {
-        margin-top: 25px; }
-      .p-myPage__article__panel__item {
-        padding: 10px;
-        margin-bottom: 10px;
-        background: #fff;
-        border-radius: 5px;
-        width: 29%;
-        margin: 3px; }
-      .p-myPage__article__panel__photo {
-        width: 120px;
-        height: 120px;
-        background: #fff;
-        border-radius: 100%; }
-        .p-myPage__article__panel__photo img {
-          width: 100%;
-          height: 100%;
-          border-radius: 100%; }
-      .p-myPage__article__panel__info {
-        background: lightgray;
-        padding: 5px;
-        box-sizing: border-box;
-        margin: 5px auto 3px;
-        border-radius: 7px; }
-      .p-myPage__article__panel__group {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 30px 0; }
-    .p-myPage__article__title {
-      font-size: 24px; }
-  .p-myPage__aside {
-    width: 25%;
-    height: 645px;
-    background: #fff;
-    padding: 30px 15px;
-    box-sizing: border-box;
-    border: 2px lightgray solid; }
-    .p-myPage__aside__item {
-      padding: 10px;
-      margin-bottom: 10px;
-      background: lightgray;
-      border-radius: 5px; }
-      .p-myPage__aside__item__attention {
-        font-size: 14px;
-        margin-bottom: 20px; }
-        .p-myPage__aside__item__attention a {
-          color: #80b1c5 !important;
-          position: relative; }
-          .p-myPage__aside__item__attention a:hover {
-            color: #2285b1 !important; }
-            .p-myPage__aside__item__attention a:hover .icon-hover-right {
-              transition: 1s;
-              animation: icon-hover-right 1s cubic-bezier(0.33, 1, 0.68, 1) 1 forwards; }
-      .p-myPage__aside__item__head {
-        font-size: 20px;
-        margin-bottom: 12px; }
-      .p-myPage__aside__item__info {
-        background: #fff;
-        padding: 5px;
-        box-sizing: border-box;
-        margin: 12px auto 3px;
-        border-radius: 7px; }
-  .p-myPage__trash {
-    position: absolute;
-    right: 33px;
-    font-size: 21px;
-    color: red; }
+.p-tweetList {
+  padding: 30px 0;
+  position: relative; }
+  .p-tweetList__item {
+    position: relative;
+    line-height: 1.5;
+    padding: 1em 3em 2em;
+    list-style-type: none !important;
+    background: -webkit-linear-gradient(top, skyblue 0%, #5aade6 100%);
+    /*グラデーション*/
+    background: linear-gradient(to bottom, skyblue 0%, #5aade6 100%);
+    /*グラデーション*/
+    color: #fff;
+    margin-bottom: 10px;
+    border-radius: 6px; }
+    .p-tweetList__item .c-solidMenu__textarea {
+      height: 76px; }
+    .p-tweetList__item__datePlan {
+      margin-bottom: 20px; }
+    .p-tweetList__item__trash {
+      position: absolute;
+      right: 16px;
+      bottom: 16px; }
+  .p-tweetList__btn {
+    text-align: center;
+    background: salmon;
+    color: #fff;
+    padding: 16px 40px;
+    text-decoration: none;
+    border-radius: 30px;
+    transition-property: opacity;
+    -webkit-transition-property: opacity;
+    transition-duration: .5s;
+    -webkit-transition-duration: .5s;
+    transition: .2s; }
+    .p-tweetList__btn:hover {
+      background: #ff5441;
+      transition: .2s; }
 
-.other-link-arrow {
-  position: absolute;
-  right: -18px; }
-
-.other-link-arrow .icon-hover-right {
-  transition: 1s;
-  animation: icon-hover-right 1s cubic-bezier(0.33, 1, 0.68, 1) 1 forwards; }
-
-@keyframes icon-hover-right {
-  0% {
-    transform: translateX(0); }
-  100% {
-    opacity: 1;
-    transform: translateX(5px); } }
-
-@media screen and (max-width: 768px) {
-  .p-myPage {
-    width: initial; }
-    .p-myPage__container {
-      display: block; }
-    .p-myPage__article {
-      width: 100%; }
-      .p-myPage__article__panel {
-        width: 100%;
-        height: 870px;
-        display: block; }
-        .p-myPage__article__panel__photo {
-          width: 100px;
-          height: 100px; }
-        .p-myPage__article__panel__item {
-          width: 100%; }
-        .p-myPage__article__panel__group {
-          display: block; }
-        .p-myPage__article__panel__rightInfo {
-          width: initial; }
-    .p-myPage__aside {
-      width: 100%;
-      height: initial;
-      margin-bottom: 20px; } }
-
-.authFlgActive {
-  border: 3px solid deeppink; }
+.exceed-time {
+  background: -webkit-linear-gradient(top, #eb8787 0%, #e65a5a 100%) !important;
+  /*グラデーション*/
+  background: linear-gradient(to bottom, #eb8787 0%, #e65a5a 100%) !important; }
 
 .u-fade-up, .u-fade-down, .u-fade-right {
   opacity: 0; }
@@ -1048,6 +1090,10 @@ body {
   margin-bottom: 100px; }
 
 .u-red {
+  color: red; }
+
+.u-trash {
+  font-size: 21px;
   color: red; }
 
 

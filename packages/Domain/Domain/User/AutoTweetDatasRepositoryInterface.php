@@ -28,4 +28,14 @@ interface AutoTweetDatasRepositoryInterface
      * @param $user_twitter_account_id
      */
     public function notExistDataResetAutoFlg($user_twitter_account_id);
+
+    /**
+     * @param $user_twitter_account_id
+     */
+    public function getAllUserTweets($user_twitter_account_id);
+
+    /**
+     * @param $id, $text, $time
+     */
+    public function editAutoTweetData($id, $text, $time);
 }

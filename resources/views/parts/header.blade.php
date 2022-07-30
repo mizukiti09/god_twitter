@@ -11,9 +11,10 @@
                     @endif @if (Route::has('register'))
                         <li class="c-nav__item"><a href="{{ route('register') }}">{{ __('Register') }}</a></li>
                     @endif @else
-                    <li class="c-nav__item"><a href="{{ route('myPage') }}">{{ __('MyPage') }}</a></li>
+                    <li class="c-nav__item"><a href="{{ route('myPage') }}">MyPage</a></li>
+                    <li class="c-nav__item"><a href="{{ route('twitter.tweetList') }}">TwitterList</a></li>
                         <li class="c-nav__item"><a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
+                        document.getElementById('logout-form').submit();">Logout</a>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
@@ -44,8 +45,9 @@
                             <li class="c-nav__item"><a href="{{ route('register') }}">{{ __('Register') }}</a></li>
                         @endif 
                         @else
-                            <li class="c-nav__item"><a href="{{ route('myPage') }}">{{ __('myPage') }}</a></li>
-                            <li class="c-nav__item"><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
+                            <li class="c-nav__item"><a href="{{ route('myPage') }}">MyPage</a></li>
+                            <li class="c-nav__item"><a href="{{ route('twitter.tweetList') }}">TwitterList</a></li>
+                            <li class="c-nav__item"><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
