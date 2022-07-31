@@ -22,15 +22,22 @@ class TwitterFollowInteractor implements TwitterAutoFollowUseCaseInterface
         $this->a_repository = $a_repository;
     }
 
-    public function autoFollowSaveHandle($user_id, $screen_name, $array_search_text)
+    public function autoFollowSaveHandle($user_id, $screen_name, $array_search_text, $condition)
     {
         Log::debug('autoFollowSaveHandle Start (VueからのPOST API)');
         Log::info($user_id);
         Log::info($screen_name);
         Log::info($array_search_text);
 
+        $this->a_repository->saveArraySearchText($user_id, $screen_name, $array_search_text, $condition);
+    }
+
+    public function startAutoFollowHandle($user_id, $screen_name)
+    {
+        Log::debug('autoFollowStartHandle Start (VueからのPOST API)');
+        Log::info($user_id);
+        Log::info($screen_name);
         $this->u_repository->onAutoFollowFlg($user_id, $screen_name);
-        $this->a_repository->saveArraySearchText($user_id, $screen_name, $array_search_text);
     }
 
     public function stopAutoFollowHandle($user_id)

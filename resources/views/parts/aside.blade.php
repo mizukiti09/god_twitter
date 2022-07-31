@@ -30,11 +30,11 @@
                         </div>
                         <div class="c-structure__aside__item">
                             <div class="c-structure__aside__item__head">いいねモード</div>
-                            <twitter-auto-tweet-action 
+                                <twitter-auto-like-action 
                                 :user_id="{{$user_id}}"
                                 :auth_screen_name="{{json_encode($accounts[0]->screen_name)}}"
-                                :auto_tweet_flg="{{$account->auto_tweet_flg}}"
-                                ></twitter-auto-tweet-action>
+                                :auto_follow_flg="{{$account->auto_follow_flg}}"
+                                ></twitter-auto-like-action>
                         </div>
                         <div class="c-structure__aside__item">
                             <div class="c-structure__aside__item__attention"><a href="{{ route('twitter.tweetList') }}">現在のツイート予定一覧 <span id="other-link-arrow"><i class="fas fa-arrow-circle-right icon-hover-right"></i></span></a></div>

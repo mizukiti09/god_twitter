@@ -27,23 +27,23 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('command:autoFollowAccounts')
-        //     ->everyFiveMinutes()
-        //     ->onSuccess(function () {
-        //         Log::debug('自動フォローアカウンツ保存:確認OK');
-        //     })
-        //     ->onFailure(function () {
-        //         Log::error('自動フォローアカウンツ保存:確認失敗');
-        //     });
+        $schedule->command('command:autoFollowAccounts')
+            ->everyFiveMinutes()
+            ->onSuccess(function () {
+                Log::debug('自動フォローアカウンツ保存:確認OK');
+            })
+            ->onFailure(function () {
+                Log::error('自動フォローアカウンツ保存:確認失敗');
+            });
 
-        // $schedule->command('command:autoFollow')
-        //     ->everyTenMinutes()
-        //     ->onSuccess(function () {
-        //         Log::debug('自動フォロー:確認成功');
-        //     })
-        //     ->onFailure(function () {
-        //         Log::error('自動フォロー:確認失敗');
-        //     });
+        $schedule->command('command:autoFollow')
+            ->everyTenMinutes()
+            ->onSuccess(function () {
+                Log::debug('自動フォロー:確認成功');
+            })
+            ->onFailure(function () {
+                Log::error('自動フォロー:確認失敗');
+            });
 
         $schedule->command('command:autoTweet')
             ->everyMinute()

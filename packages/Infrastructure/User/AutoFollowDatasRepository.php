@@ -35,7 +35,7 @@ class AutoFollowDatasRepository implements AutoFollowDatasRepositoryInterface
             ->increment('target_account_id');
     }
 
-    public function saveArraySearchText($user_id, $screen_name, $array_search_text)
+    public function saveArraySearchText($user_id, $screen_name, $array_search_text, $condition)
     {
         $accountId = DB::table('user_twitter_accounts')
             ->where('user_id', $user_id)
@@ -55,8 +55,19 @@ class AutoFollowDatasRepository implements AutoFollowDatasRepositoryInterface
                     'search_text' => $array_search_text,
                     'next_cursor' => 0,
                     'target_account_id' => 1,
+                    'follow_condition' => $condition
                 ]
             );
+    }
+
+    public function getCondition($user_twitter_account_id)
+    {
+        $condition = DB::table('auto_follow_datas')
+            ->where('user_twitter_account_id', $user_twitter_account_id)
+            ->pluck('follow_condition')
+            ->first();
+
+        return $condition;
     }
 
     public function getNextCursor($user_twitter_account_id)

@@ -56,6 +56,8 @@ class AutoFollowAccountsCommand extends Command
                 $target_account_screen_name = $a_repository->getTargetAccountScreenName($user_twitter_account_id);
                 // フォロワーサーチキーワード
                 $array_search_text = $a_repository->getArraySearchText($user_twitter_account_id);
+                // フォローコンディション( NOT か OR か AND か null)
+                $condition = $a_repository->getCondition($user_twitter_account_id);
                 // ネクストカーソル
                 $next_cursor = $a_repository->getNextCursor($user_twitter_account_id);
                 // DBに保存する前の格納用変数
@@ -108,11 +110,18 @@ class AutoFollowAccountsCommand extends Command
                         $check_count = 0;
                         if ($user->following == false) {
                             foreach ($array_search_text as $text) {
-                                if (strpos($user->description, $text) !== false) {
-                                    $check_count += 1;
-                                }
-                                if (count($array_search_text) == $check_count) {
-                                    array_push($lists, $user->screen_name);
+                                if ($condition !== 'OR') {
+                                    if (strpos($user->description, $text) !== false) {
+                                        $check_count += 1;
+                                    }
+                                    if (count($array_search_text) == $check_count) {
+                                        array_push($lists, $user->screen_name);
+                                    }
+                                } else {
+                                    Log::info('ORです');
+                                    if (strpos($user->description, $text) !== false) {
+                                        array_push($lists, $user->screen_name);
+                                    }
                                 }
                             }
                         }

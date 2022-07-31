@@ -35,6 +35,7 @@ Vue.prototype.$vueCookies = vueCookies;
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('twitter-accounts', require('./components/TwitterAccountsComponent.vue').default);
 Vue.component('twitter-auto-follow-action', require('./components/TwitterAutoFollowActionComponent.vue').default);
+Vue.component('twitter-auto-like-action', require('./components/TwitterAutoLikeActionComponent.vue').default);
 Vue.component('twitter-auto-tweet-action', require('./components/TwitterAutoTweetActionComponent.vue').default);
 Vue.component('twitter-auto-tweet-edit-action', require('./components/TwitterAutoTweetEditActionComponent.vue').default);
 

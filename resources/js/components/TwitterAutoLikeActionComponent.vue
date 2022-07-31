@@ -19,7 +19,7 @@
                                         class="c-search__submit"
                                         type="submit"
                                         value="追加"
-                                        v-on:click="addSearchText()"
+                                        v-on:click="addSearchTextDB()"
                                         />
                             </label>
                             <div v-if="getCookie()" class="c-search__keywords">
@@ -36,29 +36,22 @@
                                 </nav>
                             </div>
                         </div>
-                        <select v-on:blur="setCookieCondition()" class="c-appBtn" name="follow_conditions" id="condition-select">
-                            <option v-if="!isCookieCondition" selected disabled value="NO">選択してください</option>
-                            <option v-else selected disabled :value="isCookieCondition">{{ isCookieCondition }}</option>
-
-                            <option 
-                                v-for="item in conditions" 
-                                :value="item.value" 
-                                :key="item.value"
-                            >
-                                {{ item.label }}
-                            </option>
-                        </select>
-                        <button class="c-appBtn" v-on:click="searchAutoFollowSave()">更新</button>
-                        <button v-show="!auto_follow_flg" class="c-appBtn" v-on:click="searchAutoFollowStart()">自動フォロー ON</button>
-                        <button v-show="auto_follow_flg" class="c-appBtn" v-on:click="searchAutoFollowStop()">自動フォロー OFF</button>
+                        <button class="c-appBtn" v-on:click="searchAutoFollow()">自動フォロー</button>
+                        <button v-show="auto_follow_flg" class="c-appBtn" v-on:click="searchAutoFollowStop()">自動フォローストップ</button>
                         <button class="c-appBtn" v-on:click="autoCancel()">閉じる</button>
                     </div>
                 </div>
             </div>
     
         </div>
-        <div class="c-appBtn"><a class="c-appBtn--none" :class="{'c-appBtn--auto': auto_follow_flg}" v-on:click="autoAction('Auto Follow Search Keyword')"><span v-if="auto_follow_flg">自動フォロー中</span><span v-else>自動フォローする</span></a></div>
-        <div class="c-appBtn"><a class="c-appBtn--auto" v-on:click="autoAction('自動アンフォロー')">自動アンフォロー中</a></div>
+        <div class="c-appBtn">
+            <a class="c-appBtn--none" 
+                :class="{'c-appBtn--auto': auto_follow_flg}"
+                v-on:click="autoAction('Auto Follow Search Keyword')"
+            ><span v-if="auto_follow_flg">自動いいね中</span>
+                <span v-else>自動いいねする</span>
+            </a>
+        </div>
     </div>
 </template>
 
@@ -70,45 +63,22 @@ export default {
             autoTarget: '',
             add_keyword: '',
             keywords: '',
-            cookiesData: this.getCookie(),
-            conditions: [
-                {label: "NOT", value: 'NOT'},
-                {label: "AND", value: 'AND'},
-                {label: "OR", value: 'OR'},
-            ],
-            isCookieCondition: this.$vueCookies.get('Condition' + this.user_id + this.auth_screen_name),
+            cookiesData: this.getCookie()
         }
     },
-    methods: {
-        setCookieCondition: function () {
-            var select = document.getElementById('condition-select');
-
-            console.log(select.value)
-            this.$vueCookies.config(60 * 60 * 24 * 30, '');
-            this.$vueCookies.set('Condition' + this.user_id + this.auth_screen_name, select.value);
-
-            if (this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name)) {
-                var cookieData = this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name);
-                var arrayCookieData = cookieData.split( ',' );
-                if ( select.value == 'NOT') {
-                    if (arrayCookieData.length > 1) {
-                        alert('NOT の場合はKeywordを一つにする必要があります');
-                    }
-                } else if ( (select.value == 'AND') || (select.value == 'OR')) {
-                    if (arrayCookieData.length <= 1) {
-                        alert('AND か OR の場合はKeywordを複数にする必要があります');
-                    }
-                }
-            }
+    computed: {
+        showButton: function() {
+            return ((this.cookiesData == null)) ? true : false;
         },
+    },
+    methods: {
         autoAction: function(targetName) {
             this.autoTarget = targetName;
         },
         autoCancel: function() {
             this.autoTarget = '';
         },
-        addSearchText: function() {
-            this.$vueCookies.config(60 * 60 * 24 * 30, '');
+        addSearchTextDB: function() {
             if (this.add_keyword) {
                 if (this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name)) {
                     var cookieData = this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name);
@@ -126,6 +96,7 @@ export default {
                         console.log(this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name));
                     }
                 } else {
+                    this.$vueCookies.config(60 * 60 * 24 * 30,'');
                     this.keywords = this.add_keyword;
                     this.$vueCookies.set('SearchText' + this.user_id + this.auth_screen_name, this.add_keyword);
                     this.add_keyword = '';
@@ -134,7 +105,6 @@ export default {
             }
         },
         deleteSearchTextCookie: function(keyword) {
-            this.$vueCookies.config(60 * 60 * 24 * 30, '');
             var cookieData = this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name);
             var arrayCookieData = cookieData.split( ',' );
             var index = arrayCookieData.indexOf(keyword);
@@ -150,7 +120,6 @@ export default {
             }
         },
         getCookie: function() {
-            this.$vueCookies.config(60 * 60 * 24 * 30, '');
            if ( this.$vueCookies.isKey('SearchText' + this.user_id + this.auth_screen_name)) {
             var cookieData = this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name);
             var arrayCookieData = cookieData.split( ',' );
@@ -159,55 +128,29 @@ export default {
             return ;
            }
         },
-        searchAutoFollowSave: function() {
-            this.$vueCookies.config(60 * 60 * 24 * 30, '');
-
+        searchAutoFollow: function() {
             if (this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name)) {
                 // Keyword 有り
                 var cookieData = this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name);
                 var arrayCookieData = cookieData.split( ',' );
-
             } else {
                 // Keyword 無し
                 var arrayCookieData = '';
             }
-            
-            if (arrayCookieData.length > 1 && this.$vueCookies.get('Condition' + this.user_id + this.auth_screen_name) == 'NOT') {
-                alert('NOT の場合はKeywordを一つにする必要があります');
-            } else if ( arrayCookieData.length <= 1 &&  this.$vueCookies.get('Condition' + this.user_id + this.auth_screen_name) == ('AND' || 'OR')) {
-                if (arrayCookieData.length <= 1) {
-                    alert('AND か OR の場合はKeywordを複数にする必要があります');
-                }
-            } else {
-                const formData = new FormData();
-                formData.append('user_id', this.user_id);
-                formData.append('screen_name', this.auth_screen_name);
-                formData.append('array_search_text', arrayCookieData);
-                formData.append('condition', this.$vueCookies.get('Condition' + this.user_id + this.auth_screen_name));
+            console.log(arrayCookieData);
 
-                this.$axios.post('/api/twitter/autoFollowSave', formData)
-                    .then((res) => {
-                        console.log(res)
-                        window.location.reload(false)
-                    })
-                    .catch((error) => {
-                        console.log('searchAutoFollowSaveは正常に起動していません。')
-                        console.log(error)
-                    })
-            }   
-        },
-        searchAutoFollowStart: function () {
             const formData = new FormData();
             formData.append('user_id', this.user_id);
             formData.append('screen_name', this.auth_screen_name);
+            formData.append('array_search_text', arrayCookieData);
 
-            this.$axios.post('/api/twitter/autoFollowStart', formData)
+            this.$axios.post('/api/twitter/autoFollow', formData)
                 .then((res) => {
                     console.log(res)
                     window.location.reload(false)
                 })
                 .catch((error) => {
-                    console.log('searchAutoFollowStartは正常に起動していません。')
+                    console.log('searchAutoFollowは正常に起動していません。')
                     console.log(error)
                 })
         },

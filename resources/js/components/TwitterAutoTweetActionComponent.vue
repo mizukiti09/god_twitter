@@ -12,9 +12,12 @@
                                 <ul>
                                     <li>
                                         <div class="c-solidMenu__date">
-                                            <vue-ctk-date-time-picker v-model="dateValue" label="日時を選択"></vue-ctk-date-time-picker>
+                                            <vue-ctk-date-time-picker 
+                                                v-model="dateValue" 
+                                                label="日時を選択"
+                                            ></vue-ctk-date-time-picker>
                                             <a class="c-solidMenu__date__a" href="javascript:void(0)" id="cookiesDom">
-                                                <textarea placeholder="tweet内容" v-on:blur="editCookieValue()" id="textarea" class="c-solidMenu__textarea" name="" cols="30" rows="8">{{ tweetText }}</textarea>
+                                                <textarea placeholder="tweet内容" v-on:blur="editCookieValue()" id="tweet_textarea" class="c-solidMenu__textarea" name="" cols="30" rows="8">{{ tweetText }}</textarea>
                                             </a>
                                         </div>
                                     </li>
@@ -42,16 +45,6 @@ export default {
             autoTarget: '',
             add_keyword: 0,
             keywords: '',
-            enabledDates: [
-                this.formatDate(new Date(), 0),
-                this.formatDate(new Date(), 1),
-                this.formatDate(new Date(), 2),
-                this.formatDate(new Date(), 3),
-                this.formatDate(new Date(), 4),
-                this.formatDate(new Date(), 5),
-                this.formatDate(new Date(), 6),
-                this.formatDate(new Date(), 7),
-            ],
             cookiesData: '',
             tweetText: (this.$vueCookies.get('TweetText' + this.user_id + this.auth_screen_name)) ? 
             this.$vueCookies.get('TweetText' + this.user_id + this.auth_screen_name) : '',
@@ -59,14 +52,6 @@ export default {
         }
     },
     methods: {
-        formatDate: function (dt, plus) {
-            var y = dt.getFullYear();
-            var m = ('00' + (dt.getMonth() + 1)).slice(-2);
-            var d = ('00' + dt.getDate()).slice(-2);
-            d = Number(d) + plus;
-            String(d);
-            return (y + '-' + m + '-' + d);
-        },
         autoAction: function (targetName) {
             this.autoTarget = targetName;
         },
@@ -88,7 +73,7 @@ export default {
             }
         },
         autoTweet: function () {
-            if (($('#textarea').val().length <= 140) && ($('#textarea').val().length > 0)) {
+            if (($('#tweet_textarea').val().length <= 140) && ($('#tweet_textarea').val().length > 0)) {
                 var cookieData = this.$vueCookies.get('TweetText' + this.user_id + this.auth_screen_name);
 
                 const formData = new FormData();
@@ -97,23 +82,23 @@ export default {
                 formData.append('tweet_text', cookieData);
                 formData.append('date_value', this.dateValue);
 
-
                 this.$axios.post('/api/twitter/autoTweet', formData)
                     .then((res) => {
                         console.log(res)
                         this.add_keyword = this.add_keyword + 1;
                         $cookies.remove('TweetText' + this.user_id + this.auth_screen_name);
                         this.dateValue = '';
-                        $('#textarea').val('');
+                        $('#tweet_textarea').val('');
                         alert('tweet内容を登録しました。');
                     })
                     .catch((error) => {
                         console.log('autoTweetは正常に起動していません。')
                         console.log(error)
                     })
-            } else if ($('#textarea').val().length > 140) {
+            } else if ($('#tweet_textarea').val().length > 140) {
                 alert('tweet内容は140文字以下でご入力ください');
-            } else if($('#textarea').val().length == 0) {
+            } else if($('#tweet_textarea').val().length == 0) {
+                console.log($('#tweet_textarea').val().length)
                 alert('textareaが空です');
             }
         },
@@ -148,7 +133,7 @@ export default {
                 })
         },
         editCookieValue: function () {
-            var textareaValue = $('#textarea').val();
+            var textareaValue = $('#tweet_textarea').val();
             this.$vueCookies.set('TweetText' + this.user_id + this.auth_screen_name, textareaValue);
         }
     },

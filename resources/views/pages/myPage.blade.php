@@ -8,7 +8,7 @@
         @include('parts.aside')
         
         <article class="c-structure__article">
-            <h1 class="c-structure__article__title"><i class="fas fa-adjust"></i>&nbsp;活動項目</h1>
+            <h1 class="c-structure__article__title"><i class="fas fa-adjust"></i>&nbsp;活動アカウント</h1>
             <twitter-accounts
             :accounts="{{ json_encode($accounts) }}"
             ></twitter-accounts>
