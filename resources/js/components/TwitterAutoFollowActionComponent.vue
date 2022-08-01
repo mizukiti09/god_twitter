@@ -187,8 +187,8 @@ export default {
 
                 this.$axios.post('/api/twitter/autoFollowSave', formData)
                     .then((res) => {
-                        console.log(res)
-                        window.location.reload(false)
+                        console.log(res);
+                        alert('フォローKeywordを更新しました。')
                     })
                     .catch((error) => {
                         console.log('searchAutoFollowSaveは正常に起動していません。')

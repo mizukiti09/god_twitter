@@ -29,6 +29,17 @@ interface UserTwitterAccountsRepositoryInterface
     /**
      * @param $user_id, $screen_name
      */
+    public function onAutoLikeFlg($user_id, $screen_name);
+
+    /**
+     * @param $user_id
+     */
+    public function offAutoLikeFlg($user_id);
+
+
+    /**
+     * @param $user_id, $screen_name
+     */
     public function onAutoTweetFlg($user_id, $screen_name);
 
     /**
@@ -39,6 +50,8 @@ interface UserTwitterAccountsRepositoryInterface
     public function getOnAutoFollowAccounts();
 
     public function getOnAutoTweetAccounts();
+
+    public function getOnAutoLikeAccounts();
 
     public function userTwitterAuthLogout();
 
@@ -73,6 +86,11 @@ interface UserTwitterAccountsRepositoryInterface
      * @param $id
      */
     public function tweetCountSave($id);
+
+    /**
+     * @param $id
+     */
+    public function likeCountSave($id);
 
     // ユーザーのアクセストークン取得
     /**
