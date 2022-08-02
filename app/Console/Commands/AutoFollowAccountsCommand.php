@@ -61,7 +61,9 @@ class AutoFollowAccountsCommand extends Command
                 // ネクストカーソル
                 $next_cursor = $a_repository->getNextCursor($user_twitter_account_id);
                 // DBに保存する前の格納用変数
-                $lists = array();
+                $listNames = array();
+                $listIds = array();
+
                 // user_twitter_account
                 $account = $u_repository->getAccount($user_twitter_account_id);
 
@@ -115,23 +117,26 @@ class AutoFollowAccountsCommand extends Command
                                         $check_count += 1;
                                     }
                                     if (count($array_search_text) == $check_count) {
-                                        array_push($lists, $user->screen_name);
+                                        array_push($listNames, $user->screen_name);
+                                        array_push($listIds, $user->id);
                                     }
                                 } else {
                                     Log::info('ORです');
                                     if (strpos($user->description, $text) !== false) {
-                                        array_push($lists, $user->screen_name);
+                                        array_push($listNames, $user->screen_name);
+                                        array_push($listIds, $user->id);
                                     }
                                 }
                             }
                         }
                     } else {
-                        array_push($lists, $user->screen_name);
+                        array_push($listNames, $user->screen_name);
+                        array_push($listIds, $user->id);
                     }
                 }
 
-                foreach ($lists as $screen_name) {
-                    $f_repository->saveFollowAccountScreenName($user_twitter_account_id, $screen_name);
+                foreach ($listNames as $key => $screen_name) {
+                    $f_repository->saveFollowAccount($user_twitter_account_id, $screen_name, $listIds[$key]);
                 }
             }
         }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div id="jsModal" v-show="autoTarget">
+        <div class="jsModal" v-show="autoTarget">
             <div class="c-overlay">
                 <div class="c-overlay__contents">
                     <div class="c-overlay__ttl">{{ autoTarget }}</div>

@@ -29,6 +29,16 @@ interface UserTwitterAccountsRepositoryInterface
     /**
      * @param $user_id, $screen_name
      */
+    public function onAutoUnFollowFlg($user_id, $screen_name);
+
+    /**
+     * @param $user_id
+     */
+    public function offAutoUnFollowFlg($user_id);
+
+    /**
+     * @param $user_id, $screen_name
+     */
     public function onAutoLikeFlg($user_id, $screen_name);
 
     /**
@@ -48,6 +58,8 @@ interface UserTwitterAccountsRepositoryInterface
     public function offAutoTweetFlg($user_id);
 
     public function getOnAutoFollowAccounts();
+
+    public function getOnAutoUnFollowAccounts();
 
     public function getOnAutoTweetAccounts();
 

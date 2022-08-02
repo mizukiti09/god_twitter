@@ -8,6 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use packages\Domain\Domain\User\FollowAccountsRepositoryInterface;
+use packages\Domain\Domain\User\FollowedAccountsRepositoryInterface;
 use packages\Domain\Domain\User\UserTwitterAccountsRepositoryInterface;
 
 class AutoFollowCommand extends Command
@@ -43,7 +44,8 @@ class AutoFollowCommand extends Command
      */
     public function handle(
         UserTwitterAccountsRepositoryInterface $u_repository,
-        FollowAccountsRepositoryInterface $f_repository
+        FollowAccountsRepositoryInterface $f_repository,
+        FollowedAccountsRepositoryInterface $fed_repository
     ) {
         Log::info('=============================');
         Log::info('AutoFollowCommand Start');
@@ -78,6 +80,8 @@ class AutoFollowCommand extends Command
                                 Log::info('フォローカウントアップ');
                                 $f_repository->deleteFollowAccount($selectedAccount->id);
                                 Log::info('DBフォローアカウント削除ID:' . $selectedAccount->id);
+                                $fed_repository->saveFollowedAccount($user_twitter_account_id, $selectedAccount->twitterId);
+                                Log::info('フォロー済みリストとしてアカウントをfollowed_accountsテーブルへ保存:' . $selectedAccount->id);
 
                                 Log::info('=============================');
                                 Log::info('AutoFollowCommand End');

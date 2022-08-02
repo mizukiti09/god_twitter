@@ -46,4 +46,19 @@ class TwitterFollowInteractor implements TwitterAutoFollowUseCaseInterface
 
         $this->u_repository->offAutoFollowFlg($user_id);
     }
+
+    public function startAutoUnFollowHandle($user_id, $screen_name)
+    {
+        Log::debug('autoUnFollowStartHandle Start (VueからのPOST API)');
+        Log::info($user_id);
+        Log::info($screen_name);
+        $this->u_repository->onAutoUnFollowFlg($user_id, $screen_name);
+    }
+
+    public function stopAutoUnFollowHandle($user_id)
+    {
+        Log::debug('stopAutoUnFollowHandle Start (VueからのPOST API)');
+
+        $this->u_repository->offAutoUnFollowFlg($user_id);
+    }
 }

@@ -5,7 +5,6 @@ namespace packages\Infrastructure\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 use packages\Domain\Domain\User\UserTwitterAccountsRepositoryInterface;
 
 class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInterface
@@ -129,6 +128,34 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
             ]);
     }
 
+    public function onAutoUnFollowFlg($user_id, $screen_name)
+    {
+        // ユーザーが自動モードを使用する際には一つのアカウントだけに
+        // 絞りたいためまずユーザーが保有しているアカウントの自動フラグを
+        // 全て0にしてからその後に、特定のアカウントのみ自動モードフラグを立てる
+        DB::table('user_twitter_accounts')
+            ->where('user_id', $user_id)
+            ->update([
+                'auto_unFollow_flg' => 0
+            ]);
+
+        DB::table('user_twitter_accounts')
+            ->where('user_id', $user_id)
+            ->where('screen_name', $screen_name)
+            ->update([
+                'auto_unFollow_flg' => 1
+            ]);
+    }
+
+    public function offAutoUnFollowFlg($user_id)
+    {
+        DB::table('user_twitter_accounts')
+            ->where('user_id', $user_id)
+            ->update([
+                'auto_unFollow_flg' => 0,
+            ]);
+    }
+
     public function onAutoLikeFlg($user_id, $screen_name)
     {
         // ユーザーが自動モードを使用する際には一つのアカウントだけに
@@ -189,6 +216,15 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
     {
         $accounts = DB::table('user_twitter_accounts')
             ->where('auto_follow_flg', 1)
+            ->pluck('id');
+
+        return $accounts;
+    }
+
+    public function getOnAutoUnFollowAccounts()
+    {
+        $accounts = DB::table('user_twitter_accounts')
+            ->where('auto_unFollow_flg', 1)
             ->pluck('id');
 
         return $accounts;

@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div id="jsModal" v-show="autoTarget">
+        <div class="jsModal" v-show="autoFollow">
             <div class="c-overlay">
                 <div class="c-overlay__contents">
-                    <div class="c-overlay__ttl">{{ autoTarget }}</div>
+                    <div class="c-overlay__ttl">{{ autoFollow }}</div>
                     <div class="c-overlay__description"><span class="u-red">*</span>Keywordを入力するとそのKeywordをもとにフォローします。<br>何も入力しないとKeywordなしでフォローします。</div>
                     <div class="c-overlay__btnContainer c-overlay__btnContainer--auto">
                         <div class="c-search">
@@ -51,23 +51,38 @@
                         <button class="c-appBtn" v-on:click="searchAutoFollowSave()">更新</button>
                         <button v-show="!auto_follow_flg" class="c-appBtn" v-on:click="searchAutoFollowStart()">自動フォロー ON</button>
                         <button v-show="auto_follow_flg" class="c-appBtn" v-on:click="searchAutoFollowStop()">自動フォロー OFF</button>
-                        <button class="c-appBtn" v-on:click="autoCancel()">閉じる</button>
+                        <button class="c-appBtn" v-on:click="autoFollowCancel()">閉じる</button>
                     </div>
                 </div>
             </div>
-    
         </div>
-        <div class="c-appBtn"><a class="c-appBtn--none" :class="{'c-appBtn--auto': auto_follow_flg}" v-on:click="autoAction('Auto Follow Search Keyword')"><span v-if="auto_follow_flg">自動フォロー中</span><span v-else>自動フォローする</span></a></div>
-        <div class="c-appBtn"><a class="c-appBtn--auto" v-on:click="autoAction('自動アンフォロー')">自動アンフォロー中</a></div>
+        <div class="jsModal" v-show="autoUnFollow">
+            <div class="c-overlay">
+                <div class="c-overlay__contents">
+                    <div class="c-overlay__ttl">{{ autoUnFollow }}</div>
+                    <div class="c-overlay__description"><span class="u-red">*</span>フォローした日時から7日以上経過している<br>
+                    又は非アクティブユーザー（15日投稿なし)を自動アンフォローする</div>
+
+                    <div class="c-overlay__btnContainer c-overlay__btnContainer--auto">
+                        <button v-show="!auto_un_follow_flg" class="c-appBtn" v-on:click="autoUnFollowStart()">自動アンフォロー ON</button>
+                        <button v-show="auto_un_follow_flg" class="c-appBtn" v-on:click="autoUnFollowStop()">自動アンフォロー OFF</button>
+                        <button class="c-appBtn" v-on:click="autoUnFollowCancel()">閉じる</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="c-appBtn"><a class="c-appBtn--none" :class="{'c-appBtn--auto': auto_follow_flg}" v-on:click="autoFollowAction('Auto Follow Search Keyword')"><span v-if="auto_follow_flg">自動フォロー中</span><span v-else>自動フォローする</span></a></div>
+        <div class="c-appBtn"><a class="c-appBtn--none" :class="{'c-appBtn--auto': auto_un_follow_flg}" v-on:click="autoUnFollowAction('Auto UnFollow')"><span v-if="auto_un_follow_flg">自動アンフォロー中</span><span v-else>自動アンフォローする</span></a></div>
     </div>
 </template>
 
 <script>
 export default {
-    props: ['user_id', 'auth_screen_name', 'auto_follow_flg'],
+    props: ['user_id', 'auth_screen_name', 'auto_follow_flg', 'auto_un_follow_flg'],
     data: function() {
         return {
-            autoTarget: '',
+            autoFollow: '',
+            autoUnFollow: '',
             add_keyword: '',
             keywords: '',
             cookiesData: this.getCookie(),
@@ -101,11 +116,17 @@ export default {
                 }
             }
         },
-        autoAction: function(targetName) {
-            this.autoTarget = targetName;
+        autoFollowAction: function(targetName) {
+            this.autoFollow = targetName;
         },
-        autoCancel: function() {
-            this.autoTarget = '';
+        autoUnFollowAction: function(targetName) {
+            this.autoUnFollow = targetName;
+        },
+        autoFollowCancel: function() {
+            this.autoFollow = '';
+        },
+        autoUnFollowCancel: function() {
+            this.autoUnFollow = '';
         },
         addSearchText: function() {
             this.$vueCookies.config(60 * 60 * 24 * 30, '');
@@ -222,6 +243,35 @@ export default {
                 })
                 .catch((error) => {
                     console.log('searchAutoFollowStopは正常に起動していません。')
+                    console.log(error)
+                })
+        },
+        autoUnFollowStart: function() {
+            const formData = new FormData();
+            formData.append('user_id', this.user_id);
+            formData.append('screen_name', this.auth_screen_name);
+
+            this.$axios.post('/api/twitter/autoUnFollowStart', formData)
+                .then((res) => {
+                    console.log(res)
+                    window.location.reload(false)
+                })
+                .catch((error) => {
+                    console.log('autoUnFollowStartは正常に起動していません。')
+                    console.log(error)
+                })
+        },
+        autoUnFollowStop: function() {
+            const formData = new FormData();
+            formData.append('user_id', this.user_id);
+
+            this.$axios.post('/api/twitter/autoUnFollowStop', formData)
+                .then((res) => {
+                    console.log(res)
+                    window.location.reload(false)
+                })
+                .catch((error) => {
+                    console.log('autoUnFollowStopは正常に起動していません。')
                     console.log(error)
                 })
         },

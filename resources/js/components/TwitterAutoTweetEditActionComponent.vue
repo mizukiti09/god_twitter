@@ -1,6 +1,6 @@
 <template>
 <div v-if="tt.length">
-    <div id="jsModal" v-show="deleteAction === true">
+    <div class="jsModal" v-show="deleteAction === true">
         <div class="c-overlay">
             <div class="c-overlay__contents">
                 <div class="c-overlay__ttl">こちらのをTweetを削除しますか？</div>
@@ -11,7 +11,7 @@
             </div>
         </div>
     </div>
-    <div id="jsModal" v-show="editAction === true">
+    <div class="jsModal" v-show="editAction === true">
         <div class="c-overlay">
             <div class="c-overlay__contents">
                 <div class="c-overlay__ttl">ツイート内容を更新しますか？</div>

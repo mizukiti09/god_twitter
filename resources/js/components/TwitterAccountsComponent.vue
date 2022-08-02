@@ -1,6 +1,6 @@
 <template>
     <div class="c-structure__article__panel__group">
-        <div id="jsModal" v-show="deleteAction === true">
+        <div class="jsModal" v-show="deleteAction === true">
             <div class="c-overlay">
                 <div class="c-overlay__contents">
                     <div class="c-overlay__ttl">こちらのアカウントを外しますか？</div>

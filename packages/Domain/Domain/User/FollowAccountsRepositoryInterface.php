@@ -5,9 +5,9 @@ namespace packages\Domain\Domain\User;
 interface FollowAccountsRepositoryInterface
 {
     /**
-     * @param $user_twitter_account_id
+     * @param $user_twitter_account_id, $screen_name, $twitterId
      */
-    public function saveFollowAccountScreenName($user_twitter_account_id, $screen_name);
+    public function saveFollowAccount($user_twitter_account_id, $screen_name, $twitterId);
 
     /**
      * @param $user_twitter_account_id

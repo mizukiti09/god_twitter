@@ -3,17 +3,17 @@
 namespace packages\Infrastructure\User;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use packages\Domain\Domain\User\FollowAccountsRepositoryInterface;
 
 class FollowAccountsRepository implements FollowAccountsRepositoryInterface
 {
-    public function saveFollowAccountScreenName($user_twitter_account_id, $screen_name)
+    public function saveFollowAccount($user_twitter_account_id, $screen_name, $twitterId)
     {
         DB::table('follow_accounts')
             ->insert([
                 'user_twitter_account_id' => $user_twitter_account_id,
                 'screen_name' => $screen_name,
+                'twitterId' => $twitterId
             ]);
     }
 
@@ -26,7 +26,8 @@ class FollowAccountsRepository implements FollowAccountsRepositoryInterface
         $account = DB::select(
             "SELECT 
                 id,
-                screen_name
+                screen_name,
+                twitterId
             FROM
                 follow_accounts
             WHERE user_twitter_account_id = :user_twitter_account_id
