@@ -97,6 +97,11 @@ interface UserTwitterAccountsRepositoryInterface
     /**
      * @param $id
      */
+    public function unFollowCountSave($id);
+
+    /**
+     * @param $id
+     */
     public function tweetCountSave($id);
 
     /**

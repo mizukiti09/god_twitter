@@ -17,25 +17,43 @@ class FollowedAccountsRepository implements FollowedAccountsRepositoryInterface
             ]);
     }
 
-    public function getFollowedIds($user_twitter_account_id)
+    public function getFollowed_data($user_twitter_account_id)
     {
+        // unixTime
+        // 1分 60
+        // 1時間 60 * 60
+        // 1日 60 * 60 * 24
+        // １週間 60 * 60 * 24 * 7
         $param = [
-            'plusTime' => 60 * 10,
+            'plusTime' => 60 * 60 * 24 * 7,
             'currentUnixTime' => time(),
             'user_twitter_account_id' => $user_twitter_account_id
         ];
 
-        $followedAccountIds = DB::select(
+        $data = DB::select(
             "SELECT 
                 id,
-                twitterId
+                twitterId,
+                follow_unixTime
             FROM
                 followed_accounts 
             WHERE ( follow_unixTime + :plusTime ) <  :currentUnixTime
-            AND user_twitter_account_id = :user_twitter_account_id",
+            AND user_twitter_account_id = :user_twitter_account_id
+            LIMIT 1",
             $param
         );
 
-        return $followedAccountIds;
+        if (!empty($data)) {
+            return $data[0];
+        } else {
+            return $data;
+        }
+    }
+
+    public function deleteFollowedAccount($id)
+    {
+        DB::table('followed_accounts')
+            ->where('id', $id)
+            ->delete();
     }
 }

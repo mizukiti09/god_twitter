@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \App\Console\Commands\AutoFollowAccountsCommand::class,
         \App\Console\Commands\AutoFollowCommand::class,
+        \App\Console\Commands\AutoUnFollowCommand::class,
         \App\Console\Commands\AutoTweetCommand::class,
         \App\Console\Commands\AutoLikeTweetsCommand::class,
     ];
@@ -62,6 +63,15 @@ class Kernel extends ConsoleKernel
         //     })
         //     ->onFailure(function () {
         //         Log::error('自動いいねツイート保存:確認失敗');
+        //     });
+
+        // $schedule->command('command:autoUnFollow')
+        //     ->everyMinute()
+        //     ->onSuccess(function () {
+        //         Log::debug('自動アンフォロー:確認成功');
+        //     })
+        //     ->onFailure(function () {
+        //         Log::error('自動アンフォロー:確認失敗');
         //     });
     }
 

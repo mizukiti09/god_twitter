@@ -18,6 +18,7 @@ use packages\Domain\Domain\User\AutoTweetDatasRepositoryInterface;
 use packages\Domain\Domain\User\FollowAccountsRepositoryInterface;
 use packages\Domain\Domain\User\FollowedAccountsRepositoryInterface;
 use packages\Domain\Domain\User\LikeTweetsRepositoryInterface;
+use packages\Domain\Domain\User\UnFollowedAccountsRepositoryInterface;
 use packages\UseCase\Twitter\Follow\TwitterAutoFollowUseCaseInterface;
 use packages\Domain\Domain\User\UserTwitterAccountsRepositoryInterface;
 use packages\Infrastructure\TargetAccountsRepository;
@@ -27,6 +28,7 @@ use packages\Infrastructure\User\AutoTweetDatasRepository;
 use packages\Infrastructure\User\FollowAccountsRepository;
 use packages\Infrastructure\User\FollowedAccountsRepository;
 use packages\Infrastructure\User\LikeTweetsRepository;
+use packages\Infrastructure\User\UnFollowedAccountsRepository;
 use packages\UseCase\Twitter\Like\TwitterAutoLikeUseCaseInterface;
 use packages\UseCase\Twitter\Tweet\TwitterAutoTweetUseCaseInterface;
 
@@ -76,5 +78,6 @@ class TwitterServiceProvider extends ServiceProvider
         AutoLikeDatasRepositoryInterface::class       => AutoLikeDatasRepository::class,
         LikeTweetsRepositoryInterface::class          => LikeTweetsRepository::class,
         FollowedAccountsRepositoryInterface::class    => FollowedAccountsRepository::class,
+        UnFollowedAccountsRepositoryInterface::class  => UnFollowedAccountsRepository::class,
     ];
 }

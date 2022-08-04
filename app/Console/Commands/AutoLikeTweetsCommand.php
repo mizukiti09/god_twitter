@@ -3,8 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Facades\Twitter;
+use App\Mail\AutoLikeMail;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use packages\Domain\Domain\User\LikeTweetsRepositoryInterface;
 use packages\Domain\Domain\User\AutoLikeDatasRepositoryInterface;
 use packages\Domain\Domain\User\UserTwitterAccountsRepositoryInterface;
@@ -56,8 +58,6 @@ class AutoLikeTweetsCommand extends Command
                 $array_search_text = $a_repository->getArraySearchText($user_twitter_account_id);
                 // フォローコンディション( NOT か OR か AND か null)
                 $condition = $a_repository->getCondition($user_twitter_account_id);
-                // DBに保存する前の格納用変数
-                $lists = array();
                 // user_twitter_account
                 $account = $u_repository->getAccount($user_twitter_account_id);
 
@@ -85,7 +85,7 @@ class AutoLikeTweetsCommand extends Command
                 $tweetsData = Twitter::getAuthConnection($account->user_id, $account->screen_name)
                     ->get("search/tweets", $options);
 
-                foreach ($tweetsData->statuses as $data) {
+                foreach ($tweetsData->statuses as $key => $data) {
                     Log::info($data->text);
 
                     $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)
@@ -100,7 +100,12 @@ class AutoLikeTweetsCommand extends Command
                         Log::info('いいね成功');
                     }
 
-                    // $l_repository->saveLikeTweet($user_twitter_account_id, $data->id);
+                    if ($key === array_key_last($tweetsData->statuses)) {
+                        Log::info('=============================');
+                        Log::info('自動いいねアクション: メール通知');
+                        $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
+                        Mail::to($user->email)->send(new AutoLikeMail($user));
+                    }
                 }
                 Log::info('tweet 保存完了');
             }
