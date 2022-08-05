@@ -18,12 +18,21 @@
 
             <ul class="p-home__list">
                 <li class="p-home__list__img">
+                    <span class="p-home__list__img__text">自動フォロー登録画面</span>
                     <img src="{{ asset('images/follow.png') }}" alt="">
                 </li>
                 <li class="p-home__list__img">
-                    <img src="{{ asset('images/follow.png') }}" alt="">
+                    <span class="p-home__list__img__text">自動アンフォロー登録画面</span>
+                    <img src="{{ asset('images/un_follow.png') }}" alt="">
                 </li>
-
+                <li class="p-home__list__img">
+                    <span class="p-home__list__img__text">自動いいね登録画面</span>
+                    <img src="{{ asset('images/like.png') }}" alt="">
+                </li>
+                <li class="p-home__list__img">
+                    <span class="p-home__list__img__text">自動ツイート登録画面</span>
+                    <img src="{{ asset('images/tweet.png') }}" alt="">
+                </li>
             </ul>
         </div>
     </div>

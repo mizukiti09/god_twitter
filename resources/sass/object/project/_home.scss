@@ -46,6 +46,7 @@
             font-size: $font-size_xxxl;
             text-align: center;
             margin-bottom: 50px;
+            color: #fff;
         }
         & .u-inner {
             max-width: 1200px;
@@ -57,7 +58,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background-color: #91d4baeb;
+            background-color: rgba(76, 77, 80, 0.85);
             transform: skewY(-5deg);
             z-index: -1;
         }
@@ -68,13 +69,16 @@
             bottom: -20px;
             left: 0;
             right: 0;
-            background-color: #476974;
+            background-color: #87ceeb;
             transform: skewY(-9deg);
             z-index: -2;
         }
     }
     &__contents {
         margin: 0 auto;
+        & p {
+            color: #fff;
+        }
     }
     &__ul {
         color: #668ad8;
@@ -96,14 +100,23 @@
         margin-bottom: 60px;
         display: flex;
         justify-content: space-between;
+        flex-wrap: wrap;
         &__img {
-            width: 45%;
+            position: relative;
+            width: 48%;
             height: 366px;
             background: gainsboro;
+            box-shadow: 0px 5px 40px #fff;
+            margin-bottom: 50px;
             & img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
+            }
+            &__text {
+                position: absolute;
+                top: -26px;
+                color: #fff;
             }
         }
     }
