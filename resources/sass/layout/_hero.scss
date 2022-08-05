@@ -1,6 +1,10 @@
 .l-hero {
     height: 100vh;
-    background-image: url(./../../images/top.jpg);
+    background: linear-gradient(to bottom, #a6d900 0%, #ff4454 100%);
+    background-image: url(./../../images/woman_hand.jpg);
+    background-color: rgba(255, 255, 255, 0.7);
+    background-blend-mode: lighten;
+    animation: huerotator 3s infinite alternate;
     background-position: center;
     background-size: cover;
     margin-bottom: 250px;
@@ -9,6 +13,18 @@
         text-align: center;
         font-size: 60px;
         color: #fff;
+        text-shadow: 1px 1px 2px white, 0 0 1em black, 0 0 0.2em #56d8be;
+    }
+}
+
+@keyframes huerotator {
+    0% {
+        -webkit-filter: hue-rotate(0deg);
+        filter: hue-rotate(0deg);
+    }
+    100% {
+        -webkit-filter: hue-rotate(360deg);
+        filter: hue-rotate(360deg);
     }
 }
 

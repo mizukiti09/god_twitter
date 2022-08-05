@@ -217,13 +217,13 @@ body {
     color: #fff;
     font-size: 24px; }
 
-@media screen and (max-width: 481px) {
-  .l-headerInner {
-    padding: 24px; } }
-
 .l-hero {
   height: 100vh;
-  background-image: url(./../../images/top.jpg);
+  background: linear-gradient(to bottom, #a6d900 0%, #ff4454 100%);
+  background-image: url(./../../images/woman_hand.jpg);
+  background-color: rgba(255, 255, 255, 0.7);
+  background-blend-mode: lighten;
+  animation: huerotator 3s infinite alternate;
   background-position: center;
   background-size: cover;
   margin-bottom: 250px; }
@@ -231,7 +231,16 @@ body {
     padding: 300px 0 80px;
     text-align: center;
     font-size: 60px;
-    color: #fff; }
+    color: #fff;
+    text-shadow: 1px 1px 2px white, 0 0 1em black, 0 0 0.2em #56d8be; }
+
+@keyframes huerotator {
+  0% {
+    -webkit-filter: hue-rotate(0deg);
+    filter: hue-rotate(0deg); }
+  100% {
+    -webkit-filter: hue-rotate(360deg);
+    filter: hue-rotate(360deg); } }
 
 @media screen and (max-width: 481px) {
   .l-hero {
@@ -923,12 +932,77 @@ body {
     transform: translateX(-52%);
     width: 58%; }
 
+.p-home__article {
+  width: 100%;
+  margin: 0;
+  padding: 150px 0;
+  position: relative;
+  top: 200px; }
+  .p-home__article h1 {
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 50px; }
+  .p-home__article .u-inner, .p-home__article .c-contents, .p-home__article .p-home {
+    max-width: 1200px; }
+  .p-home__article::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #91d4baeb;
+    transform: skewY(-5deg);
+    z-index: -1; }
+  .p-home__article::after {
+    content: '';
+    position: absolute;
+    top: -20px;
+    bottom: -20px;
+    left: 0;
+    right: 0;
+    background-color: #476974;
+    transform: skewY(-9deg);
+    z-index: -2; }
+
+.p-home__contents {
+  margin: 0 auto; }
+
+.p-home__ul {
+  color: #668ad8;
+  /*文字色*/
+  border: dashed 2px #668ad8;
+  /*破線 太さ 色*/
+  background: #f1f8ff;
+  /*背景色*/
+  padding: 0.5em 0.5em 0.5em 2em;
+  list-style: disc;
+  margin: 40px 0 0; }
+  .p-home__ul li {
+    line-height: 1.5;
+    padding: 0.5em 0; }
+
+.p-home__list {
+  padding: 60px 0;
+  margin-bottom: 60px;
+  display: flex;
+  justify-content: space-between; }
+  .p-home__list__img {
+    width: 45%;
+    height: 366px;
+    background: gainsboro; }
+    .p-home__list__img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; }
+
 @media screen and (max-width: 768px) {
   .p-home__list {
     display: block; }
     .p-home__list__img {
+      margin-bottom: 50px;
       width: 100%;
-      height: 200px; }
+      height: 350px; }
     .p-home__list__description {
       width: 100%;
       padding: 20px 0; }
@@ -956,7 +1030,7 @@ body {
   .p-tweetList__item {
     position: relative;
     line-height: 1.5;
-    padding: 1em 3em 2em;
+    padding: 1em 2em 2em;
     list-style-type: none !important;
     background: -webkit-linear-gradient(top, skyblue 0%, #5aade6 100%);
     /*グラデーション*/
