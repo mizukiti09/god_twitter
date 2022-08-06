@@ -451,4 +451,51 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
 
         return $account[0];
     }
+
+    public function followedByServiceUserFollow5000Over($user_id, $screen_name)
+    {
+        $result = DB::table('user_twitter_accounts')
+            ->where('user_id', $user_id)
+            ->where('screen_name', $screen_name)
+            ->select(
+                'id',
+                'follow',
+            )
+            ->first();
+
+        if ($result->follow > 5000) {
+            Log::info('ユーザーのフォロー数が5000を超えています。');
+            // unixTime
+            // 1分 60
+            // 1時間 60 * 60
+            // 1日 60 * 60 * 24
+            // １週間 60 * 60 * 24 * 7
+            $param = [
+                'plusTime' => 60 * 60 * 24 * 7,
+                'currentUnixTime' => time(),
+                'user_twitter_account_id' => $$result->id
+            ];
+
+            $data = DB::select(
+                "SELECT 
+                f.id
+            FROM
+                user_twitter_accounts u 
+            JOIN followed_accounts f ON u.id = f.user_twitter_account_id
+            WHERE ( follow_unixTime + :plusTime ) <  :currentUnixTime
+            AND user_twitter_account_id = :user_twitter_account_id
+            LIMIT 1",
+                $param
+            );
+
+            if ($data) {
+                Log::info('followed_accountsテーブルにデータがあり(1週間経過したデータ)、且、ユーザーのフォロー数が5000を超えています。自動アンフォーのフラグをONにします');
+                $this->onAutoUnFollowFlg($user_id, $screen_name);
+            } else {
+                Log::info('followed_accountsテーブルから1週間経過したデータはありませんでした。');
+            }
+        } else {
+            Log::info('ユーザーのフォロー数は5000は超えてません。');
+        }
+    }
 }

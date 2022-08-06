@@ -16,7 +16,14 @@ class CreateTargetAccountsTable extends Migration
     {
         Schema::create('target_accounts', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_twitter_account_id');
+            $table
+                ->foreign('user_twitter_account_id')
+                ->references('id')
+                ->on('user_twitter_accounts')
+                ->onDelete('cascade');
             $table->string('screen_name')->default(null);
+            $table->integer('follower')->default(0);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
         });

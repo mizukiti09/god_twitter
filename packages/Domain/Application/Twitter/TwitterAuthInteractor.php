@@ -48,6 +48,7 @@ class TwitterAuthInteractor implements TwitterAuthUseCaseInterface
         $this->twitterAccountsRepository->resetCountBy24HoursAgoParam2(Auth::id(), $twitterAuth->getNickname());
 
         Auth::login(Auth::user());
+
         return redirect()->route('myPage');
     }
 

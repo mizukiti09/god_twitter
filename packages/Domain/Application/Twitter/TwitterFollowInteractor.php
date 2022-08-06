@@ -4,22 +4,47 @@ namespace packages\Domain\Application\Twitter;
 
 use App\Facades\Twitter;
 use Illuminate\Support\Facades\Log;
+use packages\Domain\Domain\TargetAccountsRepositoryInterface;
 use packages\Domain\Domain\User\AutoFollowDatasRepositoryInterface;
 use packages\UseCase\Twitter\Follow\TwitterAutoFollowUseCaseInterface;
 use packages\Domain\Domain\User\UserTwitterAccountsRepositoryInterface;
+use packages\UseCase\Twitter\Follow\TwitterTargetAccountUseCaseInterface;
 
 
-class TwitterFollowInteractor implements TwitterAutoFollowUseCaseInterface
+class TwitterFollowInteractor implements TwitterAutoFollowUseCaseInterface, TwitterTargetAccountUseCaseInterface
 {
     private $u_repository;
     private $a_repository;
+    private $ta_repository;
 
     public function __construct(
         UserTwitterAccountsRepositoryInterface $u_repository,
-        AutoFollowDatasRepositoryInterface $a_repository
+        AutoFollowDatasRepositoryInterface $a_repository,
+        TargetAccountsRepositoryInterface $ta_repository
     ) {
-        $this->u_repository = $u_repository;
-        $this->a_repository = $a_repository;
+        $this->u_repository  = $u_repository;
+        $this->a_repository  = $a_repository;
+        $this->ta_repository = $ta_repository;
+    }
+
+    public function addTargetAccountHandle($user_id, $auth_screen_name, $target_screen_name)
+    {
+        Log::debug('addTargetAccountHandle Start (VueからのPOST API)');
+        Log::info($user_id);
+        Log::info($auth_screen_name);
+        Log::info($target_screen_name);
+
+        $response = Twitter::getAuthConnection($user_id, $auth_screen_name)->get('users/show', array(
+            'screen_name' => $target_screen_name
+        ));
+
+        if (isset($response->error) && $response->error != '') {
+            return $response->error;
+        } else {
+            $this->ta_repository->saveTargetAccount($user_id, $auth_screen_name, $target_screen_name, $response->followers_count);
+
+            Log::info('入力された targetのscreen_nameがあったので、DBに保存');
+        }
     }
 
     public function autoFollowSaveHandle($user_id, $screen_name, $array_search_text, $condition)

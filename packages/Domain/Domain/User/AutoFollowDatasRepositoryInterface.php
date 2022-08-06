@@ -7,12 +7,16 @@ interface AutoFollowDatasRepositoryInterface
     /**
      * @param $user_twitter_account_id
      */
+    public function getFollowData($user_twitter_account_id);
+    /**
+     * @param $user_twitter_account_id
+     */
     public function getTargetAccountScreenName($user_twitter_account_id);
 
     /**
      * @param $user_twitter_account_id
      */
-    public function incrementTargetAccountId($user_twitter_account_id);
+    public function nextTargetAccountId($user_twitter_account_id);
 
     /**
      * @param $user_id, $next_cursor, $search_text, $condition
@@ -38,4 +42,34 @@ interface AutoFollowDatasRepositoryInterface
      * @param $user_twitter_account_id
      */
     public function getArraySearchText($user_twitter_account_id);
+
+    /**
+     * @param $user_twitter_account_id
+     */
+    public function changeTrueFollowActionFlg($user_twitter_account_id);
+
+    /**
+     * @param $user_twitter_account_id
+     */
+    public function changeFalseFollowActionFlg($user_twitter_account_id);
+
+    /**
+     * @param $user_twitter_account_id
+     */
+    public function getFollowActionFlg($user_twitter_account_id);
+
+    /**
+     * @param $user_twitter_account_id
+     */
+    public function checkFollowEnd($user_twitter_account_id);
+
+    /**
+     * @param $user_twitter_account_id, $plus
+     */
+    public function plusCursorCount($user_twitter_account_id, $plus);
+
+    /**
+     * @param $user_twitter_account_id
+     */
+    public function resetCursorCount($user_twitter_account_id);
 }

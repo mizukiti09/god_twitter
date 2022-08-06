@@ -22,11 +22,12 @@ class CreateAutoFollowDatasTable extends Migration
                 ->references('id')
                 ->on('user_twitter_accounts')
                 ->onDelete('cascade');
-            $table->unsignedBigInteger('target_account_id')->default(1);
+            $table->unsignedBigInteger('target_account_id')->default(0);
             $table
                 ->foreign('target_account_id')
                 ->references('id')
-                ->on('target_accounts');
+                ->on('target_accounts')
+                ->onDelete('cascade');
             $table->integer('cursor_count')->default(0);
             $table->bigInteger('next_cursor')->default(0);
             $table->string('search_text')->nullable()->default(null);

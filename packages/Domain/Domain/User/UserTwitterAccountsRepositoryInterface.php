@@ -125,4 +125,9 @@ interface UserTwitterAccountsRepositoryInterface
      * @param $id
      */
     public function getAccount($id);
+
+    /**
+     * @param $id
+     */
+    public function followedByServiceUserFollow5000Over($user_id, $screen_name);
 }

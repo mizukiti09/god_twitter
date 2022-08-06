@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::namespace('Twitter')->group(function () {
     Route::post('twitter/account/delete', 'UserTwitterAccountController@delete')->name('twitter.deleteAccount');
+    Route::post('twitter/addTargetAccount', 'TwitterFollowController@addTargetAccount')->name('twitter.addTargetAccount');
     Route::post('twitter/autoFollowSave', 'TwitterFollowController@autoFollowSave')->name('twitter.autoFollowSave');
     Route::post('twitter/autoFollowStart', 'TwitterFollowController@autoFollowStart')->name('twitter.autoFollowStart');
     Route::post('twitter/autoFollowStop', 'TwitterFollowController@autoFollowStop')->name('twitter.autoFollowStop');

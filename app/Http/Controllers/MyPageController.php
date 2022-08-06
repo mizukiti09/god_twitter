@@ -19,6 +19,7 @@ class MyPageController extends Controller
             foreach ($accounts as $account) {
                 if ($account->auth_flg) {
                     $auth_screen_name = $account->screen_name;
+                    $repository->followedByServiceUserFollow5000Over(Auth::id(), $account->screen_name);
                 } else {
                     $auth_screen_name = 'MyPage_auth_screen_name_null';
                 }

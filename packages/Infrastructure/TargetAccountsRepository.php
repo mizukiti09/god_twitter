@@ -9,11 +9,13 @@ use packages\Domain\Domain\TargetAccountsRepositoryInterface;
 
 class TargetAccountsRepository implements TargetAccountsRepositoryInterface
 {
-    public function getAllAccounts()
+    public function getAllTargetAccounts($user_twitter_account_id)
     {
         $accounts = DB::table('target_accounts')
+            ->where('user_twitter_account_id', $user_twitter_account_id)
             ->select([
                 'screen_name',
+                'follower'
             ])
             ->get();
 
@@ -29,5 +31,26 @@ class TargetAccountsRepository implements TargetAccountsRepositoryInterface
             ->inRandomOrder()
             ->first();
         return $account->screen_name;
+    }
+
+    public function saveTargetAccount($user_id, $auth_screen_name, $target_screen_name, $follower)
+    {
+        $user_twitter_account_id = DB::table('user_twitter_accounts')
+            ->where('user_id', $user_id)
+            ->where('screen_name', $auth_screen_name)
+            ->select([
+                'id'
+            ])
+            ->get()
+            ->first();
+
+        $user_twitter_account_id = $user_twitter_account_id->id;
+
+        DB::table('target_accounts')
+            ->insert([
+                'user_twitter_account_id' => $user_twitter_account_id,
+                'screen_name' => $target_screen_name,
+                'follower' => $follower
+            ]);
     }
 }

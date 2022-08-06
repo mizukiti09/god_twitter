@@ -1,0 +1,27 @@
+@section('title', 'God Twitter / tweetList')@extends('app') @section('content')
+
+<div class="c-structure u-inner u-m__contents">
+    <div class="c-currentPage__title">
+        TargetAccounts &nbsp;\&nbsp; 登録ターゲットアカウント数 &nbsp;:&nbsp;<span
+            id="js-target-account-count">{{ count($target_accounts) }}</span>
+    </div>
+    <div class="c-structure__container">
+        @include('parts.aside')
+
+        <article class="c-structure__article">
+            <h1 class="c-structure__article__title"><i class="fas fa-adjust"></i>&nbsp;ターゲットアカウント一覧</h1>
+            @if ($accounts)
+                @foreach ($accounts as $account)
+                    @if ($account->auth_flg == 1)
+                        <twitter-target-account-edit :user_id="{{ $user_id }}"
+                            :auth_screen_name="{{ json_encode($account->screen_name) }}"
+                            :auto_follow_flg="{{ $account->auto_follow_flg }}"
+                            :target_accounts="{{ json_encode($target_accounts) }}"></twitter-target-account-edit>
+                    @endif
+                @endforeach
+            @endif
+        </article>
+    </div>
+
+</div>
+@endsection
