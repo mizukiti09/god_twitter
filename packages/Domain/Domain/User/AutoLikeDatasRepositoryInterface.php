@@ -18,4 +18,9 @@ interface AutoLikeDatasRepositoryInterface
      * @param $user_twitter_account_id
      */
     public function getArraySearchText($user_twitter_account_id);
+
+    /**
+     * @param $user_twitter_account_id
+     */
+    public function getSearchTextAndCondition($user_twitter_account_id);
 }

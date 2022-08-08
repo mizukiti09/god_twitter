@@ -6,23 +6,17 @@
     </div>
     <div class="c-structure__container">
         @include('parts.aside')
-        
+
         <article class="c-structure__article">
             <h1 class="c-structure__article__title"><i class="fas fa-adjust"></i>&nbsp;予定一覧</h1>
-            @if ($accounts) 
-                @foreach ($accounts as $account) 
-                    @if ($account->auth_flg == 1) 
-                        <twitter-auto-tweet-edit-action
-                        :user_id="{{$user_id}}"
-                        :auth_screen_name="{{json_encode($account->screen_name)}}"
-                        :auto_tweet_flg="{{$account->auto_tweet_flg}}"
-                        :tweet_list="{{json_encode($tweetList)}}"
-                        ></twitter-auto-tweet-edit-action>
-                    @endif
-                @endforeach
+            @if ($auth_account)
+                <twitter-auto-tweet-edit-action :user_id="{{ $user_id }}"
+                    :auth_screen_name="{{ json_encode($auth_account->screen_name) }}"
+                    :auto_tweet_flg="{{ $auth_account->auto_tweet_flg }}" :tweet_list="{{ json_encode($tweetList) }}">
+                </twitter-auto-tweet-edit-action>
             @endif
         </article>
     </div>
-    
+
 </div>
 @endsection

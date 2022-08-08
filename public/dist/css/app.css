@@ -257,8 +257,9 @@ body {
     box-sizing: border-box;
     padding: 30px 15px; }
     .c-structure__article__panel {
+      border: 3px solid gray;
       background: lightgray;
-      height: 280px;
+      height: 221px;
       margin-bottom: 20px;
       position: relative;
       display: flex;
@@ -281,25 +282,32 @@ body {
         width: calc(100% - 120px);
         display: flex;
         flex-wrap: wrap;
-        margin-top: 22px; }
+        margin-top: 40px; }
       .c-structure__article__panel__leftInfo {
-        margin-top: 25px; }
+        margin-top: 25px;
+        width: 20%; }
       .c-structure__article__panel__item {
         padding: 10px;
         margin-bottom: 10px;
         background: #fff;
         border-radius: 5px;
         width: 29%;
-        margin: 3px; }
+        margin: 3px;
+        font-size: 15px; }
       .c-structure__article__panel__photo {
-        width: 120px;
-        height: 120px;
+        margin: 0 auto;
+        width: 90px;
+        height: 90px;
         background: #fff;
         border-radius: 100%; }
         .c-structure__article__panel__photo img {
           width: 100%;
           height: 100%;
           border-radius: 100%; }
+      .c-structure__article__panel__name {
+        width: 15% !important;
+        position: absolute;
+        bottom: 10px; }
       .c-structure__article__panel__info {
         background: lightgray;
         padding: 5px;
@@ -372,24 +380,30 @@ body {
       width: 100%; }
       .c-structure__article__panel {
         width: 100%;
-        height: 890px;
+        height: 620px;
         display: block; }
         .c-structure__article__panel__photo {
           width: 100px;
           height: 100px; }
+        .c-structure__article__panel__name {
+          width: calc(100% - 196px) !important;
+          bottom: initial;
+          top: 67px;
+          right: 27px; }
         .c-structure__article__panel__item {
           width: 100%; }
         .c-structure__article__panel__group {
           display: block; }
         .c-structure__article__panel__rightInfo {
-          width: initial; }
+          width: initial;
+          margin-top: 0px; }
     .c-structure__aside {
       width: 100%;
       height: initial;
       margin-bottom: 20px; } }
 
 .authFlgActive {
-  border: 3px solid deeppink; }
+  border: 3px solid deeppink !important; }
 
 .c-overlay {
   /*　要素を重ねた時の順番　*/
@@ -406,6 +420,47 @@ body {
   align-items: center;
   justify-content: center;
   transition: .3s; }
+  .c-overlay__db__border {
+    border: 1px solid #52c2d0;
+    border-top: none; }
+  .c-overlay__db__table {
+    width: 100%;
+    border-collapse: collapse; }
+  .c-overlay__db__tr {
+    border-bottom: solid 2px white; }
+    .c-overlay__db__tr:last-child {
+      border-bottom: none; }
+  .c-overlay__db__th {
+    position: relative;
+    text-align: left;
+    width: 30%;
+    background-color: #52c2d0;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    vertical-align: middle; }
+    .c-overlay__db__th:after {
+      display: block;
+      content: "";
+      width: 0px;
+      height: 0px;
+      position: absolute;
+      top: calc(50% - 10px);
+      right: -10px;
+      border-left: 10px solid #52c2d0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent; }
+  .c-overlay__db__td {
+    width: 70%;
+    text-align: center;
+    background-color: #eee;
+    padding: 10px 0;
+    vertical-align: middle; }
+  .c-overlay__targetName {
+    margin: 20px 0 0;
+    padding-bottom: 6px;
+    border-bottom: 1px solid;
+    text-align: center; }
   .c-overlay__ttl {
     text-align: center; }
   .c-overlay__description {
@@ -433,6 +488,17 @@ body {
   position: relative;
   width: 100%;
   margin: 0 0 20px; }
+  .c-search__loading {
+    width: 22px;
+    height: 20px;
+    position: absolute;
+    top: -27px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100; }
+    .c-search__loading img {
+      width: 100%;
+      height: 100%; }
   .c-search__input {
     font: 15px/24px sans-serif;
     box-sizing: border-box;
@@ -1078,6 +1144,9 @@ body {
   /*グラデーション*/
   background: linear-gradient(to bottom, #eb8787 0%, #e65a5a 100%) !important; }
 
+.p-targetAccount__current {
+  margin: 10px 0px; }
+
 .p-targetAccount__list {
   margin: 40px 0 0;
   counter-reset: list;
@@ -1098,6 +1167,20 @@ body {
     -o-transition: 0.3s;
     -ms-transition: 0.3s;
     transition: 0.3s; }
+    .p-targetAccount__list__item__trash {
+      position: absolute;
+      right: 8px;
+      top: 4px; }
+    .p-targetAccount__list__item--on {
+      border: solid 1px #0ec52e !important; }
+      .p-targetAccount__list__item--on:before {
+        background: #0ec52e !important; }
+      .p-targetAccount__list__item--on:hover {
+        background: #0ec52e !important;
+        color: #fff !important; }
+        .p-targetAccount__list__item--on:hover:before {
+          background: #fff !important;
+          color: #0ec52e !important; }
     .p-targetAccount__list__item:before {
       counter-increment: list;
       content: counter(list);
@@ -1227,6 +1310,9 @@ body {
 .u-trash {
   font-size: 21px;
   color: red; }
+
+.u-twitter-link {
+  color: skyblue; }
 
 
 /*# sourceMappingURL=app.css.map*/

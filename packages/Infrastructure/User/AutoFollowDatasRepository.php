@@ -254,4 +254,67 @@ class AutoFollowDatasRepository implements AutoFollowDatasRepositoryInterface
                 'cursor_count' => 0,
             ]);
     }
+
+    public function getTarget($user_twitter_account_id)
+    {
+        $param = [
+            'user_twitter_account_id' => $user_twitter_account_id
+        ];
+
+        $target = DB::select(
+            "SELECT 
+                t.screen_name,
+                a.cursor_count,
+                t.follower
+            FROM
+                auto_follow_datas as a
+            LEFT JOIN target_accounts as t
+            ON a.target_account_id = t.id
+            WHERE a.user_twitter_account_id = :user_twitter_account_id",
+            $param
+        );
+
+        if (isset($target[0])) {
+            return $target[0];
+        } else {
+            return array();
+        }
+
+        return $target[0];
+    }
+
+    public function getSearchTextAndCondition($user_twitter_account_id)
+    {
+        $data = DB::table('auto_follow_datas')
+            ->where('user_twitter_account_id', $user_twitter_account_id)
+            ->select([
+                'search_text',
+                'follow_condition'
+            ])
+            ->first();
+
+        return $data;
+    }
+
+    public function changeFirstTargetAccountId($user_twitter_account_id)
+    {
+        $param = [
+            'user_twitter_account_id' => $user_twitter_account_id
+        ];
+
+        $targets = DB::select(
+            "SELECT 
+                id
+            FROM
+                target_accounts
+            WHERE user_twitter_account_id = :user_twitter_account_id",
+            $param
+        );
+
+        DB::table('auto_follow_datas')
+            ->where('user_twitter_account_id', $user_twitter_account_id)
+            ->update([
+                'target_account_id' => $targets[0]->id,
+            ]);
+    }
 }

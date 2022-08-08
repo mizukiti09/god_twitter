@@ -72,4 +72,19 @@ interface AutoFollowDatasRepositoryInterface
      * @param $user_twitter_account_id
      */
     public function resetCursorCount($user_twitter_account_id);
+
+    /**
+     * @param $user_twitter_account_id
+     */
+    public function getTarget($user_twitter_account_id);
+
+    /**
+     * @param $user_twitter_account_id
+     */
+    public function getSearchTextAndCondition($user_twitter_account_id);
+
+    /**
+     * @param $user_twitter_account_id
+     */
+    public function changeFirstTargetAccountId($user_twitter_account_id);
 }

@@ -47,6 +47,22 @@ class TwitterFollowInteractor implements TwitterAutoFollowUseCaseInterface, Twit
         }
     }
 
+    public function deleteTargetAccountHandle($user_id, $auth_screen_name, $target_id, $reset_auto_follow_flg)
+    {
+        Log::debug('deleteTargetAccountHandle Start (VueからのPOST API)');
+        Log::info($user_id);
+        Log::info($auth_screen_name);
+        Log::info($target_id);
+        Log::info($reset_auto_follow_flg);
+
+        if ($reset_auto_follow_flg == true) {
+            $this->u_repository->offAutoFollowFlg($user_id);
+        }
+
+        $this->ta_repository->deleteTargetAccount($user_id, $auth_screen_name, $target_id);
+        Log::info('削除しました。');
+    }
+
     public function autoFollowSaveHandle($user_id, $screen_name, $array_search_text, $condition)
     {
         Log::debug('autoFollowSaveHandle Start (VueからのPOST API)');

@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use App\Http\ViewComposers\TwitterCommonComposer;
 use packages\Infrastructure\TargetAccountsRepository;
 use packages\Infrastructure\User\LikeTweetsRepository;
 use packages\Infrastructure\User\AutoLikeDatasRepository;
@@ -57,7 +59,9 @@ class TwitterServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        View::composers([
+            TwitterCommonComposer::class => 'pages.*',
+        ]);
     }
 
     /**

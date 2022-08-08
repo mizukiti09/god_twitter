@@ -11,21 +11,25 @@
                 </div>
             </div>
         </div>
-        <div v-for="(account, i) in accounts" :key="i" class="c-structure__article__panel" :class="{ authFlgActive: account.auth_flg}">
-            <div class="c-structure__article__panel__status" v-show="account.auth_flg" :class="{ authFlgActive: account.auth_flg}">
+        <div v-for="(account, i) in accounts" :key="i" class="c-structure__article__panel"
+            :class="{ authFlgActive: account.auth_flg}">
+            <div class="c-structure__article__panel__status" v-show="account.auth_flg"
+                :class="{ authFlgActive: account.auth_flg}">
                 稼働中</div>
             <div class="c-structure__article__panel__upDatedAt">更新日時: {{ account.updated_at }}</div>
-            <i class="fas fa-trash-restore u-trash c-structure__trash " v-on:click="deleteAccount(account.screen_name)"></i>
+            <i class="fas fa-trash-restore u-trash c-structure__trash "
+                v-on:click="deleteAccount(account.screen_name)"></i>
             <div class="c-structure__article__panel__leftInfo">
                 <div class="c-structure__article__panel__photo">
                     <img :src="account.profile_photo_path.replace( '_normal.', '.')" alt="twitter photo img">
                 </div>
-            </div>
-            <div class="c-structure__article__panel__rightInfo">
                 <div class="c-structure__article__panel__name c-structure__article__panel__item">
                     <p class="c-structure__article__panel__head">アカウント名</p>
                     <p class="c-structure__article__panel__info">{{ account.screen_name }}</p>
                 </div>
+            </div>
+            <div class="c-structure__article__panel__rightInfo">
+
                 <div class="c-structure__article__panel__follow c-structure__article__panel__item">
                     <p class="c-structure__article__panel__head">フォロー数</p>
                     <p class="c-structure__article__panel__info">{{ account.follow }}</p>
@@ -38,10 +42,10 @@
                     <p class="c-structure__article__panel__head">本日の自動フォローした数</p>
                     <p class="c-structure__article__panel__info">{{ account.follow_count }}</p>
                 </div>
-                <div class="c-structure__article__panel__follower c-structure__article__panel__item">
+                <!-- <div class="c-structure__article__panel__follower c-structure__article__panel__item">
                     <p class="c-structure__article__panel__head">本日のフォローされた数</p>
                     <p class="c-structure__article__panel__info">{{ account.follower_count }}</p>
-                </div>
+                </div> -->
                 <div class="c-structure__article__panel__follower c-structure__article__panel__item">
                     <p class="c-structure__article__panel__head">本日の自動アンフォロー数</p>
                     <p class="c-structure__article__panel__info">{{ account.unFollow_count }}</p>
@@ -50,10 +54,10 @@
                     <p class="c-structure__article__panel__head">本日の自動いいねした数</p>
                     <p class="c-structure__article__panel__info">{{ account.like_count }}</p>
                 </div>
-                <div class="c-structure__article__panel__follower c-structure__article__panel__item">
+                <!-- <div class="c-structure__article__panel__follower c-structure__article__panel__item">
                     <p class="c-structure__article__panel__head">本日のいいねされた数</p>
                     <p class="c-structure__article__panel__info">{{ account.like_count_get }}</p>
-                </div>
+                </div> -->
                 <div class="c-structure__article__panel__follower c-structure__article__panel__item">
                     <p class="c-structure__article__panel__head">本日の自動ツイート数</p>
                     <p class="c-structure__article__panel__info">{{ account.tweet_count }}</p>

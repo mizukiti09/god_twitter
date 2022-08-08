@@ -3,9 +3,6 @@
 namespace packages\Domain\Application\Twitter;
 
 use App\Facades\Twitter;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
-use Laravel\Socialite\Facades\Socialite;
 use packages\UseCase\Twitter\UserTwitterAccountUseCaseInterface;
 use packages\Domain\Domain\User\UserTwitterAccountsRepositoryInterface;
 

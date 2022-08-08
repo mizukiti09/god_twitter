@@ -72,12 +72,12 @@ class AutoFollowCommand extends Command
                         Log::info('account_user_id:' . $account->user_id);
                         Log::info('account_screen_name:' . $account->screen_name);
 
-                        $selectedTenAccounts = $f_repository->getFiveAccounts($user_twitter_account_id);
+                        $selectedFiveAccounts = $f_repository->getFiveAccounts($user_twitter_account_id);
 
-                        if (!empty($selectedTenAccounts)) {
+                        if (!empty($selectedFiveAccounts)) {
                             // 一回に最高5件フォロー
-                            Log::info('selectedTenAccounts 有り');
-                            foreach ($selectedTenAccounts as $key => $selectedAccount) {
+                            Log::info('selectedFiveAccounts 有り');
+                            foreach ($selectedFiveAccounts as $key => $selectedAccount) {
                                 $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->post('friendships/create', array(
                                     "screen_name" => $selectedAccount->screen_name,
                                 ));
@@ -101,19 +101,43 @@ class AutoFollowCommand extends Command
                                         if ($a_repository->checkFollowEnd($user_twitter_account_id)) {
                                             $u_repository->offAutoFollowFlg($account->user_id);
                                             Log::info('全てのターゲットアカウントを巡回しました。自動フォローモードをOFFにします');
+
+                                            $a_repository->changeFirstTargetAccountId($user_twitter_account_id);
+                                            Log::info('ターゲットアカウントを一番はじめに戻します。');
+                                        } else {
+                                            Log::info('ターゲットアカウントはまだ残っています。');
+                                            $a_repository->nextTargetAccountId($user_twitter_account_id);
+                                            Log::info('nextTargetAccountIdされました。');
                                         }
                                     }
 
                                     Log::info('=============================');
                                     Log::info('AutoFollowCommand End');
                                     Log::info('=============================');
-                                    if ($key === array_key_last($selectedTenAccounts)) {
+                                    if ($key === array_key_last($selectedFiveAccounts)) {
                                         Log::info('=============================');
                                         Log::info('自動フォローアクション: メール通知');
                                         $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
                                         Mail::to($user->email)->send(new AutoFollowMail($user));
                                     }
                                 }
+                            }
+                        } else { // if (!empty($selectedFiveAccounts)) {
+                            // cursor_countをリセット
+                            $a_repository->resetCursorCount($user_twitter_account_id);
+                            $a_repository->changeFalseFollowActionFlg($user_twitter_account_id);
+                            Log::info('フォローするデータがないです。follow_action_flgを 0 にします。');
+
+                            if ($a_repository->checkFollowEnd($user_twitter_account_id)) {
+                                $u_repository->offAutoFollowFlg($account->user_id);
+                                Log::info('全てのターゲットアカウントを巡回しました。自動フォローモードをOFFにします');
+
+                                $a_repository->changeFirstTargetAccountId($user_twitter_account_id);
+                                Log::info('ターゲットアカウントを一番はじめに戻します。');
+                            } else {
+                                Log::info('ターゲットアカウントはまだ残っています。');
+                                $a_repository->nextTargetAccountId($user_twitter_account_id);
+                                Log::info('nextTargetAccountIdされました。');
                             }
                         }
                     }

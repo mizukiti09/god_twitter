@@ -10,15 +10,12 @@
 
         <article class="c-structure__article">
             <h1 class="c-structure__article__title"><i class="fas fa-adjust"></i>&nbsp;ターゲットアカウント一覧</h1>
-            @if ($accounts)
-                @foreach ($accounts as $account)
-                    @if ($account->auth_flg == 1)
-                        <twitter-target-account-edit :user_id="{{ $user_id }}"
-                            :auth_screen_name="{{ json_encode($account->screen_name) }}"
-                            :auto_follow_flg="{{ $account->auto_follow_flg }}"
-                            :target_accounts="{{ json_encode($target_accounts) }}"></twitter-target-account-edit>
-                    @endif
-                @endforeach
+            @if ($auth_account)
+                <twitter-target-account-edit :user_id="{{ $user_id }}"
+                    :auth_screen_name="{{ json_encode($auth_account->screen_name) }}"
+                    :auto_follow_flg="{{ $auth_account->auto_follow_flg }}"
+                    :target_accounts="{{ json_encode($target_accounts) }}" :target="{{ json_encode($target) }}">
+                </twitter-target-account-edit>
             @endif
         </article>
     </div>

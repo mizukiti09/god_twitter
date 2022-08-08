@@ -52,4 +52,17 @@ class AutoLikeDatasRepository implements AutoLikeDatasRepositoryInterface
 
         return $array_search_text;
     }
+
+    public function getSearchTextAndCondition($user_twitter_account_id)
+    {
+        $data = DB::table('auto_like_datas')
+            ->where('user_twitter_account_id', $user_twitter_account_id)
+            ->select([
+                'search_text',
+                'like_condition'
+            ])
+            ->first();
+
+        return $data;
+    }
 }

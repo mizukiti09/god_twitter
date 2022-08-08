@@ -15,4 +15,9 @@ interface TargetAccountsRepositoryInterface
      * @param $user_id, $auth_screen_name, $target_screen_name
      */
     public function saveTargetAccount($user_id, $auth_screen_name, $target_screen_name, $follower);
+
+    /**
+     * @param $user_id, $auth_screen_name, $target_id
+     */
+    public function deleteTargetAccount($user_id, $auth_screen_name, $target_id);
 }

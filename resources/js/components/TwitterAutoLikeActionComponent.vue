@@ -4,61 +4,65 @@
             <div class="c-overlay">
                 <div class="c-overlay__contents">
                     <div class="c-overlay__ttl">{{ autoTarget }}</div>
-                    <div class="c-overlay__description"><span class="u-red">*</span>Keywordを入力するとそのKeywordをもとにいいねします。</div>
-                    <div class="c-overlay__btnContainer c-overlay__btnContainer--auto">
+                    <div class="c-overlay__description"><span class="u-red">*</span>Keywordを入力するとそのKeywordをもとにいいねします。
+                    </div>
+                    <div class="c-overlay__db">
+                        <table class="c-overlay__db__table">
+                            <tbody class="c-overlay__db__tbody">
+                                <tr class="c-overlay__db__tr">
+                                    <th class="c-overlay__db__th">登録Keyword</th>
+                                    <td v-if="db_search_text_condition" class="c-overlay__db__td">{{ db_text }}</td>
+                                    <td v-else class="c-overlay__db__td"></td>
+                                </tr>
+                                <tr class="c-overlay__db__tr">
+                                    <th class="c-overlay__db__th">登録Condition</th>
+                                    <td v-if="db_search_text_condition" class="c-overlay__db__td">{{ db_condition }}</td>
+                                    <td v-else class="c-overlay__db__td"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="c-overlay__btnContainer c-overlay__btnContainer--auto c-overlay__db__border">
                         <div class="c-search">
                             <label class="ef">
-                                    <input 
-                                        type="text" 
-                                        class="c-search__input"
-                                        name="keyword" 
-                                        placeholder="Keyword"
-                                        v-model="add_keyword"
-                                        />
-                                    <input
-                                        class="c-search__submit"
-                                        type="submit"
-                                        value="追加"
-                                        v-on:click="addSearchText()"
-                                        />
+                                <input type="text" class="c-search__input" name="keyword" placeholder="Keyword"
+                                    v-model="add_keyword" />
+                                <input class="c-search__submit" type="submit" value="追加" v-on:click="addSearchText()" />
                             </label>
                             <div v-if="getCookie()" class="c-search__keywords">
                                 <nav class="c-solidMenu">
                                     <ul>
-                                        <li v-for="(keyword, i) in getCookie()" :key="i" :id="keyword"><a href="javascript:void(0)" id="cookiesDom"><span>{{keyword}}</span></a><input
-                                        class="c-search__submit"
-                                        type="submit"
-                                        value="削除"
-                                        v-on:click="deleteSearchTextCookie(keyword)"
-                                        /></li>
-                                        
+                                        <li v-for="(keyword, i) in getCookie()" :key="i" :id="'like_' + keyword"><a
+                                                href="javascript:void(0)"
+                                                id="cookiesDom"><span>{{keyword}}</span></a><input
+                                                class="c-search__submit" type="submit" value="削除"
+                                                v-on:click="deleteSearchTextCookie(keyword)" /></li>
+
                                     </ul>
                                 </nav>
                             </div>
                         </div>
-                        <select v-on:blur="setCookieCondition()" class="c-appBtn" name="like_conditions" id="condition-like-select">
+                        <select v-on:blur="setCookieCondition()" class="c-appBtn" name="like_conditions"
+                            id="condition-like-select">
                             <option v-if="!isCookieCondition" selected disabled value="NO">選択してください</option>
                             <option v-else selected disabled :value="isCookieCondition">{{ isCookieCondition }}</option>
 
-                            <option 
-                                v-for="item in conditions" 
-                                :value="item.value" 
-                                :key="item.value"
-                            >
+                            <option v-for="item in conditions" :value="item.value" :key="item.value">
                                 {{ item.label }}
                             </option>
                         </select>
                         <button class="c-appBtn" v-on:click="searchAutoLikeSave()">更新</button>
-                        <button v-show="!auto_like_flg" class="c-appBtn" v-on:click="searchAutoLikeStart()">自動いいね ON</button>
-                        <button v-show="auto_like_flg" class="c-appBtn" v-on:click="searchAutoLikeStop()">自動いいね OFF</button>
+                        <button v-show="!auto_like_flg" class="c-appBtn" v-on:click="searchAutoLikeStart()">自動いいね
+                            ON</button>
+                        <button v-show="auto_like_flg" class="c-appBtn" v-on:click="searchAutoLikeStop()">自動いいね
+                            OFF</button>
                         <button class="c-appBtn" v-on:click="autoCancel()">閉じる</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="c-appBtn">
-            <a class="c-appBtn--none" 
-                :class="{'c-appBtn--auto': auto_like_flg}" 
+            <a class="c-appBtn--none" :class="{'c-appBtn--auto': auto_like_flg}"
                 v-on:click="autoAction('Auto Like Search Keyword')">
                 <span v-if="auto_like_flg">自動いいね中</span><span v-else>自動いいねする</span>
             </a>
@@ -68,9 +72,11 @@
 
 <script>
 export default {
-    props: ['user_id', 'auth_screen_name', 'auto_like_flg'],
+    props: ['user_id', 'auth_screen_name', 'auto_like_flg', 'db_search_text_condition'],
     data: function() {
         return {
+            db_text: this.db_search_text_condition.search_text,
+            db_condition: this.db_search_text_condition.like_condition,
             autoTarget: '',
             add_keyword: '',
             keywords: '',
@@ -108,7 +114,7 @@ export default {
         autoAction: function(targetName) {
             this.autoTarget = targetName;
         },
-        autoCancel: function() {
+        autoCancel: function () {
             this.autoTarget = '';
         },
         addSearchText: function() {
@@ -146,7 +152,7 @@ export default {
             this.keywords = arrayCookieData;
             this.$vueCookies.set('SearchLikeText' + this.user_id + this.auth_screen_name, arrayCookieData);
             console.log(this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name));
-            const keywordDom = document.getElementById(keyword);
+            const keywordDom = document.getElementById('like_' + keyword);
             keywordDom.remove();
 
             if (this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name) == null) {
@@ -169,36 +175,40 @@ export default {
             if (this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name)) {
                 // Keyword 有り
                 var cookieData = this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name);
-                var arrayCookieData = cookieData.split( ',' );
+                var arrayCookieData = cookieData.split(',');
+                var cookieCondition = this.$vueCookies.get('ConditionLike' + this.user_id + this.auth_screen_name);
+
+                if (arrayCookieData.length > 1 && this.$vueCookies.get('ConditionLike' + this.user_id + this.auth_screen_name) == 'NOT') {
+                    alert('NOT の場合はKeywordを一つにする必要があります');
+                } else if (arrayCookieData.length <= 1 && this.$vueCookies.get('ConditionLike' + this.user_id + this.auth_screen_name) == ('AND' || 'OR')) {
+                    if (arrayCookieData.length <= 1) {
+                        alert('AND か OR の場合はKeywordを複数にする必要があります');
+                    }
+                } else {
+                    const formData = new FormData();
+                    formData.append('user_id', this.user_id);
+                    formData.append('screen_name', this.auth_screen_name);
+                    formData.append('array_search_text', arrayCookieData);
+                    formData.append('condition', cookieCondition);
+
+                    this.$axios.post('/api/twitter/autoLikeSave', formData)
+                        .then((res) => {
+                            this.add_flg = true;
+                            console.log(res)
+                            this.db_text = cookieData;
+                            this.db_condition = cookieCondition;
+                            alert('いいねKeywordを更新しました。')
+                        })
+                        .catch((error) => {
+                            console.log('searchAutoLikeSaveは正常に起動していません。')
+                            console.log(error)
+                        })
+                }   
 
             } else {
                 // Keyword 無し
-                var arrayCookieData = '';
+                alert('Keywordは1つ以上設定してください。');
             }
-            
-            if (arrayCookieData.length > 1 && this.$vueCookies.get('ConditionLike' + this.user_id + this.auth_screen_name) == 'NOT') {
-                alert('NOT の場合はKeywordを一つにする必要があります');
-            } else if ( arrayCookieData.length <= 1 &&  this.$vueCookies.get('ConditionLike' + this.user_id + this.auth_screen_name) == ('AND' || 'OR')) {
-                if (arrayCookieData.length <= 1) {
-                    alert('AND か OR の場合はKeywordを複数にする必要があります');
-                }
-            } else {
-                const formData = new FormData();
-                formData.append('user_id', this.user_id);
-                formData.append('screen_name', this.auth_screen_name);
-                formData.append('array_search_text', arrayCookieData);
-                formData.append('condition', this.$vueCookies.get('ConditionLike' + this.user_id + this.auth_screen_name));
-
-                this.$axios.post('/api/twitter/autoLikeSave', formData)
-                    .then((res) => {
-                        console.log(res)
-                        alert('いいねKeywordを更新しました。')
-                    })
-                    .catch((error) => {
-                        console.log('searchAutoLikeSaveは正常に起動していません。')
-                        console.log(error)
-                    })
-            }   
         },
         searchAutoLikeStart: function () {
             if (this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name)) {

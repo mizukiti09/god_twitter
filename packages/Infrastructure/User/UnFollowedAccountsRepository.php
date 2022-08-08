@@ -16,4 +16,14 @@ class UnFollowedAccountsRepository implements UnFollowedAccountsRepositoryInterf
                 'unFollowed_unixTime' => time(),
             ]);
     }
+
+    public function checkUnFollowedExist($user_twitter_account_id, $twitterId)
+    {
+        $result = DB::table('unFollowed_accounts')
+            ->where('user_twitter_account_id', $user_twitter_account_id)
+            ->where('twitterId', $twitterId)
+            ->exists();
+
+        return $result;
+    }
 }
