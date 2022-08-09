@@ -29,6 +29,8 @@ class AutoFollowMail extends Mailable
     public function build()
     {
         return $this->view('email.auto.autoFollow')
-            ->with(['user' => $this->user])->subject('自動フォロー通知');
+            ->with([
+                'user' => $this->user,
+            ])->subject('自動フォロー通知');
     }
 }

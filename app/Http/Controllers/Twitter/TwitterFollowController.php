@@ -51,7 +51,7 @@ class TwitterFollowController extends Controller
 
     public function autoFollowStop(Request $request, TwitterAutoFollowUseCaseInterface $useCase)
     {
-        $useCase->stopAutoFollowHandle($request->user_id);
+        $useCase->stopAutoFollowHandle($request->user_id, $request->screen_name);
     }
 
     public function autoUnFollowStart(Request $request, TwitterAutoFollowUseCaseInterface $useCase)
@@ -61,6 +61,6 @@ class TwitterFollowController extends Controller
 
     public function autoUnFollowStop(Request $request, TwitterAutoFollowUseCaseInterface $useCase)
     {
-        $useCase->stopAutoUnFollowHandle($request->user_id);
+        $useCase->stopAutoUnFollowHandle($request->user_id, $request->screen_name);
     }
 }

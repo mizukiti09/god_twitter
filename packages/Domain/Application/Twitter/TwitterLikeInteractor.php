@@ -40,10 +40,10 @@ class TwitterLikeInteractor implements TwitterAutoLikeUseCaseInterface
         $this->u_repository->onAutoLikeFlg($user_id, $screen_name);
     }
 
-    public function stopAutoLikeHandle($user_id)
+    public function stopAutoLikeHandle($user_id, $screen_name)
     {
         Log::debug('stopAutoLikeHandle Start (VueからのPOST API)');
 
-        $this->u_repository->offAutoLikeFlg($user_id);
+        $this->u_repository->offAutoLikeFlg($user_id, $screen_name);
     }
 }

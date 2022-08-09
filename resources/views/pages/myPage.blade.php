@@ -1,5 +1,6 @@
 @section('title', 'God Twitter / MyPage')@extends('app') @section('content')
 
+
 <div class="c-structure u-inner u-m__contents">
     <div class="c-currentPage__title">
         MyPage &nbsp;\&nbsp; サービス登録アカウント {{ count($accounts) }}/10

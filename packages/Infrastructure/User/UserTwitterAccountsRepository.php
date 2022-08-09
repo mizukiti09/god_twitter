@@ -119,12 +119,14 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
             ]);
     }
 
-    public function offAutoFollowFlg($user_id)
+    public function offAutoFollowFlg($user_id, $screen_name)
     {
         DB::table('user_twitter_accounts')
             ->where('user_id', $user_id)
+            ->where('screen_name', $screen_name)
             ->update([
                 'auto_follow_flg' => 0,
+                'restart_follow_unixTime' => time(),
             ]);
     }
 
@@ -147,12 +149,14 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
             ]);
     }
 
-    public function offAutoUnFollowFlg($user_id)
+    public function offAutoUnFollowFlg($user_id, $screen_name)
     {
         DB::table('user_twitter_accounts')
             ->where('user_id', $user_id)
+            ->where('screen_name', $screen_name)
             ->update([
                 'auto_unFollow_flg' => 0,
+                'restart_unFollow_unixTime' => time(),
             ]);
     }
 
@@ -175,12 +179,14 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
             ]);
     }
 
-    public function offAutoLikeFlg($user_id)
+    public function offAutoLikeFlg($user_id, $screen_name)
     {
         DB::table('user_twitter_accounts')
             ->where('user_id', $user_id)
+            ->where('screen_name', $screen_name)
             ->update([
                 'auto_like_flg' => 0,
+                'restart_like_unixTime' => time(),
             ]);
     }
 
@@ -203,10 +209,11 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
             ]);
     }
 
-    public function offAutoTweetFlg($user_id)
+    public function offAutoTweetFlg($user_id, $screen_name)
     {
         DB::table('user_twitter_accounts')
             ->where('user_id', $user_id)
+            ->where('screen_name', $screen_name)
             ->update([
                 'auto_tweet_flg' => 0,
             ]);
@@ -279,6 +286,9 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
     {
         $result = DB::table('user_twitter_accounts')
             ->where('id', $id)
+            ->select([
+                'follow_count_first_unix_time',
+            ])
             ->get()
             ->first();
 
@@ -295,7 +305,6 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
                     ->update([
                         'follow_count'                 => 0,
                         'follower_count'               => 0,
-                        'unFollow_count'               => 0,
                         'like_count'                   => 0,
                         'like_count_get'               => 0,
                         'tweet_count'                  => 0,
@@ -309,6 +318,41 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
                 ->where('id', $id)
                 ->update([
                     'follow_count_first_unix_time' => time(),
+                ]);
+        }
+    }
+
+    public function resetUnFollowCountBy24HoursAgo($id)
+    {
+        $result = DB::table('user_twitter_accounts')
+            ->where('id', $id)
+            ->select([
+                'unFollow_count_first_unix_time',
+            ])
+            ->get()
+            ->first();
+
+        $unFollowCountFirstUnixTime = $result->unFollow_count_first_unix_time;
+
+        // // 現在のUnixタイム
+        $currentTime = time();
+
+        if ($unFollowCountFirstUnixTime) {
+            // 86400 は 1日あたりのUnixタイム
+            if (($unFollowCountFirstUnixTime + 86400) < $currentTime) {
+                DB::table('user_twitter_accounts')
+                    ->where('id', $id)
+                    ->update([
+                        'unFollow_count_first_unix_time' => time(),
+                    ]);
+            }
+        } else {
+            //  ユーザーが初めてアンフォローする時は$unFollowCountFirstUnixTime は nullになるので
+            // こちらの処理がされる
+            DB::table('user_twitter_accounts')
+                ->where('id', $id)
+                ->update([
+                    'unFollow_count_first_unix_time' => time(),
                 ]);
         }
     }
@@ -370,6 +414,26 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
             return true;
         } else {
             Log::info('現状のDBフォローカウントは1000件以上');
+            return false;
+        }
+    }
+
+    public function unFollowCountUpperCheck($id)
+    {
+        $result = DB::table('user_twitter_accounts')
+            ->where('id', $id)
+            ->select('unFollow_count')
+            ->get()
+            ->first();
+        $unFollowCount = $result->unFollow_count;
+
+        Log::info('現状のDBアンフォローカウント' . $unFollowCount);
+
+        if ($unFollowCount < 1000) {
+            Log::info('現状のDBアンフォローカウントは1000件未満 OK');
+            return true;
+        } else {
+            Log::info('現状のDBアンフォローカウントは1000件以上');
             return false;
         }
     }
@@ -496,6 +560,90 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
             }
         } else {
             Log::info('ユーザーのフォロー数は5000は超えてません。');
+        }
+    }
+
+    public function checkRestartFollowUnixTime($id)
+    {
+        $result = DB::table('user_twitter_accounts')
+            ->where('id', $id)
+            ->select([
+                'restart_follow_unixTime',
+            ])
+            ->get()
+            ->first();
+
+        $restartFollowUnixTime = $result->restart_follow_unixTime;
+
+        // // 現在のUnixタイム
+        $currentTime = time();
+
+        if ($restartFollowUnixTime) {
+            // 900 は 15分あたりのUnixタイム
+            if (($restartFollowUnixTime + 900) < $currentTime) {
+                // 15分過ぎた時
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    public function checkRestartUnFollowUnixTime($id)
+    {
+        $result = DB::table('user_twitter_accounts')
+            ->where('id', $id)
+            ->select([
+                'restart_unFollow_unixTime',
+            ])
+            ->get()
+            ->first();
+
+        $restartUnFollowUnixTime = $result->restart_unFollow_unixTime;
+
+        // // 現在のUnixタイム
+        $currentTime = time();
+
+        if ($restartUnFollowUnixTime) {
+            // 900 は 15分あたりのUnixタイム
+            if (($restartUnFollowUnixTime + 900) < $currentTime) {
+                // 15分過ぎた時
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    public function checkRestartLikeUnixTime($id)
+    {
+        $result = DB::table('user_twitter_accounts')
+            ->where('id', $id)
+            ->select([
+                'restart_like_unixTime',
+            ])
+            ->get()
+            ->first();
+
+        $restartLikeUnixTime = $result->restart_like_unixTime;
+
+        // // 現在のUnixタイム
+        $currentTime = time();
+
+        if ($restartLikeUnixTime) {
+            // 900 は 15分あたりのUnixタイム
+            if (($restartLikeUnixTime + 900) < $currentTime) {
+                // 15分過ぎた時
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
         }
     }
 }

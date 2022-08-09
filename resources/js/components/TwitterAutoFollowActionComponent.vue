@@ -264,6 +264,7 @@ export default {
         searchAutoFollowStop: function() {
             const formData = new FormData();
             formData.append('user_id', this.user_id);
+            formData.append('screen_name', this.auth_screen_name);
 
             this.$axios.post('/api/twitter/autoFollowStop', formData)
                 .then((res) => {
@@ -293,6 +294,7 @@ export default {
         autoUnFollowStop: function() {
             const formData = new FormData();
             formData.append('user_id', this.user_id);
+            formData.append('screen_name', this.auth_screen_name);
 
             this.$axios.post('/api/twitter/autoUnFollowStop', formData)
                 .then((res) => {

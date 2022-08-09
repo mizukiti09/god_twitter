@@ -22,7 +22,7 @@ interface TwitterAutoTweetUseCaseInterface
     /**
      * @param $user_id
      */
-    public function stopAutoTweetHandle($user_id);
+    public function stopAutoTweetHandle($user_id, $screen_name);
 
     /**
      * @param $id

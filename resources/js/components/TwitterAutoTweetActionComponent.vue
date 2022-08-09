@@ -120,6 +120,7 @@ export default {
         autoTweetStop: function () {
             const formData = new FormData();
             formData.append('user_id', this.user_id);
+            formData.append('screen_name', this.auth_screen_name);
 
             this.$axios.post('/api/twitter/autoTweetStop', formData)
                 .then((res) => {

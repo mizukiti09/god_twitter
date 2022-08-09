@@ -31,7 +31,7 @@ class TwitterTweetController extends Controller
 
     public function autoTweetStop(Request $request, TwitterAutoTweetUseCaseInterface $useCase)
     {
-        $useCase->stopAutoTweetHandle($request->user_id);
+        $useCase->stopAutoTweetHandle($request->user_id, $request->screen_name);
     }
 
     public function tweetDelete(Request $request, TwitterAutoTweetUseCaseInterface $useCase)

@@ -17,7 +17,7 @@ interface TwitterAutoFollowUseCaseInterface
     /**
      * @param $user_id
      */
-    public function stopAutoFollowHandle($user_id);
+    public function stopAutoFollowHandle($user_id, $screen_name);
 
     /**
      * @param $user_id, $screen_name
@@ -27,5 +27,5 @@ interface TwitterAutoFollowUseCaseInterface
     /**
      * @param $user_id
      */
-    public function stopAutoUnFollowHandle($user_id);
+    public function stopAutoUnFollowHandle($user_id, $screen_name);
 }

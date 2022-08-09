@@ -81,11 +81,11 @@ class TwitterFollowInteractor implements TwitterAutoFollowUseCaseInterface, Twit
         $this->u_repository->onAutoFollowFlg($user_id, $screen_name);
     }
 
-    public function stopAutoFollowHandle($user_id)
+    public function stopAutoFollowHandle($user_id, $screen_name)
     {
         Log::debug('stopAutoFollowHandle Start (VueからのPOST API)');
 
-        $this->u_repository->offAutoFollowFlg($user_id);
+        $this->u_repository->offAutoFollowFlg($user_id, $screen_name);
     }
 
     public function startAutoUnFollowHandle($user_id, $screen_name)
@@ -96,10 +96,10 @@ class TwitterFollowInteractor implements TwitterAutoFollowUseCaseInterface, Twit
         $this->u_repository->onAutoUnFollowFlg($user_id, $screen_name);
     }
 
-    public function stopAutoUnFollowHandle($user_id)
+    public function stopAutoUnFollowHandle($user_id, $screen_name)
     {
         Log::debug('stopAutoUnFollowHandle Start (VueからのPOST API)');
 
-        $this->u_repository->offAutoUnFollowFlg($user_id);
+        $this->u_repository->offAutoUnFollowFlg($user_id, $screen_name);
     }
 }

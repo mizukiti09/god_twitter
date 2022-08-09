@@ -24,7 +24,7 @@ interface UserTwitterAccountsRepositoryInterface
     /**
      * @param $user_id
      */
-    public function offAutoFollowFlg($user_id);
+    public function offAutoFollowFlg($user_id, $screen_name);
 
     /**
      * @param $user_id, $screen_name
@@ -34,7 +34,7 @@ interface UserTwitterAccountsRepositoryInterface
     /**
      * @param $user_id
      */
-    public function offAutoUnFollowFlg($user_id);
+    public function offAutoUnFollowFlg($user_id, $screen_name);
 
     /**
      * @param $user_id, $screen_name
@@ -44,7 +44,7 @@ interface UserTwitterAccountsRepositoryInterface
     /**
      * @param $user_id
      */
-    public function offAutoLikeFlg($user_id);
+    public function offAutoLikeFlg($user_id, $screen_name);
 
 
     /**
@@ -55,7 +55,7 @@ interface UserTwitterAccountsRepositoryInterface
     /**
      * @param $user_id
      */
-    public function offAutoTweetFlg($user_id);
+    public function offAutoTweetFlg($user_id, $screen_name);
 
     public function getOnAutoFollowAccounts();
 
@@ -80,6 +80,11 @@ interface UserTwitterAccountsRepositoryInterface
     public function resetCountBy24HoursAgo($id);
 
     /**
+     * @param $id
+     */
+    public function resetUnFollowCountBy24HoursAgo($id);
+
+    /**
      * @param $user_id, $screen_name
      */
     public function resetCountBy24HoursAgoParam2($user_id, $screen_name);
@@ -88,6 +93,12 @@ interface UserTwitterAccountsRepositoryInterface
      * @param $id
      */
     public function followCountUpperCheck($id);
+
+    /**
+     * @param $id
+     */
+    public function unFollowCountUpperCheck($id);
+
 
     /**
      * @param $id
@@ -130,4 +141,19 @@ interface UserTwitterAccountsRepositoryInterface
      * @param $id
      */
     public function followedByServiceUserFollow5000Over($user_id, $screen_name);
+
+    /**
+     * @param $id
+     */
+    public function checkRestartFollowUnixTime($id);
+
+    /**
+     * @param $id
+     */
+    public function checkRestartUnFollowUnixTime($id);
+
+    /**
+     * @param $id
+     */
+    public function checkRestartLikeUnixTime($id);
 }

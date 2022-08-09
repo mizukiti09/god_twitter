@@ -66,11 +66,11 @@ class TwitterTweetInteractor implements TwitterAutoTweetUseCaseInterface
         $this->u_repository->onAutoTweetFlg($user_id, $screen_name);
     }
 
-    public function stopAutoTweetHandle($user_id)
+    public function stopAutoTweetHandle($user_id, $screen_name)
     {
         Log::debug('stopAutoTweetHandle Start (VueからのPOST API)');
 
-        $this->u_repository->offAutoTweetFlg($user_id);
+        $this->u_repository->offAutoTweetFlg($user_id, $screen_name);
     }
 
     public function tweetDeleteHandle($id)

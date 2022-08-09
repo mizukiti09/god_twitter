@@ -29,6 +29,8 @@ class AutoLikeMail extends Mailable
     public function build()
     {
         return $this->view('email.auto.autoLike')
-            ->with(['user' => $this->user])->subject('自動いいね通知');
+            ->with([
+                'user' => $this->user,
+            ])->subject('自動いいね通知');
     }
 }

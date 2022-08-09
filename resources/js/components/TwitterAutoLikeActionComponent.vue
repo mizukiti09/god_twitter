@@ -11,13 +11,13 @@
                             <tbody class="c-overlay__db__tbody">
                                 <tr class="c-overlay__db__tr">
                                     <th class="c-overlay__db__th">登録Keyword</th>
-                                    <td v-if="db_search_text_condition" class="c-overlay__db__td">{{ db_text }}</td>
-                                    <td v-else class="c-overlay__db__td"></td>
+
+                                    <td class="c-overlay__db__td">{{db_text}}</td>
                                 </tr>
                                 <tr class="c-overlay__db__tr">
                                     <th class="c-overlay__db__th">登録Condition</th>
-                                    <td v-if="db_search_text_condition" class="c-overlay__db__td">{{ db_condition }}</td>
-                                    <td v-else class="c-overlay__db__td"></td>
+
+                                    <td class="c-overlay__db__td">{{db_condition}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -75,8 +75,8 @@ export default {
     props: ['user_id', 'auth_screen_name', 'auto_like_flg', 'db_search_text_condition'],
     data: function() {
         return {
-            db_text: this.db_search_text_condition.search_text,
-            db_condition: this.db_search_text_condition.like_condition,
+            db_text: this.isDbSearchText(),
+            db_condition: this.isDbCondition(),
             autoTarget: '',
             add_keyword: '',
             keywords: '',
@@ -90,6 +90,20 @@ export default {
         }
     },
     methods: {
+        isDbSearchText: function () {
+            if (this.db_search_text_condition) {
+                return this.db_search_text_condition.search_text;
+            } else {
+                return '';
+            }
+        },
+        isDbCondition: function () {
+            if (this.db_search_text_condition) {
+                return this.db_search_text_condition.like_condition;
+            } else {
+                return '';
+            }
+        },
         setCookieCondition: function () {
             var select = document.getElementById('condition-like-select');
 
@@ -232,6 +246,7 @@ export default {
         searchAutoLikeStop: function() {
             const formData = new FormData();
             formData.append('user_id', this.user_id);
+            formData.append('screen_name', this.auth_screen_name);
 
             this.$axios.post('/api/twitter/autoLikeStop', formData)
                 .then((res) => {

@@ -57,7 +57,7 @@ class Kernel extends ConsoleKernel
             });
 
         $schedule->command('command:autoLikeTweets')
-            ->everyMinute()
+            ->everyTenMinutes()
             ->onSuccess(function () {
                 Log::debug('自動いいねツイート保存:確認OK');
             })

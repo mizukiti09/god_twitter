@@ -56,95 +56,108 @@ class AutoFollowCommand extends Command
         if (!empty($userTwitterAccountIds[0])) {
             Log::info('user_twitter_account 有り');
             foreach ($userTwitterAccountIds as $user_twitter_account_id) {
-                Log::info('user_twitter_account_id:' . $user_twitter_account_id);
 
-                if ($a_repository->getFollowActionFlg($user_twitter_account_id) == 1) {
-                    Log::info('follow_action_flg: ' . $a_repository->getFollowActionFlg($user_twitter_account_id) . ':自動フォロー可能');
+                // APIのリクエスト上限にひっかからないよう、いいね再開15分確実に空けてから再開させることのチェック
+                // 一番最初の時はチェックはスルーされる
+                if ($u_repository->checkRestartFollowUnixTime($user_twitter_account_id) == true) {
+                    Log::info('checkRestartFollowUnixTime の チェックOK');
 
-                    // 24時間経過していたらfollow_countをリセットする
-                    $u_repository->resetCountBy24HoursAgo($user_twitter_account_id);
-                    Log::info('resetCountBy24HoursAgo CheckOK');
+                    Log::info('user_twitter_account_id:' . $user_twitter_account_id);
 
-                    // follow_countが1000件未満かチェック
-                    if ($u_repository->followCountUpperCheck($user_twitter_account_id) == true) {
-                        Log::info('followCountUpperCheck 1000件未満OK');
+                    if ($a_repository->getFollowActionFlg($user_twitter_account_id) == 1) {
+                        Log::info('follow_action_flg: ' . $a_repository->getFollowActionFlg($user_twitter_account_id) . ':自動フォロー可能');
+
+                        // 24時間経過していたらfollow_countをリセットする
+                        $u_repository->resetCountBy24HoursAgo($user_twitter_account_id);
+                        Log::info('resetCountBy24HoursAgo CheckOK');
+
                         $account = $u_repository->getAccount($user_twitter_account_id);
                         Log::info('account_user_id:' . $account->user_id);
                         Log::info('account_screen_name:' . $account->screen_name);
 
-                        $selectedFiveAccounts = $f_repository->getFiveAccounts($user_twitter_account_id);
+                        // follow_countが1000件未満かチェック
+                        if ($u_repository->followCountUpperCheck($user_twitter_account_id) == true) {
+                            Log::info('followCountUpperCheck 1000件未満OK');
 
-                        if (!empty($selectedFiveAccounts)) {
-                            // 一回に最高5件フォロー
-                            Log::info('selectedFiveAccounts 有り');
-                            foreach ($selectedFiveAccounts as $key => $selectedAccount) {
-                                $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->post('friendships/create', array(
-                                    "screen_name" => $selectedAccount->screen_name,
-                                ));
+                            $selectedFiveAccounts = $f_repository->getFiveAccounts($user_twitter_account_id);
 
-                                if (isset($response->error) && $response->error != '') {
-                                    return $response->error;
-                                } else {
-                                    $u_repository->followCountSave($user_twitter_account_id);
-                                    Log::info('フォローカウントアップ');
-                                    $f_repository->deleteFollowAccount($selectedAccount->id);
-                                    Log::info('DBフォローアカウント削除ID:' . $selectedAccount->id);
-                                    $fed_repository->saveFollowedAccount($user_twitter_account_id, $selectedAccount->twitterId);
-                                    Log::info('フォロー済みリストとしてアカウントをfollowed_accountsテーブルへ保存:' . $selectedAccount->id);
+                            if (!empty($selectedFiveAccounts)) {
+                                // 一回に最高5件フォロー
+                                Log::info('selectedFiveAccounts 有り');
+                                foreach ($selectedFiveAccounts as $key => $selectedAccount) {
+                                    $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->post('friendships/create', array(
+                                        "screen_name" => $selectedAccount->screen_name,
+                                    ));
 
-                                    if ($f_repository->existsFollowData($user_twitter_account_id) == false) {
-                                        // cursor_countをリセット
-                                        $a_repository->resetCursorCount($user_twitter_account_id);
-                                        $a_repository->changeFalseFollowActionFlg($user_twitter_account_id);
-                                        Log::info('全てのデータのフォローが終わりました。follow_action_flgを 0 にします。');
+                                    if (isset($response->error) && $response->error != '') {
+                                        return $response->error;
+                                    } else {
+                                        $u_repository->followCountSave($user_twitter_account_id);
+                                        Log::info('フォローカウントアップ');
+                                        $f_repository->deleteFollowAccount($selectedAccount->id);
+                                        Log::info('DBフォローアカウント削除ID:' . $selectedAccount->id);
+                                        $fed_repository->saveFollowedAccount($user_twitter_account_id, $selectedAccount->twitterId);
+                                        Log::info('フォロー済みリストとしてアカウントをfollowed_accountsテーブルへ保存:' . $selectedAccount->id);
 
-                                        if ($a_repository->checkFollowEnd($user_twitter_account_id)) {
-                                            $u_repository->offAutoFollowFlg($account->user_id);
-                                            Log::info('全てのターゲットアカウントを巡回しました。自動フォローモードをOFFにします');
+                                        if ($f_repository->existsFollowData($user_twitter_account_id) == false) {
+                                            // cursor_countをリセット
+                                            $a_repository->resetCursorCount($user_twitter_account_id);
+                                            $a_repository->changeFalseFollowActionFlg($user_twitter_account_id);
+                                            Log::info('全てのデータのフォローが終わりました。follow_action_flgを 0 にします。');
 
-                                            $a_repository->changeFirstTargetAccountId($user_twitter_account_id);
-                                            Log::info('ターゲットアカウントを一番はじめに戻します。');
-                                        } else {
-                                            Log::info('ターゲットアカウントはまだ残っています。');
-                                            $a_repository->nextTargetAccountId($user_twitter_account_id);
-                                            Log::info('nextTargetAccountIdされました。');
+                                            if ($a_repository->checkFollowEnd($user_twitter_account_id)) {
+                                                $u_repository->offAutoFollowFlg($account->user_id, $account->screen_name);
+                                                Log::info('全てのターゲットアカウントを巡回しました。自動フォローモードをOFFにします');
+
+                                                $a_repository->changeFirstTargetAccountId($user_twitter_account_id);
+                                                Log::info('ターゲットアカウントを一番はじめに戻します。');
+                                            } else {
+                                                Log::info('ターゲットアカウントはまだ残っています。');
+                                                $a_repository->nextTargetAccountId($user_twitter_account_id);
+                                                Log::info('nextTargetAccountIdされました。');
+                                            }
+                                        }
+
+                                        Log::info('=============================');
+                                        Log::info('AutoFollowCommand End');
+                                        Log::info('=============================');
+                                        if ($key === array_key_last($selectedFiveAccounts)) {
+                                            Log::info('=============================');
+                                            Log::info('自動フォローアクション: メール通知');
+                                            $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
+                                            Mail::to($user->email)->send(new AutoFollowMail($user));
                                         }
                                     }
+                                }
+                            } else { // if (!empty($selectedFiveAccounts)) {
+                                // cursor_countをリセット
+                                $a_repository->resetCursorCount($user_twitter_account_id);
+                                $a_repository->changeFalseFollowActionFlg($user_twitter_account_id);
+                                Log::info('フォローするデータがないです。follow_action_flgを 0 にします。');
 
-                                    Log::info('=============================');
-                                    Log::info('AutoFollowCommand End');
-                                    Log::info('=============================');
-                                    if ($key === array_key_last($selectedFiveAccounts)) {
-                                        Log::info('=============================');
-                                        Log::info('自動フォローアクション: メール通知');
-                                        $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
-                                        Mail::to($user->email)->send(new AutoFollowMail($user));
-                                    }
+                                if ($a_repository->checkFollowEnd($user_twitter_account_id)) {
+                                    $u_repository->offAutoFollowFlg($account->user_id, $account->screen_name);
+                                    Log::info('全てのターゲットアカウントを巡回しました。自動フォローモードをOFFにします');
+
+                                    $a_repository->changeFirstTargetAccountId($user_twitter_account_id);
+                                    Log::info('ターゲットアカウントを一番はじめに戻します。');
+                                } else {
+                                    Log::info('ターゲットアカウントはまだ残っています。');
+                                    $a_repository->nextTargetAccountId($user_twitter_account_id);
+                                    Log::info('nextTargetAccountIdされました。');
                                 }
                             }
-                        } else { // if (!empty($selectedFiveAccounts)) {
-                            // cursor_countをリセット
-                            $a_repository->resetCursorCount($user_twitter_account_id);
-                            $a_repository->changeFalseFollowActionFlg($user_twitter_account_id);
-                            Log::info('フォローするデータがないです。follow_action_flgを 0 にします。');
-
-                            if ($a_repository->checkFollowEnd($user_twitter_account_id)) {
-                                $u_repository->offAutoFollowFlg($account->user_id);
-                                Log::info('全てのターゲットアカウントを巡回しました。自動フォローモードをOFFにします');
-
-                                $a_repository->changeFirstTargetAccountId($user_twitter_account_id);
-                                Log::info('ターゲットアカウントを一番はじめに戻します。');
-                            } else {
-                                Log::info('ターゲットアカウントはまだ残っています。');
-                                $a_repository->nextTargetAccountId($user_twitter_account_id);
-                                Log::info('nextTargetAccountIdされました。');
-                            }
-                        }
+                        } else {
+                            Log::info('フォローカウントが1000件以上ある為、自動フォローはできません。自動フォローモードをOFFにします。');
+                            $u_repository->offAutoFollowFlg($account->user_id, $account->screen_name);
+                        } // if ($u_repository->followCountUpperCheck($user_twitter_account_id) == true) {
+                    } else {
+                        Log::info('follow_action_flg: ' . $a_repository->getFollowActionFlg($user_twitter_account_id) . ':自動フォロー不可能');
                     }
                 } else {
-                    Log::info('follow_action_flg: ' . $a_repository->getFollowActionFlg($user_twitter_account_id) . ':自動フォロー不可能');
-                }
-            }
+                    Log::info('checkRestartFollowUnixTime の チェックNG。もうしばらくお待ちください。');
+                } // if ($u_repository->checkRestartFollowUnixTime($user_twitter_account_id) == true) {
+            } // foreach ($userTwitterAccountIds as $user_twitter_account_id) {
         }
     }
 }

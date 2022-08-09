@@ -17,5 +17,5 @@ interface TwitterAutoLikeUseCaseInterface
     /**
      * @param $user_id
      */
-    public function stopAutoLikeHandle($user_id);
+    public function stopAutoLikeHandle($user_id, $screen_name);
 }
