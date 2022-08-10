@@ -82,11 +82,7 @@ class AutoFollowAccountsCommand extends Command
                         // user_twitter_account
                         $account = $u_repository->getAccount($user_twitter_account_id);
 
-                        // if (!empty($array_search_text[0])) {
                         $listGetCount = 200;
-                        // } else {
-                        //     $listGetCount = 10;
-                        // }
 
                         Log::info($account->user_id);
                         Log::info($account->screen_name);

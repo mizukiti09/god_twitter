@@ -98,9 +98,12 @@ export default {
                     this.deleteAction = false;
                     this.target_id = '';
                     this.target_dom_key = '';
+                    return;
                 } else {
                     reset_auto_follow_flg = true;
                 }
+            } else {
+                reset_auto_follow_flg = false;
             }
 
             formData.append('user_id', this.user_id);

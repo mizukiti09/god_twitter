@@ -39,7 +39,7 @@ class TwitterAuthInteractor implements TwitterAuthUseCaseInterface
 
         Log::info('Twitterから取得しました。', ['user' => $twitterAuth]);
 
-        $account = Twitter::getConnection(Auth::id(), $twitterAuth->getNickname())->get('users/lookup', array(
+        $account = Twitter::getAuthConnection(Auth::id(), $twitterAuth->getNickname())->get('users/lookup', array(
             'screen_name' => $twitterAuth->getNickname(),
         ));
 

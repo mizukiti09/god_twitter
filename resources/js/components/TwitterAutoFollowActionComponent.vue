@@ -247,19 +247,24 @@ export default {
             }
         },
         searchAutoFollowStart: function () {
-            const formData = new FormData();
-            formData.append('user_id', this.user_id);
-            formData.append('screen_name', this.auth_screen_name);
 
-            this.$axios.post('/api/twitter/autoFollowStart', formData)
-                .then((res) => {
-                    console.log(res)
-                    window.location.reload(false)
-                })
-                .catch((error) => {
-                    console.log('searchAutoFollowStartは正常に起動していません。')
-                    console.log(error)
-                })
+            if (this.db_text.length || this.db_search_text_condition !== null ) {
+                const formData = new FormData();
+                formData.append('user_id', this.user_id);
+                formData.append('screen_name', this.auth_screen_name);
+
+                this.$axios.post('/api/twitter/autoFollowStart', formData)
+                    .then((res) => {
+                        console.log(res)
+                        window.location.reload(false)
+                    })
+                    .catch((error) => {
+                        console.log('searchAutoFollowStartは正常に起動していません。')
+                        console.log(error)
+                    })
+            } else {
+                alert('Keywordは1つ以上登録してから自動フォローしてください。');
+            }
         },
         searchAutoFollowStop: function() {
             const formData = new FormData();

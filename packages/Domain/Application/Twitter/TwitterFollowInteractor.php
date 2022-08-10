@@ -54,9 +54,10 @@ class TwitterFollowInteractor implements TwitterAutoFollowUseCaseInterface, Twit
         Log::info($auth_screen_name);
         Log::info($target_id);
         Log::info($reset_auto_follow_flg);
+        Log::info('タイプ:' . gettype($reset_auto_follow_flg));
 
-        if ($reset_auto_follow_flg == true) {
-            $this->u_repository->offAutoFollowFlg($user_id);
+        if ($reset_auto_follow_flg === 'true') {
+            $this->u_repository->offAutoFollowFlg($user_id, $auth_screen_name);
         }
 
         $this->ta_repository->deleteTargetAccount($user_id, $auth_screen_name, $target_id);
