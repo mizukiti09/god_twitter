@@ -65,8 +65,8 @@
             <div class="c-overlay">
                 <div class="c-overlay__contents">
                     <div class="c-overlay__ttl">{{ autoUnFollow }}</div>
-                    <div class="c-overlay__description"><span class="u-red">*</span>フォローした日時から7日以上経過している<br>
-                        又は非アクティブユーザー（15日投稿なし)を自動アンフォローする</div>
+                    <div class="c-overlay__description"><span class="u-red">*</span>フォローした日時から7日以上経過してフォローバックがないアカウント<br>
+                        又は非アクティブユーザー（15日以上投稿なし)を自動アンフォローする</div>
 
                     <div class="c-overlay__btnContainer c-overlay__btnContainer--auto">
                         <button v-show="!auto_un_follow_flg" class="c-appBtn" v-on:click="autoUnFollowStart()">自動アンフォロー

@@ -3,7 +3,7 @@
 
 <div class="c-structure u-inner u-m__contents">
     <div class="c-currentPage__title">
-        MyPage &nbsp;\&nbsp; サービス登録アカウント {{ count($accounts) }}/10
+        MyPage &nbsp;\&nbsp;<br class="u-sp_br"> サービス登録アカウント {{ count($accounts) }}/10
     </div>
     <div class="c-structure__container">
         @include('parts.aside')

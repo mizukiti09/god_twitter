@@ -87,7 +87,7 @@ class AutoLikeTweetsCommand extends Command
                     Log::info('searchKeyは: ' . $searchKey);
 
                     // 取得オプション
-                    $options = array('q' => $searchKey, 'lang' => 'ja', 'count' => 10, 'result_type' => 'recent');
+                    $options = array('q' => $searchKey, 'lang' => 'ja', 'count' => 5, 'result_type' => 'recent');
                     $tweetsData = Twitter::getAuthConnection($account->user_id, $account->screen_name)
                         ->get("search/tweets", $options);
 

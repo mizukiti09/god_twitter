@@ -1,8 +1,8 @@
-@section('title', 'God Twitter / tweetList')@extends('app') @section('content')
+@section('title', 'God Twitter / targetAccounts')@extends('app') @section('content')
 
 <div class="c-structure u-inner u-m__contents">
     <div class="c-currentPage__title">
-        TargetAccounts &nbsp;\&nbsp; 登録ターゲットアカウント数 &nbsp;:&nbsp;<span
+        TargetAccounts &nbsp;\&nbsp;<br class="u-sp_br"> 登録ターゲットアカウント数 &nbsp;:&nbsp;<span
             id="js-target-account-count">{{ count($target_accounts) }}</span>
     </div>
     <div class="c-structure__container">

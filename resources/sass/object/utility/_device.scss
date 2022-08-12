@@ -1,15 +1,26 @@
-#u-device__sp {
+.u-device__pc {
+    display: block;
+}
+
+.u-device__sp {
     display: none;
     & .c-nav__item a {
         color: $baseColor;
     }
 }
 
+.u-sp_br {
+    display: none;
+}
+
 @media screen and (max-width: 768px) {
-    #u-device__desc {
+    .u-device__pc {
         display: none;
     }
-    #u-device__sp {
+    .u-device__desc {
+        display: none;
+    }
+    .u-device__sp {
         display: block;
     }
     .u-blockNone {
@@ -23,5 +34,8 @@
     }
     .p-problem__description {
         width: 80%;
+    }
+    .u-sp_br {
+        display: initial;
     }
 }

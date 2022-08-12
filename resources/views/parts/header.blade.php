@@ -3,7 +3,7 @@
         <div class="l-header__logo">
             <a href="{{ route('home') }}">God Twitter</a>
         </div>
-        <div id="u-device__desc">
+        <div class="u-device__desc">
             <nav>
                 <ul class="c-navbar">
                     @guest @if (Route::has('login'))
@@ -36,7 +36,7 @@
         </nav>
     </div>
 
-    <div id="u-device__sp">
+    <div class="u-device__sp">
         <div class="c-btn-open">
             <span></span>
             <span></span>

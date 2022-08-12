@@ -71,3 +71,17 @@
         }
     }
 }
+
+@media screen and (max-width: 481px) {
+    .p-targetAccount {
+        &__list {
+            &__item {
+                &__trash {
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+            }
+        }
+    }
+}

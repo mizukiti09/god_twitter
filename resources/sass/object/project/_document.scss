@@ -1,0 +1,45 @@
+.p-document {
+    max-width: 500px !important;
+    &__contents {
+        margin: 86px auto;
+        &__item {
+            margin-bottom: 50px;
+            width: 100%;
+            &__img {
+                background: gray;
+                width: 100%;
+                height: 300px;
+                & img {
+                    object-fit: contain;
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+            &__description {
+                font-size: $font-size_xl;
+                line-height: 30px;
+                padding: 10px 0;
+            }
+        }
+    }
+    &__title {
+        font-size: 30px;
+        text-align: center;
+        border-bottom: 3px solid skyblue;
+        padding-bottom: 10px;
+        margin-bottom: 70px;
+    }
+}
+
+@media screen and (max-width: 481px) {
+    .p-document {
+        &__contents {
+            &__item {
+                &__description {
+                    font-size: $font-size_default;
+                    line-height: 26px;
+                }
+            }
+        }
+    }
+}

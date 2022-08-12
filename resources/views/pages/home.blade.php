@@ -4,7 +4,7 @@
     <div class="u-inner">
         <h1>
             <i class="fab fa-twitter-square"></i>
-            Twitterの自動システム
+            Auto Services
         </h1>
 
         <div class="p-home__contents">
@@ -16,62 +16,37 @@
                 <li>登録した特定のKeyword、日時を基に自動ツイート機能</li>
             </ul>
 
+            <h1>
+                <i class="fas fa-book"></i>
+                Document Links
+            </h1>
             <ul class="p-home__list">
-                <li class="p-home__list__img">
-                    <span class="p-home__list__img__text">自動フォロー登録画面</span>
-                    <img src="{{ asset('images/follow.png') }}" alt="">
+                <li class="p-home__list__img p-home__list__img--start">
+                    <span class="p-home__list__img__text">最初にやること</span>
+                    <a href="{{ route('document.first') }}">
+                        First Start
+                    </a>
                 </li>
-                <li class="p-home__list__img">
-                    <span class="p-home__list__img__text">自動アンフォロー登録画面</span>
-                    <img src="{{ asset('images/un_follow.png') }}" alt="">
+                <li class="p-home__list__img p-home__list__img--follow">
+                    <span class="p-home__list__img__text">自動フォロー、自動アンフォロー</span>
+                    <a href="{{ route('document.autoFollow') }}">
+                        Auto Follow
+                    </a>
                 </li>
-                <li class="p-home__list__img">
-                    <span class="p-home__list__img__text">自動いいね登録画面</span>
-                    <img src="{{ asset('images/like.png') }}" alt="">
+                <li class="p-home__list__img p-home__list__img--like ">
+                    <span class="p-home__list__img__text">自動いいね</span>
+                    <a href="{{ route('document.autoLike') }}">
+                        Auto Like
+                    </a>
                 </li>
-                <li class="p-home__list__img">
-                    <span class="p-home__list__img__text">自動ツイート登録画面</span>
-                    <img src="{{ asset('images/tweet.png') }}" alt="">
+                <li class="p-home__list__img p-home__list__img--tweet">
+                    <span class="p-home__list__img__text">自動ツイート</span>
+                    <a href="{{ route('document.autoTweet') }}">
+                        Auto Tweet
+                    </a>
                 </li>
             </ul>
         </div>
     </div>
 </div>
-{{-- <div class="p-home c-section">
-    <div class="p-home__wave">
-        <p class="p-home__title">コンテンツが入ります。</p>
-        <ul class="p-home__list">
-            <li class="p-home__list__img"><img src="" alt=""></li>
-            <li class="p-home__list__description">text.text.text.text.text.text.text.text.text.text.text.text.text.text.
-                text.text.text.text.text.text.text.text.text.text.text.text.text.
-                text.text.text.text.text.text.text.text.text.text.
-                text.text.text.text.text.text.text.text.text.
-            </li>
-        </ul>
-        <canvas id="waveCanvas"></canvas>
-    </div>
-    <div class="p-home__wave">
-        <p class="p-home__title">コンテンツが入ります。</p>
-        <ul class="p-home__list p-home__list__even">
-            <li class="p-home__list__img"><img src="" alt=""></li>
-            <li class="p-home__list__description">text.text.text.text.text.text.text.text.text.text.text.text.text.text.
-                text.text.text.text.text.text.text.text.text.text.text.text.text.
-                text.text.text.text.text.text.text.text.text.text.
-                text.text.text.text.text.text.text.text.text.
-            </li>
-        </ul>
-        <canvas id="waveCanvas2"></canvas>
-    </div>
-    <div class="p-home__wave">
-        <p class="p-home__title">コンテンツが入ります。</p>
-        <ul class="p-home__list">
-            <li class="p-home__list__img"><img src="" alt=""></li>
-            <li class="p-home__list__description">text.text.text.text.text.text.text.text.text.text.text.text.text.text.
-                text.text.text.text.text.text.text.text.text.text.text.text.text.
-                text.text.text.text.text.text.text.text.text.text.
-                text.text.text.text.text.text.text.text.text.
-            </li>
-        </ul>
-        <canvas id="waveCanvas3"></canvas>
-    </div> --}}
 @endsection

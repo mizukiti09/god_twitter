@@ -26,9 +26,9 @@
                 :id="'target_data' + i" :class="{ 'p-targetAccount__list__item--on': checkLoad(account.screen_name)}">
                 <i v-on:click="deleteOpen(account.id, account.screen_name,i)"
                     class="fas fa-trash-restore u-trash p-targetAccount__list__item__trash"></i>
-                【AccountName: <a class="u-twitter-link"
-                    :href="'https://twitter.com/' + account.screen_name">{{account.screen_name}}</a>】,【Follower:
-                {{account.follower}}】
+                <p class="p-targetAccount__list__item__text">【AccountName: <a class="u-twitter-link"
+                        :href="'https://twitter.com/' + account.screen_name">{{account.screen_name}}</a>】,<br class="u-sp_br">【Follower:
+                    {{account.follower}}】</p>
             </li>
         </ul>
     </div>

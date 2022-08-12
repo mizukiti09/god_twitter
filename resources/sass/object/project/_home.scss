@@ -1,41 +1,4 @@
 .p-home {
-    @extend .u-inner;
-    &__title {
-        text-align: center;
-        font-size: $font-size_3l;
-        color: $baseColor;
-    }
-    &__list {
-        padding: 140px 0;
-        margin-bottom: 60px;
-        display: flex;
-        justify-content: space-between;
-        &__even {
-            flex-direction: row-reverse;
-        }
-        &__img {
-            width: 55%;
-            height: 366px;
-            background: gainsboro;
-        }
-        &__description {
-            width: 40%;
-            overflow-wrap: break-word;
-        }
-    }
-    &__wave {
-        position: relative;
-        & canvas {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-52%);
-            width: 58%;
-        }
-    }
-}
-
-.p-home {
     &__article {
         width: 100%;
         margin: 0;
@@ -89,7 +52,7 @@
         /*背景色*/
         padding: 0.5em 0.5em 0.5em 2em;
         list-style: disc;
-        margin: 40px 0 0;
+        margin: 40px 0 130px;
         & li {
             line-height: 1.5;
             padding: 0.5em 0;
@@ -102,16 +65,34 @@
         justify-content: space-between;
         flex-wrap: wrap;
         &__img {
-            position: relative;
+            margin-bottom: 70px;
             width: 48%;
             height: 366px;
             background: gainsboro;
-            box-shadow: 0px 5px 40px #fff;
-            margin-bottom: 50px;
-            & img {
+            background-color: rgba(255, 255, 255, 0.7);
+            background-blend-mode: lighten;
+            animation: huerotator 3s infinite alternate;
+            background-position: center;
+            background-size: cover;
+            &--start {
+                background-image: url(./../../images/start.jpeg);
+            }
+            &--follow {
+                background-image: url(./../../images/follow.jpeg);
+            }
+            &--like {
+                background-image: url(./../../images/like.jpeg);
+            }
+            &--tweet {
+                background-image: url(./../../images/tweet.jpg);
+            }
+            & a {
                 width: 100%;
                 height: 100%;
-                object-fit: cover;
+                display: block;
+                text-align: center;
+                line-height: 360px;
+                font-size: 50px;
             }
             &__text {
                 position: absolute;

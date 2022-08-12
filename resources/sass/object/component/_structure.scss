@@ -194,6 +194,16 @@
     }
 }
 
+@media screen and (max-width: 481px) {
+    .c-structure {
+        &__article {
+            &__title {
+                font-size: $font-size_xl;
+            }
+        }
+    }
+}
+
 // myPageで使われるvue用のclass
 // ユーザー認証されている時に付与されるclass
 .authFlgActive {
