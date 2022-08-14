@@ -5,10 +5,11 @@ namespace App\Console\Commands;
 use App\Facades\Twitter;
 use App\Mail\AutoFollowMail;
 use Illuminate\Console\Command;
+use App\Mail\AutoFollowOverMail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use packages\Domain\Domain\User\AutoFollowDatasRepositoryInterface;
 use packages\Domain\Domain\User\FollowAccountsRepositoryInterface;
+use packages\Domain\Domain\User\AutoFollowDatasRepositoryInterface;
 use packages\Domain\Domain\User\FollowedAccountsRepositoryInterface;
 use packages\Domain\Domain\User\UserTwitterAccountsRepositoryInterface;
 
@@ -79,7 +80,7 @@ class AutoFollowCommand extends Command
                         if ($u_repository->followCountUpperCheck($user_twitter_account_id) == true) {
                             Log::info('followCountUpperCheck 1000件未満OK');
 
-                            $selectedFiveAccounts = $f_repository->getFiveAccounts($user_twitter_account_id);
+                            $selectedFiveAccounts = $f_repository->getTenAccounts($user_twitter_account_id);
 
                             if (!empty($selectedFiveAccounts)) {
                                 // 一回に最高5件フォロー
@@ -150,6 +151,8 @@ class AutoFollowCommand extends Command
                         } else {
                             Log::info('フォローカウントが1000件以上ある為、自動フォローはできません。自動フォローモードをOFFにします。');
                             $u_repository->offAutoFollowFlg($account->user_id, $account->screen_name);
+                            $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
+                            Mail::to($user->email)->send(new AutoFollowOverMail($user));
                         } // if ($u_repository->followCountUpperCheck($user_twitter_account_id) == true) {
                     } else {
                         Log::info('follow_action_flg: ' . $a_repository->getFollowActionFlg($user_twitter_account_id) . ':自動フォロー不可能');

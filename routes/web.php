@@ -18,11 +18,14 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Auth::routes();
 
+// アプリドキュメンツ
 Route::namespace('Document')->group(function () {
-    Route::get('/document/first', 'DocumentController@first')->name('document.first');
-    Route::get('/document/autoFollow', 'DocumentController@autoFollow')->name('document.autoFollow');
-    Route::get('/document/autoLike', 'DocumentController@autoLike')->name('document.autoLike');
-    Route::get('/document/autoTweet', 'DocumentController@autoTweet')->name('document.autoTweet');
+    Route::prefix('document')->group(function () {
+        Route::get('/first', 'DocumentController@first')->name('document.first');
+        Route::get('/autoFollow', 'DocumentController@autoFollow')->name('document.autoFollow');
+        Route::get('/autoLike', 'DocumentController@autoLike')->name('document.autoLike');
+        Route::get('/autoTweet', 'DocumentController@autoTweet')->name('document.autoTweet');
+    });
 });
 
 Route::namespace('Auth')->group(function () {

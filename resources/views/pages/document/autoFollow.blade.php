@@ -100,7 +100,28 @@
                 ・2つ以上Keywordが設定されていて、どれか1つでも設定したKeywordがプロフィールに含まれているアカウントをフォローしたい場合は OR を選択してください。<br>
 
                 <br><br><br><br>
-                Keywordを更新した後に自動フォローONをクリックすると自動フォローが始まります。
+                Keywordを更新した後に自動フォローONをクリックすると自動フォローアクションが始まります。<br>
+                自動フォローアクションが行われると、まず対象のターゲットアカウントのフォロワーからKeyword設定にマッチしたアカウントから探します。<br>
+                全てのフォロワーのチェックが終わったその後に自動フォローが行われます。
+
+            </div>
+        </div>
+
+        <div class="p-document__contents__item">
+            <div class="p-document__contents__item__img u-device__pc">
+                <img src="{{ asset('images/document/autoFollow_pc_08.png') }}" alt="">
+            </div>
+
+            <div class="p-document__contents__item__img u-device__sp">
+                <img src="{{ asset('images/document/autoFollow_sp_08.png') }}" alt="">
+            </div>
+
+            <div class="p-document__contents__item__description">
+                自動ONをクリックすると現在のTargetAccounts一覧ページ内はこのように表示されます。<br><br>
+                Current Target の項目に現在フォローアクションが行われているTwitterアカウント名が表示されます。<br><br>
+                Follower の項目には現在フォローアクションが行われているTwitterアカウントのフォロワー数が表示されます。<br><br>
+                Load の項目にはCurrent Targetのフォロワーをどれぐらいチェック出来たかのパーセンテージが表示されます。<br><br>
+                Load の項目が 100% になったら全てのフォロワーのチェックが終わり、自動フォローが行われます。<br><br>
             </div>
         </div>
     </div><br><br>
