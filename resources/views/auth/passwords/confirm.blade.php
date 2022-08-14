@@ -1,49 +1,53 @@
-@extends('app')
-
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Confirm Password') }}</div>
-
-                <div class="card-body">
-                    {{ __('Please confirm your password before continuing.') }}
-
-                    <form method="POST" action="{{ route('password.confirm') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Confirm Password') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
-                </div>
+@extends('app') @section('content')
+    <div class="c-contents">
+        <section class="c-form__container">
+            <div class="c-section__title">
+                <h1>{{ __('Confirm Password') }}</h1>
             </div>
-        </div>
+
+            <div class="c-form__list">
+                {{ __('Please confirm your password before continuing.') }}
+
+                <form method="POST" action="{{ route('password.confirm') }}">
+                    @csrf
+
+                    <div class="c-form__item">
+                        <label for="password" class="c-form__label">{{ __('Password') }}</label>
+
+                        <div class="c-form__body">
+                            <span class="c-form__input--feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                        </span> @enderror
+                        <input id="password" type="password"
+                            class="c-form__input @error('password') is-invalid @enderror" name="password" required
+                            autocomplete="current-password" autofocus> @error('password')
+                        </div>
+                    </div>
+
+                    <div class="c-form__item">
+                        <button type="submit" class="c-form__button">
+                            {{ __('Confirm Password') }}
+                        </button>
+                        @if (Route::has('password.request'))
+                            <a class="c-link" href="{{ route('password.request') }}">
+                                {{ __('Forgot Your Password?') }}
+                            </a>
+                        @endif
+                    </div>
+
+                    <div class="c-form__item">
+                        <button type="submit" class="c-form__button">
+                            {{ __('Confirm Password') }}
+                        </button>
+                        @if (Route::has('password.request'))
+                            <a class="c-link" href="{{ route('password.request') }}">
+                                {{ __('Forgot Your Password?') }}
+                            </a>
+                        @endif
+                    </div>
+            </div>
+            </form>
     </div>
-</div>
+    </div>
+    </div>
 @endsection
