@@ -80,12 +80,12 @@ class AutoFollowCommand extends Command
                         if ($u_repository->followCountUpperCheck($user_twitter_account_id) == true) {
                             Log::info('followCountUpperCheck 1000件未満OK');
 
-                            $selectedFiveAccounts = $f_repository->getTenAccounts($user_twitter_account_id);
+                            $selectedTenAccounts = $f_repository->getTenAccounts($user_twitter_account_id);
 
-                            if (!empty($selectedFiveAccounts)) {
+                            if (!empty($selectedTenAccounts)) {
                                 // 一回に最高5件フォロー
                                 Log::info('selectedFiveAccounts 有り');
-                                foreach ($selectedFiveAccounts as $key => $selectedAccount) {
+                                foreach ($selectedTenAccounts as $key => $selectedAccount) {
                                     $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->post('friendships/create', array(
                                         "screen_name" => $selectedAccount->screen_name,
                                     ));
@@ -122,7 +122,7 @@ class AutoFollowCommand extends Command
                                         Log::info('=============================');
                                         Log::info('AutoFollowCommand End');
                                         Log::info('=============================');
-                                        if ($key === array_key_last($selectedFiveAccounts)) {
+                                        if ($key === array_key_last($selectedTenAccounts)) {
                                             Log::info('=============================');
                                             Log::info('自動フォローアクション: メール通知');
                                             $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
@@ -130,7 +130,7 @@ class AutoFollowCommand extends Command
                                         }
                                     }
                                 }
-                            } else { // if (!empty($selectedFiveAccounts)) {
+                            } else { // if (!empty($selectedTenAccounts)) {
                                 // cursor_countをリセット
                                 $a_repository->resetCursorCount($user_twitter_account_id);
                                 $a_repository->changeFalseFollowActionFlg($user_twitter_account_id);

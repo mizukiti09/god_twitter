@@ -39,15 +39,12 @@ class FollowedAccountsRepository implements FollowedAccountsRepositoryInterface
                 followed_accounts 
             WHERE ( follow_unixTime + :plusTime ) <  :currentUnixTime
             AND user_twitter_account_id = :user_twitter_account_id
-            LIMIT 1",
+            LIMIT 5",
             $param
         );
 
-        if (!empty($data)) {
-            return $data[0];
-        } else {
-            return $data;
-        }
+
+        return $data;
     }
 
     public function deleteFollowedAccount($id)
