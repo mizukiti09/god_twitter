@@ -65,6 +65,7 @@
         justify-content: space-between;
         flex-wrap: wrap;
         &__img {
+            position: relative;
             margin-bottom: 70px;
             width: 48%;
             height: 366px;

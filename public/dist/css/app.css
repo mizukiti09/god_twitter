@@ -1032,6 +1032,7 @@ body {
   justify-content: space-between;
   flex-wrap: wrap; }
   .p-home__list__img {
+    position: relative;
     margin-bottom: 70px;
     width: 48%;
     height: 366px;
