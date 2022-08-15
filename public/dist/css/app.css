@@ -139,7 +139,7 @@ table {
   margin-top: 150px; }
 
 body {
-  font-size: 16px;
+  font-size: 17px;
   font-family: serif;
   background: #f5f5f5; }
 
@@ -657,6 +657,9 @@ body {
 .none {
   display: none; }
 
+.overlay-date-time-picker .field-input {
+  font-size: 17px !important; }
+
 .overlay-date-time-picker::before {
   box-sizing: border-box;
   content: "";
@@ -969,10 +972,6 @@ body {
   .c-currentPage__title {
     font-size: 20px; } }
 
-@media screen and (max-width: 481px) {
-  .c-currentPage__title {
-    font-size: 16px; } }
-
 .p-home__article {
   width: 100%;
   margin: 0;
@@ -1230,7 +1229,7 @@ body {
 
 @media screen and (max-width: 481px) {
   .p-document__contents__item__description {
-    font-size: 16px;
+    font-size: 17px;
     line-height: 26px; } }
 
 .u-fade-up, .u-fade-down, .u-fade-right {

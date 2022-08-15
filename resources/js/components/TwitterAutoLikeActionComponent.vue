@@ -4,7 +4,8 @@
             <div class="c-overlay">
                 <div class="c-overlay__contents">
                     <div class="c-overlay__ttl">{{ autoTarget }}</div>
-                    <div class="c-overlay__description"><span class="u-red">*</span>Keywordを入力するとそのKeywordをもとにいいねします。
+                    <div class="c-overlay__description"><span class="u-red">*</span>Keywordを入力するとそのKeyword<br
+                            class="u-sp_br">をもとにいいねします。
                     </div>
                     <div class="c-overlay__db">
                         <table class="c-overlay__db__table">
@@ -42,8 +43,8 @@
                                 </nav>
                             </div>
                         </div>
-                        <select v-on:blur="setCookieCondition()" class="c-appBtn" name="like_conditions"
-                            id="condition-like-select">
+                        <select v-on:blur="setCookieCondition()" style="text-align:center;" class="c-appBtn"
+                            name="like_conditions" id="condition-like-select">
                             <option v-if="!isCookieCondition" selected disabled value="NO">選択してください</option>
                             <option v-else selected disabled :value="isCookieCondition">{{ isCookieCondition }}</option>
 

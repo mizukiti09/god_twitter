@@ -4,7 +4,7 @@
             <div class="c-overlay">
                 <div class="c-overlay__contents">
                     <div class="c-overlay__ttl">{{ add_target }}</div>
-                    <div class="c-overlay__description"><span class="u-red">*</span>@を抜いたtwitterアカウント名を入力してください。
+                    <div class="c-overlay__description"><span class="u-red">*</span>@を抜いたtwitterアカウント名<br class="u-sp_br">を入力してください。
                     </div>
                     <div class="c-overlay__btnContainer c-overlay__btnContainer--auto">
                         <div class="c-search">

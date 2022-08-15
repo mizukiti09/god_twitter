@@ -10,9 +10,3 @@
         font-size: $font-size_xl;
     }
 }
-
-@media screen and (max-width: 481px) {
-    .c-currentPage__title {
-        font-size: $font-size_default;
-    }
-}

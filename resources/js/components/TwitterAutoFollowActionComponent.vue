@@ -4,7 +4,8 @@
             <div class="c-overlay">
                 <div class="c-overlay__contents">
                     <div class="c-overlay__ttl">{{ autoFollow }}</div>
-                    <div class="c-overlay__description"><span class="u-red">*</span>Keywordを入力するとそのKeywordをもとにフォローします。
+                    <div class="c-overlay__description"><span class="u-red">*</span>Keywordを入力するとそのKeyword<br
+                            class="u-sp_br">をもとにフォローします。
                     </div>
                     <div class="c-overlay__db">
                         <table class="c-overlay__db__table">
@@ -16,7 +17,7 @@
                                 </tr>
                                 <tr class="c-overlay__db__tr">
                                     <th class="c-overlay__db__th">登録Condition</th>
-                                    
+
                                     <td class="c-overlay__db__td">{{db_condition}}</td>
                                 </tr>
                             </tbody>
@@ -42,8 +43,8 @@
                                 </nav>
                             </div>
                         </div>
-                        <select v-on:blur="setCookieCondition()" class="c-appBtn" name="follow_conditions"
-                            id="condition-select">
+                        <select v-on:blur="setCookieCondition()" style="text-align:center;" class="c-appBtn"
+                            name="follow_conditions" id="condition-select">
                             <option v-if="!isCookieCondition" selected disabled value="NO">選択してください</option>
                             <option v-else selected disabled :value="isCookieCondition">{{ isCookieCondition }}</option>
 
@@ -65,8 +66,9 @@
             <div class="c-overlay">
                 <div class="c-overlay__contents">
                     <div class="c-overlay__ttl">{{ autoUnFollow }}</div>
-                    <div class="c-overlay__description"><span class="u-red">*</span>フォローした日時から7日以上経過してフォローバックがないアカウント<br>
-                        又は非アクティブユーザー（15日以上投稿なし)を自動アンフォローする</div>
+                    <div class="c-overlay__description"><span class="u-red">*</span>フォローした日時から7日以上経過して<br
+                            class="u-sp_br">フォローバックがないアカウント<br>
+                        又は非アクティブユーザー（15日以上投稿なし)<br class="u-sp_br">を自動アンフォローします。</div>
 
                     <div class="c-overlay__btnContainer c-overlay__btnContainer--auto">
                         <button v-show="!auto_un_follow_flg" class="c-appBtn" v-on:click="autoUnFollowStart()">自動アンフォロー

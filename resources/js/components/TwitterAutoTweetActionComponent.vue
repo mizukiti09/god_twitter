@@ -4,7 +4,7 @@
             <div class="c-overlay">
                 <div class="c-overlay__contents">
                     <div class="c-overlay__ttl">{{ autoTarget }}</div>
-                    <div class="c-overlay__description"><span class="u-red">*</span>自動ツイートしたい内容を特定の日時にツイート出来ます。</div>
+                    <div class="c-overlay__description"><span class="u-red">*</span>自動ツイートしたい内容を<br class="u-sp_br">特定の日時にツイートします。</div>
                     <div class="c-overlay__btnContainer c-overlay__btnContainer--auto">
                         <div class="c-search">
                             <div class="c-search__keywords">
