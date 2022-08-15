@@ -301,10 +301,13 @@
     display: none;
 }
 
-.overlay-date-time-picker {
+.date-time-picker {
     & .field-input {
         font-size: $font-size_default !important;
     }
+}
+
+.overlay-date-time-picker {
     &::before {
         box-sizing: border-box;
         content: "";

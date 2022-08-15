@@ -657,7 +657,7 @@ body {
 .none {
   display: none; }
 
-.overlay-date-time-picker .field-input {
+.date-time-picker .field-input {
   font-size: 17px !important; }
 
 .overlay-date-time-picker::before {
