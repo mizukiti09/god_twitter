@@ -92,7 +92,7 @@ export default {
     },
     methods: {
         checkTime: function(time) {
-            var dataUnixTime = Date.parse(time);
+            var dataUnixTime = Date.parse(time.replace(/-/g, "/"));
             
             var date = new Date() ;
             var currentUnixTime = date.getTime() ;
