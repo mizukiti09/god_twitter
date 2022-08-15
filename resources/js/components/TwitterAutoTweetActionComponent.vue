@@ -1,40 +1,44 @@
 <template>
-<div>
-    <div class="jsModal" v-show="autoTarget">
-        <div class="c-overlay">
-            <div class="c-overlay__contents">
-                <div class="c-overlay__ttl">{{ autoTarget }}</div>
-                <div class="c-overlay__description"><span class="u-red">*</span>自動ツイートしたい内容を特定の日時にツイート出来ます。</div>
-                <div class="c-overlay__btnContainer c-overlay__btnContainer--auto">
-                    <div class="c-search">
-                        <div class="c-search__keywords">
-                            <nav class="c-solidMenu">
-                                <ul>
-                                    <li>
-                                        <div class="c-solidMenu__date">
-                                            <vue-ctk-date-time-picker 
-                                                v-model="dateValue" 
-                                                label="日時を選択"
-                                            ></vue-ctk-date-time-picker>
-                                            <a class="c-solidMenu__date__a" href="javascript:void(0)" id="cookiesDom">
-                                                <textarea placeholder="tweet内容" v-on:blur="editCookieValue()" id="tweet_textarea" class="c-solidMenu__textarea" name="" cols="30" rows="8">{{ tweetText }}</textarea>
-                                            </a>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </nav>
+    <div>
+        <div class="jsModal" v-show="autoTarget">
+            <div class="c-overlay">
+                <div class="c-overlay__contents">
+                    <div class="c-overlay__ttl">{{ autoTarget }}</div>
+                    <div class="c-overlay__description"><span class="u-red">*</span>自動ツイートしたい内容を特定の日時にツイート出来ます。</div>
+                    <div class="c-overlay__btnContainer c-overlay__btnContainer--auto">
+                        <div class="c-search">
+                            <div class="c-search__keywords">
+                                <nav class="c-solidMenu">
+                                    <ul>
+                                        <li>
+                                            <div class="c-solidMenu__date">
+                                                <vue-ctk-date-time-picker class="overlay-date-time-picker" v-model="dateValue" label="日時を選択">
+                                                </vue-ctk-date-time-picker>
+                                                <a class="c-solidMenu__date__a" href="javascript:void(0)"
+                                                    id="cookiesDom">
+                                                    <textarea placeholder="tweet内容" v-on:blur="editCookieValue()"
+                                                        id="tweet_textarea" class="c-solidMenu__textarea" name=""
+                                                        cols="30" rows="8">{{ tweetText }}</textarea>
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
                         </div>
+                        <button class="c-appBtn" v-on:click="autoTweet()">登録</button>
+                        <button v-show="!auto_tweet_flg" class="c-appBtn" v-on:click="autoTweetOn()">自動tweet ON</button>
+                        <button v-show="auto_tweet_flg" class="c-appBtn" v-on:click="autoTweetStop()">自動tweet
+                            OFF</button>
+                        <button class="c-appBtn" v-on:click="autoCancel()">閉じる</button>
                     </div>
-                    <button class="c-appBtn" v-on:click="autoTweet()">登録</button>
-                    <button v-show="!auto_tweet_flg" class="c-appBtn" v-on:click="autoTweetOn()">自動tweet ON</button>
-                    <button v-show="auto_tweet_flg" class="c-appBtn" v-on:click="autoTweetStop()">自動tweet OFF</button>
-                    <button class="c-appBtn" v-on:click="autoCancel()">閉じる</button>
                 </div>
             </div>
         </div>
+        <div class="c-appBtn"><a class="c-appBtn--none" id="js-tweet-btn" :class="{'c-appBtn--auto': auto_tweet_flg}"
+                v-on:click="autoAction('Auto Tweet')"><span v-if="auto_tweet_flg">自動ツイート中</span><span
+                    v-else>自動ツイートする</span></a></div>
     </div>
-    <div class="c-appBtn"><a class="c-appBtn--none" id="js-tweet-btn" :class="{'c-appBtn--auto': auto_tweet_flg}" v-on:click="autoAction('Auto Tweet')"><span v-if="auto_tweet_flg">自動ツイート中</span><span v-else>自動ツイートする</span></a></div>
-</div>
 </template>
 
 <script>

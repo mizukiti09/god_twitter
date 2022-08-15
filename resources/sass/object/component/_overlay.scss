@@ -36,7 +36,7 @@
             background-color: #52c2d0;
             color: white;
             text-align: center;
-            padding: 10px 0;
+            padding: 10px 5px;
             vertical-align: middle;
             &:after {
                 display: block;
@@ -121,7 +121,6 @@
         letter-spacing: 1px;
         color: #3f3f3f;
         border: 5px solid #787878 !important;
-        border-radius: 4px;
         z-index: 10;
     }
     &__submit {
@@ -129,7 +128,6 @@
         border: 5px solid #00ffb7;
         background: #fff;
         font-weight: bold;
-        border-radius: 4px;
         transition: .2s;
         &:hover {
             background: #91ffe0;
@@ -284,6 +282,11 @@
                     transform: skew(-45deg, 0deg);
                 }
             }
+            & .c-solidMenu__date__a {
+                &::before {
+                    height: 144px;
+                }
+            }
         }
     }
 }
@@ -298,14 +301,14 @@
     display: none;
 }
 
-.date-time-picker {
+.overlay-date-time-picker {
     &::before {
         box-sizing: border-box;
         content: "";
         position: absolute;
         background: #666;
         width: 0.5em;
-        height: -webkit-fill-available;
+        height: 45px;
         left: -0.5em;
         top: 0.25em;
         border-style: none;
@@ -351,7 +354,7 @@
         & ul {
             & li {
                 & a {
-                    width: 100%;
+                    width: 82%;
                 }
             }
         }
