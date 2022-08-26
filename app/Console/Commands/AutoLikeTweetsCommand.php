@@ -77,12 +77,15 @@ class AutoLikeTweetsCommand extends Command
                             $searchKey = $searchKey . $text . ' ';
                         }
                     } else if ($condition == 'OR') {
-                        Log::info('コンディションは:' . $condition);
+                        Log::info('$array_search_text:' . $array_search_text);
 
+                        Log::info('コンディションは:' . $condition);
                         $searchKey = '';
+                        $or = ' OR ';
                         foreach ($array_search_text as $text) {
-                            $searchKey = $searchKey . $text . ' OR ';
+                            $searchKey = $searchKey . $text . $or;
                         }
+                        $searchKey = substr($searchKey, 0, strlen($searchKey) - 4);
                     }
                     Log::info('searchKeyは: ' . $searchKey);
 
