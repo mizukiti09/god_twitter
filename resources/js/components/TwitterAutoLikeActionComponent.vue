@@ -64,7 +64,7 @@
         </div>
         <div class="c-appBtn">
             <a class="c-appBtn--none" :class="{'c-appBtn--auto': auto_like_flg}"
-                v-on:click="autoAction('Auto Like Search Keyword')">
+                v-on:click="autoAction('自動いいね')">
                 <span v-if="auto_like_flg">自動いいね中</span><span v-else>自動いいねする</span>
             </a>
         </div>

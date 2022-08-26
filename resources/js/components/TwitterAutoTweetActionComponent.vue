@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="c-appBtn"><a class="c-appBtn--none" id="js-tweet-btn" :class="{'c-appBtn--auto': auto_tweet_flg}"
-                v-on:click="autoAction('Auto Tweet')"><span v-if="auto_tweet_flg">自動ツイート中</span><span
+                v-on:click="autoAction('自動ツイート')"><span v-if="auto_tweet_flg">自動ツイート中</span><span
                     v-else>自動ツイートする</span></a></div>
     </div>
 </template>

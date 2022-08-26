@@ -4,7 +4,7 @@
             <div class="c-overlay">
                 <div class="c-overlay__contents">
                     <div class="c-overlay__ttl">{{ add_target }}</div>
-                    <div class="c-overlay__description"><span class="u-red">*</span>@を抜いたtwitterアカウント名<br class="u-sp_br">を入力してください。
+                    <div class="c-overlay__description"><span class="u-red">*</span>twitterアカウント名<br class="u-sp_br">を入力してください。
                     </div>
                     <div class="c-overlay__btnContainer c-overlay__btnContainer--auto">
                         <div class="c-search">
@@ -23,7 +23,7 @@
         </div>
         <div class="c-appBtn">
             <a class="c-appBtn--none" :class="{ 'c-appBtn--auto': auto_follow_flg }"
-                v-on:click="addAction('Add Target Account ')">
+                v-on:click="addAction('ターゲットアカウント登録')">
                 <span>TargetAccount登録</span>
             </a>
         </div>

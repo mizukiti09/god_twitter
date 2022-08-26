@@ -81,10 +81,10 @@
             </div>
         </div>
         <div class="c-appBtn"><a class="c-appBtn--none" :class="{'c-appBtn--auto': auto_follow_flg}"
-                v-on:click="autoFollowAction('Auto Follow Search Keyword')"><span
+                v-on:click="autoFollowAction('自動フォロー')"><span
                     v-if="auto_follow_flg">自動フォロー中</span><span v-else>自動フォローする</span></a></div>
         <div class="c-appBtn"><a class="c-appBtn--none" :class="{'c-appBtn--auto': auto_un_follow_flg}"
-                v-on:click="autoUnFollowAction('Auto UnFollow')"><span v-if="auto_un_follow_flg">自動アンフォロー中</span><span
+                v-on:click="autoUnFollowAction('自動アンフォロー')"><span v-if="auto_un_follow_flg">自動アンフォロー中</span><span
                     v-else>自動アンフォローする</span></a></div>
     </div>
 </template>
