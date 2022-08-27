@@ -107,8 +107,6 @@ export default {
         },
         setCookieCondition: function () {
             var select = document.getElementById('condition-like-select');
-
-            console.log(select.value)
             this.$vueCookies.config(60 * 60 * 24 * 30, '');
             this.$vueCookies.set('ConditionLike' + this.user_id + this.auth_screen_name, select.value);
 
@@ -148,13 +146,11 @@ export default {
                         this.keywords = arrayCookieData;
                         this.add_keyword = '';
                         this.$vueCookies.set('SearchLikeText' + this.user_id + this.auth_screen_name, arrayCookieData);
-                        console.log(this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name));
                     }
                 } else {
                     this.keywords = this.add_keyword;
                     this.$vueCookies.set('SearchLikeText' + this.user_id + this.auth_screen_name, this.add_keyword);
                     this.add_keyword = '';
-                    console.log(this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name));
                 }
             }
         },
@@ -166,7 +162,6 @@ export default {
             arrayCookieData.splice(index, 1);
             this.keywords = arrayCookieData;
             this.$vueCookies.set('SearchLikeText' + this.user_id + this.auth_screen_name, arrayCookieData);
-            console.log(this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name));
             const keywordDom = document.getElementById('like_' + keyword);
             keywordDom.remove();
 
@@ -209,7 +204,6 @@ export default {
                     this.$axios.post('/api/twitter/autoLikeSave', formData)
                         .then((res) => {
                             this.add_flg = true;
-                            console.log(res)
                             this.db_text = cookieData;
                             this.db_condition = cookieCondition;
                             alert('いいねKeywordを更新しました。')
@@ -233,12 +227,9 @@ export default {
 
                 this.$axios.post('/api/twitter/autoLikeStart', formData)
                     .then((res) => {
-                        console.log(res)
                         window.location.reload(false)
                     })
                     .catch((error) => {
-                        console.log('searchAutoLikeStartは正常に起動していません。')
-                        console.log(error)
                     })
             } else {
                 alert('Keywordを1つ以上設定する必要があります');
@@ -251,13 +242,9 @@ export default {
 
             this.$axios.post('/api/twitter/autoLikeStop', formData)
                 .then((res) => {
-                    console.log(res)
                     window.location.reload(false)
                 })
-                .catch((error) => {
-                    console.log('searchAutoLikeStopは正常に起動していません。')
-                    console.log(error)
-                })
+                .catch((error) => {alert('予期せぬシステムエラーです。')})
         },
     },
 }

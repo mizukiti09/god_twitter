@@ -16,12 +16,12 @@
     </div>
     @if ($auth_account)
         <div class="c-structure__aside__item">
-            <div class="c-structure__aside__item__attention">
-                <a href="{{ route('twitter.targetAccounts') }}">現在のTargetAccount一覧
-                    <span id="other-link-arrow"><i class="fas fa-arrow-circle-right icon-hover-right"></i></span>
+            <div class="c-structure__aside__item__head">TargetAccount</div>
+            <div class="c-appBtn">
+                <a href="{{ route('twitter.targetAccounts') }}" class="c-appBtn--none">
+                    ターゲットアカウント一覧
                 </a>
             </div>
-            <div class="c-structure__aside__item__head">TargetAccount</div>
             <twitter-target-account :user_id="{{ $user_id }}"
                 :auth_screen_name="{{ json_encode($auth_account->screen_name) }}"
                 :auto_follow_flg="{{ $auth_account->auto_follow_flg }}" :target="{{ json_encode($target) }}">
@@ -45,10 +45,12 @@
             </twitter-auto-like-action>
         </div>
         <div class="c-structure__aside__item">
-            <div class="c-structure__aside__item__attention"><a href="{{ route('twitter.tweetList') }}">現在のツイート予定一覧
-                    <span id="other-link-arrow"><i class="fas fa-arrow-circle-right icon-hover-right"></i></span></a>
-            </div>
             <div class="c-structure__aside__item__head">Tweet</div>
+            <div class="c-appBtn">
+                <a href="{{ route('twitter.tweetList') }}" class="c-appBtn--none">
+                    ツイート予定一覧
+                </a>
+            </div>
             <twitter-auto-tweet-action :user_id="{{ $user_id }}"
                 :auth_screen_name="{{ json_encode($auth_account->screen_name) }}"
                 :auto_tweet_flg="{{ $auth_account->auto_tweet_flg }}"></twitter-auto-tweet-action>

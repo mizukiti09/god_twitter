@@ -13,7 +13,7 @@
                                 <tr class="c-overlay__db__tr">
                                     <th class="c-overlay__db__th">登録Keyword</th>
 
-                                    <td class="c-overlay__db__td">{{db_text}}</td>
+                                    <td class="c-overlay__db__td"><div class="c-overlay__db__td__text" v-for="(text, i) in db_text" :key="i">{{text}}</div></td>
                                 </tr>
                                 <tr class="c-overlay__db__tr">
                                     <th class="c-overlay__db__th">登録Condition</th>
@@ -94,8 +94,8 @@ export default {
     props: ['user_id', 'auth_screen_name', 'auto_follow_flg', 'auto_un_follow_flg', 'db_search_text_condition'],
     data: function() {
         return {
-            db_text: this.isDbSearchText(),
-            db_condition: this.isDbCondition(),
+            db_text: this.dbSearchText(),
+            db_condition: this.dbCondition(),
             autoFollow: '',
             autoUnFollow: '',
             add_keyword: '',
@@ -110,14 +110,15 @@ export default {
         }
     },
     methods: {
-        isDbSearchText: function () {
+        dbSearchText: function () {
             if (this.db_search_text_condition) {
-                return this.db_search_text_condition.search_text;
+                var array_search_text = this.db_search_text_condition.search_text.split(',');
+                return array_search_text;
             } else {
                 return '';
             }
         },
-        isDbCondition: function () {
+        dbCondition: function () {
             if (this.db_search_text_condition) {
                 return this.db_search_text_condition.follow_condition;
             } else {
@@ -126,8 +127,6 @@ export default {
         },
         setCookieCondition: function () {
             var select = document.getElementById('condition-select');
-
-            console.log(select.value)
             this.$vueCookies.config(60 * 60 * 24 * 30, '');
             this.$vueCookies.set('Condition' + this.user_id + this.auth_screen_name, select.value);
 
@@ -173,13 +172,11 @@ export default {
                         this.keywords = arrayCookieData;
                         this.add_keyword = '';
                         this.$vueCookies.set('SearchText' + this.user_id + this.auth_screen_name, arrayCookieData);
-                        console.log(this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name));
                     }
                 } else {
                     this.keywords = this.add_keyword;
                     this.$vueCookies.set('SearchText' + this.user_id + this.auth_screen_name, this.add_keyword);
                     this.add_keyword = '';
-                    console.log(this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name));
                 }
             }
         },
@@ -191,7 +188,6 @@ export default {
             arrayCookieData.splice(index, 1);
             this.keywords = arrayCookieData;
             this.$vueCookies.set('SearchText' + this.user_id + this.auth_screen_name, arrayCookieData);
-            console.log(this.$vueCookies.get('SearchText' + this.user_id + this.auth_screen_name));
             const keywordDom = document.getElementById(keyword);
             keywordDom.remove();
 
@@ -233,14 +229,11 @@ export default {
 
                     this.$axios.post('/api/twitter/autoFollowSave', formData)
                         .then((res) => {
-                            console.log(res);
-                            this.db_text = cookieData;
+                            this.db_text = arrayCookieData;
                             this.db_condition = cookieCondition;
                             alert('フォローKeywordを更新しました。')
                         })
                         .catch((error) => {
-                            console.log('searchAutoFollowSaveは正常に起動していません。')
-                            console.log(error)
                         })
                 }   
             } else {
@@ -257,12 +250,9 @@ export default {
 
                 this.$axios.post('/api/twitter/autoFollowStart', formData)
                     .then((res) => {
-                        console.log(res)
                         window.location.reload(false)
                     })
                     .catch((error) => {
-                        console.log('searchAutoFollowStartは正常に起動していません。')
-                        console.log(error)
                     })
             } else {
                 alert('Keywordは1つ以上登録してから自動フォローしてください。');
@@ -275,13 +265,9 @@ export default {
 
             this.$axios.post('/api/twitter/autoFollowStop', formData)
                 .then((res) => {
-                    console.log(res)
                     window.location.reload(false)
                 })
-                .catch((error) => {
-                    console.log('searchAutoFollowStopは正常に起動していません。')
-                    console.log(error)
-                })
+                .catch((error) => {alert('予期せぬシステムエラーです。')})
         },
         autoUnFollowStart: function() {
             const formData = new FormData();
@@ -290,13 +276,9 @@ export default {
 
             this.$axios.post('/api/twitter/autoUnFollowStart', formData)
                 .then((res) => {
-                    console.log(res)
                     window.location.reload(false)
                 })
-                .catch((error) => {
-                    console.log('autoUnFollowStartは正常に起動していません。')
-                    console.log(error)
-                })
+                .catch((error) => {alert('予期せぬシステムエラーです。')})
         },
         autoUnFollowStop: function() {
             const formData = new FormData();
@@ -305,13 +287,9 @@ export default {
 
             this.$axios.post('/api/twitter/autoUnFollowStop', formData)
                 .then((res) => {
-                    console.log(res)
                     window.location.reload(false)
                 })
-                .catch((error) => {
-                    console.log('autoUnFollowStopは正常に起動していません。')
-                    console.log(error)
-                })
+                .catch((error) => {alert('予期せぬシステムエラーです。')})
         },
     },
 }

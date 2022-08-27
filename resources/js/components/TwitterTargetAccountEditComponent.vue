@@ -47,9 +47,6 @@ export default {
             delete_screen_name: '',
         }
     },
-    computed: {
-    
-    },
     methods: {
         loadPercent: function () {
             if (this.target.length == 0) {
@@ -64,7 +61,6 @@ export default {
                         return result = 100;
                     }
 
-                    // return Math.floor(result);
                     return result;
                 }
             }
@@ -113,16 +109,12 @@ export default {
 
             this.$axios.post('/api/twitter/deleteTargetAccount', formData)
                 .then((res) => {
-                    console.log(res)
                     if (this.target_accounts.length == 1) {
                         $cookies.remove('SearchText' + this.user_id + this.auth_screen_name);
                     }
                     window.location.reload(false)
                 })
-                .catch((error) => {
-                    console.log('autoTweetStopは正常に起動していません。')
-                    console.log(error)
-                })
+                .catch((error) => {alert('予期せぬシステムエラーです。')})
         },
     },
 }

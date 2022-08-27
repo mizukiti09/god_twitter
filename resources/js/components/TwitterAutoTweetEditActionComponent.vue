@@ -143,13 +143,8 @@ export default {
                     var tweetCount = $("#js-tweet-count").text();
                     tweetCount = Number(tweetCount) - 1;
                     $("#js-tweet-count").text(tweetCount);
-
-                    console.log('okDeleteは正常に起動しました。')
                 })
-                .catch((error) => {
-                    console.log(error)
-                    console.log('okDeleteは正常に起動していません。')
-                })
+                .catch((error) => {alert('予期せぬシステムエラーです。')})
         },
         okEdit: function () {
             var textareaValue = this.tt[this.target_key];
@@ -182,15 +177,13 @@ export default {
                             this.target_tweet_id = '';
                             this.formal_text = '';
                             this.formal_time = '';
-                            console.log('editTweetValueは正常に起動しました。')
                         })
                         .catch((error) => {
-                            console.log(error)
-                            console.log('editTweetValueは正常に起動していません。')
                         })
                 }
             } else if(textareaValue.length > 140) {
                 alert('tweet内容は140文字以下でご入力ください');
+
             } else {
                 formData.append('tweet_id', this.target_tweet_id);
                 formData.append('tweet_text', textareaValue);
@@ -206,21 +199,15 @@ export default {
                         this.editAction = false;
                         this.target_key = '';
                         this.target_tweet_id = '';
-                        console.log('editOkは正常に起動しました。')
                     })
-                    .catch((error) => {
-                        console.log(error)
-                        console.log('editOkは正常に起動していません。')
-                    })
+                    .catch((error) => {alert('予期せぬシステムエラーです。')})
             }
         },
         dateTimes: function () {
             var array = [];
             
             $.each(this.tweet_list, function(key, value) {
-
                 array.push(value.tweetTime);
-            
             })
 
             return array;
@@ -229,22 +216,16 @@ export default {
             var array = [];
             
             $.each(this.tweet_list, function(key, value) {
-
                 array.push(value.tweetText);
-            
             })
 
             return array;
         },
         userIds: function () {
             var array = [];
-            
             $.each(this.tweet_list, function(key, value) {
-
                 array.push(value.id);
-            
             })
-
             return array;
         },
     },

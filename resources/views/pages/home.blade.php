@@ -4,7 +4,7 @@
     <div class="u-inner">
         <h1>
             <i class="fab fa-twitter-square"></i>
-            Auto Services
+            サービス概要
         </h1>
 
         <div class="p-home__contents">
@@ -18,7 +18,7 @@
 
             <h1>
                 <i class="fas fa-book"></i>
-                Document Links
+                機能説明ページ
             </h1>
             <ul class="p-home__list">
                 <li class="p-home__list__img p-home__list__img--start">

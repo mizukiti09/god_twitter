@@ -94,10 +94,7 @@ export default {
                 .then((res) => {
                     window.location.reload(false);
                 })
-                .catch((error) => {
-                    console.log('okDeleteは正常に動いてません');
-                    console.log(error)
-                })
+                .catch((error) => {alert('予期せぬシステムエラーです。')})
         }
     },
 }

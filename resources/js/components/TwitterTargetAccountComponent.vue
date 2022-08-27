@@ -24,7 +24,7 @@
         <div class="c-appBtn">
             <a class="c-appBtn--none" :class="{ 'c-appBtn--auto': auto_follow_flg }"
                 v-on:click="addAction('ターゲットアカウント登録')">
-                <span>TargetAccount登録</span>
+                <span>ターゲットアカウント登録</span>
             </a>
         </div>
     </div>
@@ -62,22 +62,17 @@ export default {
                         this.loading = false;
                         this.target_screen_nam = '';
                         this.add_target = '';
-                        console.log('addAccountは正常に起動しました。');
                         if (!alert('登録完了しました。')) {
                             window.location.reload(false)
                         }
                     })
                     .catch((error) => {
                         this.loading = false;
-                        console.log(error);
                         if (error.response.data.message.includes('timed out')) {
                             alert('Twitter API制限の為、少し時間を開けてから登録お願いします。');
                         } else {
                             alert('正しく入力されていないのか、Twitterサービスに登録されていないアカウントかもしれません。登録されているアカウント名を正しくご入力ください。');
                         }
-                        
-                        console.log(error.response.data.message);
-                        console.log('addAccountは正常に起動していません。');
                     })
             }
         },

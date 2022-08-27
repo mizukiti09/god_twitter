@@ -57,6 +57,9 @@
             background-color: #eee;
             padding: 10px 0;
             vertical-align: middle;
+            &__text {
+                padding: 3px;
+            }
         }
     }
     &__targetName {
@@ -79,6 +82,8 @@
         background: #fff;
         padding: 40px 40px 8px;
         border-radius: 12px;
+        max-height: 620px;
+        max-width: 373px;
     }
     &__btnContainer {
         padding: 25px;
