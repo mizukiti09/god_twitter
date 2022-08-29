@@ -30,7 +30,7 @@ class CreateAutoFollowDatasTable extends Migration
                 ->onDelete('cascade');
             $table->integer('cursor_count')->default(0);
             $table->bigInteger('next_cursor')->default(0);
-            $table->string('search_text')->nullable()->default(null);
+            $table->text('search_text')->nullable()->default(null);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
         });

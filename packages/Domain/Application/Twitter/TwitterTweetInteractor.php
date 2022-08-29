@@ -29,12 +29,9 @@ class TwitterTweetInteractor implements TwitterAutoTweetUseCaseInterface
         $tweet_text,
         $date_value
     ) {
-        Log::debug('autoTweetSaveHandle Start (VueからのPOST API)');
-        Log::info($user_id);
-        Log::info($screen_name);
-        Log::info($tweet_text);
-        Log::info($date_value);
-
+        if (mb_strlen($tweet_text) > 140) {
+            return;
+        }
         $halfDayUnixTime = 0;
 
         if (!empty($date_value)) {
@@ -59,33 +56,24 @@ class TwitterTweetInteractor implements TwitterAutoTweetUseCaseInterface
 
     public function onAutoTweetHandle($user_id, $screen_name)
     {
-        Log::info($user_id);
-        Log::info($screen_name);
-        Log::debug('onAutoTweetHandle Start (VueからのPOST API)');
-
         $this->u_repository->onAutoTweetFlg($user_id, $screen_name);
     }
 
     public function stopAutoTweetHandle($user_id, $screen_name)
     {
-        Log::debug('stopAutoTweetHandle Start (VueからのPOST API)');
-
         $this->u_repository->offAutoTweetFlg($user_id, $screen_name);
     }
 
     public function tweetDeleteHandle($id)
     {
-        Log::debug('tweetDeleteHandle Start (VueからのPOST API)');
-
         $this->t_repository->deleteAutoTweetData($id);
     }
 
     public function tweetEditHandle($id, $text, $time)
     {
-        Log::debug('tweetEditHandle Start (VueからのPOST API)');
-        Log::debug('id:' . $id);
-        Log::debug('text:' . $text);
-        Log::debug('time:' . $time);
+        if (mb_strlen($text) > 140) {
+            return;
+        }
 
         $halfDayUnixTime = 0;
         if (!empty($time)) {

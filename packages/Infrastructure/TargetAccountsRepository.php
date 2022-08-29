@@ -84,7 +84,7 @@ class TargetAccountsRepository implements TargetAccountsRepositoryInterface
             Log::info('auto_follow_data->target_account_id :' . $auto_follow_data->target_account_id);
             Log::info('target_id :' . $target_id);
 
-            if ($auto_follow_data->target_account_id == $target_id) {
+            if ($auto_follow_data->target_account_id === $target_id) {
                 Log::info('target_account_id と target_id は同じ値です');
 
                 $param = [
@@ -103,7 +103,7 @@ class TargetAccountsRepository implements TargetAccountsRepositoryInterface
 
                 $target_array_key = 0;
                 foreach ($targets as $key => $target) {
-                    if ($target->id == $target_id) {
+                    if ($target->id === $target_id) {
                         $target_array_key = $key;
                     }
                 }

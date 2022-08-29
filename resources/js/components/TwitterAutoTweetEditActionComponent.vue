@@ -151,7 +151,7 @@ export default {
             var timeValue = this.dt[this.target_key];
             const formData = new FormData();
 
-            if (textareaValue.length == 0) {
+            if (textareaValue.length === 0) {
                 if(!confirm('textareaの中身が空です。削除されますか？')){
                     /* キャンセルの時の処理 */
 

@@ -57,7 +57,7 @@ class AutoUnFollowCommand extends Command
 
                 // APIのリクエスト上限にひっかからないよう、いいね再開15分確実に空けてから再開させることのチェック
                 // 一番最初の時はチェックはスルーされる
-                if ($u_repository->checkRestartUnFollowUnixTime($user_twitter_account_id) == true) {
+                if ($u_repository->checkRestartUnFollowUnixTime($user_twitter_account_id) === true) {
                     Log::info('checkRestartUnFollowUnixTime の チェックOK');
 
                     // 24時間経過していたらunFollow_countをリセットする
@@ -68,7 +68,7 @@ class AutoUnFollowCommand extends Command
                     $account = $u_repository->getAccount($user_twitter_account_id);
 
                     // unFollow_countが1000件未満かチェック
-                    if ($u_repository->unFollowCountUpperCheck($user_twitter_account_id) == true) {
+                    if ($u_repository->unFollowCountUpperCheck($user_twitter_account_id) === true) {
                         Log::info('unFollowCountUpperCheck 1000件未満OK');
 
                         // 一定時間過ぎたフォローしたTwitterユーザーのIDを取得
@@ -127,7 +127,7 @@ class AutoUnFollowCommand extends Command
                                         ));
 
                                         if (!empty($result[0])) {
-                                            if (in_array('followed_by', $result[0]->connections) == false) {
+                                            if (in_array('followed_by', $result[0]->connections) === false) {
                                                 Log::info('フォローはされてません');
                                                 $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->post("friendships/destroy", array(
                                                     "user_id" => $followed_data->twitterId,
@@ -163,7 +163,7 @@ class AutoUnFollowCommand extends Command
                                         "user_id" => $followed_data->twitterId,
                                     ));
                                     if (!empty($result[0])) {
-                                        if (in_array('followed_by', $result[0]->connections) == false) {
+                                        if (in_array('followed_by', $result[0]->connections) === false) {
                                             Log::info('フォローはされてません');
                                             $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->post("friendships/destroy", array(
                                                 "user_id" => $followed_data->twitterId,
@@ -196,10 +196,10 @@ class AutoUnFollowCommand extends Command
                     } else {
                         Log::info('アンフォローカウントが1000件以上ある為、自動アンフォローはできません。自動アンフォローモードをOFFにします。');
                         $u_repository->offAutoUnFollowFlg($account->user_id, $account->screen_name);
-                    } // if ($u_repository->unFollowCountUpperCheck($user_twitter_account_id) == true) {
+                    } // if ($u_repository->unFollowCountUpperCheck($user_twitter_account_id) === true) {
                 } else {
                     Log::info('checkRestartUnFollowUnixTime の チェックNG。もうしばらくお待ちください。');
-                } // if ($u_repository->checkRestartFollowUnixTime($user_twitter_account_id) == true) {
+                } // if ($u_repository->checkRestartFollowUnixTime($user_twitter_account_id) === true) {
             } // foreach ($userTwitterAccountIds as $key => $user_twitter_account_id) {
         } // if (!empty($userTwitterAccountIds[0])) {
 

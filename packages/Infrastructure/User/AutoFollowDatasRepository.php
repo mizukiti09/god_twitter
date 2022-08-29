@@ -77,7 +77,7 @@ class AutoFollowDatasRepository implements AutoFollowDatasRepositoryInterface
 
         $target_array_key = 0;
         foreach ($targets as $key => $target) {
-            if ($target->id == $target_account_id) {
+            if ($target->id === $target_account_id) {
                 $target_array_key = $key;
             }
         }
@@ -115,7 +115,7 @@ class AutoFollowDatasRepository implements AutoFollowDatasRepositoryInterface
             ->pluck('target_account_id')
             ->first();
 
-        if ($targets[$array_last_key]->id == $target_account_id) {
+        if ($targets[$array_last_key]->id === $target_account_id) {
             return true;
         } else {
             return false;
@@ -316,5 +316,21 @@ class AutoFollowDatasRepository implements AutoFollowDatasRepositoryInterface
             ->update([
                 'target_account_id' => $targets[0]->id,
             ]);
+    }
+
+    public function reset($user_id, $screen_name)
+    {
+        $accountId = DB::table('user_twitter_accounts')
+            ->where('user_id', $user_id)
+            ->where('screen_name', $screen_name)
+            ->select([
+                'id'
+            ])
+            ->get()
+            ->first();
+
+        DB::table('auto_follow_datas')
+            ->where('user_twitter_account_id', $accountId->id)
+            ->delete();
     }
 }

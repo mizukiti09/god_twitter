@@ -57,7 +57,7 @@ class AutoFollowAccountsCommand extends Command
 
                 // APIのリクエスト上限にひっかからないよう、いいね再開15分確実に空けてから再開させることのチェック
                 // 一番最初の時はチェックはスルーされる
-                if ($u_repository->checkRestartFollowUnixTime($user_twitter_account_id) == true) {
+                if ($u_repository->checkRestartFollowUnixTime($user_twitter_account_id) === true) {
                     Log::info('checkRestartFollowUnixTime の チェックOK');
 
                     // フォローデータ
@@ -65,7 +65,7 @@ class AutoFollowAccountsCommand extends Command
                     // フォローアカウント保存フラグ
                     $follow_action_flg = $followData->follow_action_flg;
 
-                    if ($follow_action_flg == 0) {
+                    if ($follow_action_flg === 0) {
                         Log::info('フォローアカウント保存フラグ0');
                         // ターゲットアカウントのスクリーンネーム
                         $target_account_screen_name = $followData->screen_name;
@@ -127,17 +127,17 @@ class AutoFollowAccountsCommand extends Command
                                     // 同じ数になればデータベースに保存する。
 
 
-                                    if ($unf_repository->checkUnFollowedExist($user_twitter_account_id, $user->id) == false) {
+                                    if ($unf_repository->checkUnFollowedExist($user_twitter_account_id, $user->id) === false) {
                                         // ユーザー都度のアンフォローリストに該当のtwitterIdが存在しなければフォローリストへ追加する
 
                                         $check_count = 0;
-                                        if ($user->following == false) {
+                                        if ($user->following === false) {
                                             foreach ($array_search_text as $text) {
                                                 if ($condition !== 'OR') {
                                                     if (strpos($user->description, $text) !== false) {
                                                         $check_count += 1;
                                                     }
-                                                    if (count($array_search_text) == $check_count) {
+                                                    if (count($array_search_text) === $check_count) {
                                                         array_push($listNames, $user->screen_name);
                                                         array_push($listIds, $user->id);
                                                     }
@@ -170,10 +170,10 @@ class AutoFollowAccountsCommand extends Command
                         }
                     } else {
                         Log::info('フォローアカウント保存フラグ1。自動フォローを実施します。');
-                    } // if ($follow_action_flg == 0)
+                    } // if ($follow_action_flg === 0)
                 } else {
                     Log::info('checkRestartFollowUnixTime の チェックNG。もうしばらくお待ちください。');
-                } // if ($u_repository->checkRestartFollowUnixTime($user_twitter_account_id) == true) {
+                } // if ($u_repository->checkRestartFollowUnixTime($user_twitter_account_id) === true) {
             } // foreach ($userTwitterAccountIds as $user_twitter_account_id)
         }
 

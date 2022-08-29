@@ -58,7 +58,7 @@ class AutoTweetCommand extends Command
             Log::info($currentUnixTime);
 
             foreach ($userTwitterAccountIds as $userTwitterAccountId) {
-                if ($t_repository->notExistDataResetAutoFlg($userTwitterAccountId) == false) {
+                if ($t_repository->notExistDataResetAutoFlg($userTwitterAccountId) === false) {
                     Log::info('実行user_twitter_account_id:' . $userTwitterAccountId);
                     $autoTweetDatas = $t_repository->getAutoTweetDatas($userTwitterAccountId);
 

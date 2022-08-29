@@ -49,10 +49,10 @@ export default {
     },
     methods: {
         loadPercent: function () {
-            if (this.target.length == 0) {
+            if (this.target.length === 0) {
                 return '';
             } else {
-                if (this.target.cursor_count == 0) {
+                if (this.target.cursor_count === 0) {
                     return '';
                 } else {
                     var result = this.target.cursor_count / this.target.follower * 100;
@@ -66,7 +66,7 @@ export default {
             }
         },
         checkLoad: function (check_name) {
-            if ((this.load_count == 100) && (check_name == this.target.screen_name)) {
+            if ((this.load_count === 100) && (check_name === this.target.screen_name)) {
                 return true;
             } else {
             return false;
@@ -88,7 +88,7 @@ export default {
             const formData = new FormData();
             var reset_auto_follow_flg = false;
 
-            if (this.delete_screen_name == this.target.screen_name && this.auto_follow_flg) {
+            if (this.delete_screen_name === this.target.screen_name && this.auto_follow_flg) {
                 if (!confirm('こちらのターゲットアカウントで現在、自動フォローモードONになっています。自動フォローモードOFFの状態であれば削除できます。自動フォローモードをOFFにして削除しますか？')) {
                     /* キャンセルの時の処理 */
                     this.deleteAction = false;
@@ -109,7 +109,7 @@ export default {
 
             this.$axios.post('/api/twitter/deleteTargetAccount', formData)
                 .then((res) => {
-                    if (this.target_accounts.length == 1) {
+                    if (this.target_accounts.length === 1) {
                         $cookies.remove('SearchText' + this.user_id + this.auth_screen_name);
                     }
                     window.location.reload(false)

@@ -23,6 +23,7 @@ Route::namespace('Twitter')->group(function () {
     Route::post('twitter/addTargetAccount', 'TwitterFollowController@addTargetAccount')->name('twitter.addTargetAccount');
     Route::post('twitter/deleteTargetAccount', 'TwitterFollowController@deleteTargetAccount')->name('twitter.deleteTargetAccount');
     Route::post('twitter/autoFollowSave', 'TwitterFollowController@autoFollowSave')->name('twitter.autoFollowSave');
+    Route::post('twitter/autoFollowReset', 'TwitterFollowController@autoFollowReset')->name('twitter.autoFollowReset');
     Route::post('twitter/autoFollowStart', 'TwitterFollowController@autoFollowStart')->name('twitter.autoFollowStart');
     Route::post('twitter/autoFollowStop', 'TwitterFollowController@autoFollowStop')->name('twitter.autoFollowStop');
     Route::post('twitter/autoUnFollowStart', 'TwitterFollowController@autoUnFollowStart')->name('twitter.autoUnFollowStart');

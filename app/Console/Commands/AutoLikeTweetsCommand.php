@@ -57,7 +57,7 @@ class AutoLikeTweetsCommand extends Command
 
                 // APIのリクエスト上限にひっかからないよう、いいね再開15分確実に空けてから再開させることのチェック
                 // 一番最初の時はチェックはスルーされる
-                if ($u_repository->checkRestartLikeUnixTime($user_twitter_account_id) == true) {
+                if ($u_repository->checkRestartLikeUnixTime($user_twitter_account_id) === true) {
                     Log::info('checkRestartLikeUnixTime の チェックOK');
 
                     // フォロワーサーチキーワード
@@ -70,13 +70,13 @@ class AutoLikeTweetsCommand extends Command
                     Log::info('アカウントユーザーID:' . $account->user_id);
                     Log::info('アカウントスクリーンネーム' . $account->screen_name);
 
-                    if ($condition == ('AND' || 'NOT')) {
+                    if ($condition === ('AND' || 'NOT')) {
                         Log::info('コンディションは:' . $condition);
                         $searchKey = '';
                         foreach ($array_search_text as $text) {
                             $searchKey = $searchKey . $text . ' ';
                         }
-                    } else if ($condition == 'OR') {
+                    } else if ($condition === 'OR') {
                         Log::info('$array_search_text:' . $array_search_text);
 
                         Log::info('コンディションは:' . $condition);
@@ -119,7 +119,7 @@ class AutoLikeTweetsCommand extends Command
                     Log::info('tweet 保存完了');
                 } else {
                     Log::info('checkRestartLikeUnixTime の チェックNG。もうしばらくお待ちください。');
-                } // if ($u_repository->checkRestartLikeUnixTime($user_twitter_account_id) == true) {
+                } // if ($u_repository->checkRestartLikeUnixTime($user_twitter_account_id) === true) {
             } // foreach ($userTwitterAccountIds as $user_twitter_account_id) {
         }
     }

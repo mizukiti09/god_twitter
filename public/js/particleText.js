@@ -18,11 +18,11 @@
         var easing = 0.09;
 
         if (options.speed) {
-            if (options.speed == "middle") {
+            if (options.speed === "middle") {
                 easing = 0.07;
-            } else if (options.speed == "slow") {
+            } else if (options.speed === "slow") {
                 easing = 0.04;
-            } else if (options.speed == "high") {
+            } else if (options.speed === "high") {
                 easing = 0.09;
             }
         }

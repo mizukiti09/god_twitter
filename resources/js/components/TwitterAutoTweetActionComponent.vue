@@ -84,7 +84,7 @@ export default {
                     })
             } else if (this.tweetText.length > 140) {
                 alert('tweet内容は140文字以下でご入力ください');
-            } else if(this.tweetText.length == 0) {
+            } else if(this.tweetText.length === 0) {
                 alert('textareaが空です');
             }
         },

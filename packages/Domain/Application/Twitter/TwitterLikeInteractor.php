@@ -24,26 +24,23 @@ class TwitterLikeInteractor implements TwitterAutoLikeUseCaseInterface
 
     public function autoLikeSaveHandle($user_id, $screen_name, $array_search_text, $condition)
     {
-        Log::debug('autoLikeSaveHandle Start (VueからのPOST API)');
-        Log::info($user_id);
-        Log::info($screen_name);
-        Log::info($array_search_text);
+        $arrayText = explode(",", $array_search_text);
 
+        foreach ($arrayText as $text) {
+            if (mb_strlen($text) > 140) {
+                return;
+            }
+        }
         $this->l_repository->saveArraySearchText($user_id, $screen_name, $array_search_text, $condition);
     }
 
     public function startAutoLikeHandle($user_id, $screen_name)
     {
-        Log::debug('autoLikeStartHandle Start (VueからのPOST API)');
-        Log::info($user_id);
-        Log::info($screen_name);
         $this->u_repository->onAutoLikeFlg($user_id, $screen_name);
     }
 
     public function stopAutoLikeHandle($user_id, $screen_name)
     {
-        Log::debug('stopAutoLikeHandle Start (VueからのPOST API)');
-
         $this->u_repository->offAutoLikeFlg($user_id, $screen_name);
     }
 }

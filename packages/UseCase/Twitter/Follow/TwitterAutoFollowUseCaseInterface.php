@@ -12,6 +12,11 @@ interface TwitterAutoFollowUseCaseInterface
     /**
      * @param $user_id, $screen_name
      */
+    public function autoFollowResetHandle($user_id, $screen_name);
+
+    /**
+     * @param $user_id, $screen_name
+     */
     public function startAutoFollowHandle($user_id, $screen_name);
 
     /**

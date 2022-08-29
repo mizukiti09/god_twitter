@@ -113,11 +113,11 @@ export default {
             if (this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name)) {
                 var cookieData = this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name);
                 var arrayCookieData = cookieData.split( ',' );
-                if ( select.value == 'NOT') {
+                if ( select.value === 'NOT') {
                     if (arrayCookieData.length > 1) {
                         alert('NOT の場合はKeywordを一つにする必要があります');
                     }
-                } else if ( (select.value == 'AND') || (select.value == 'OR')) {
+                } else if ( (select.value === 'AND') || (select.value === 'OR')) {
                     if (arrayCookieData.length <= 1) {
                         alert('AND か OR の場合はKeywordを複数にする必要があります');
                     }
@@ -165,7 +165,7 @@ export default {
             const keywordDom = document.getElementById('like_' + keyword);
             keywordDom.remove();
 
-            if (this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name) == null) {
+            if (this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name) === null) {
                 $cookies.remove('SearchLikeText' + this.user_id + this.auth_screen_name);
             }
         },
@@ -188,9 +188,9 @@ export default {
                 var arrayCookieData = cookieData.split(',');
                 var cookieCondition = this.$vueCookies.get('ConditionLike' + this.user_id + this.auth_screen_name);
 
-                if (arrayCookieData.length > 1 && this.$vueCookies.get('ConditionLike' + this.user_id + this.auth_screen_name) == 'NOT') {
+                if (arrayCookieData.length > 1 && this.$vueCookies.get('ConditionLike' + this.user_id + this.auth_screen_name) === 'NOT') {
                     alert('NOT の場合はKeywordを一つにする必要があります');
-                } else if (arrayCookieData.length <= 1 && this.$vueCookies.get('ConditionLike' + this.user_id + this.auth_screen_name) == ('AND' || 'OR')) {
+                } else if (arrayCookieData.length <= 1 && this.$vueCookies.get('ConditionLike' + this.user_id + this.auth_screen_name) === ('AND' || 'OR')) {
                     if (arrayCookieData.length <= 1) {
                         alert('AND か OR の場合はKeywordを複数にする必要があります');
                     }

@@ -443,6 +443,10 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
         DB::table('user_twitter_accounts')
             ->where('id', $id)
             ->increment('follow_count');
+
+        DB::table('user_twitter_accounts')
+            ->where('id', $id)
+            ->increment('follow');
     }
 
     public function unFollowCountSave($id)

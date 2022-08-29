@@ -44,6 +44,14 @@ class TwitterFollowController extends Controller
         );
     }
 
+    public function autoFollowReset(Request $request, TwitterAutoFollowUseCaseInterface $useCase)
+    {
+        $useCase->autoFollowResetHandle(
+            $request->user_id,
+            $request->screen_name
+        );
+    }
+
     public function autoFollowStart(Request $request, TwitterAutoFollowUseCaseInterface $useCase)
     {
         $useCase->startAutoFollowHandle($request->user_id, $request->screen_name);
