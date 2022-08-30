@@ -179,7 +179,7 @@ export default {
             return ;
            }
         },
-        searchAutoLikeSave: function() {
+        searchAutoLikeSave: async function() {
             this.$vueCookies.config(60 * 60 * 24 * 30, '');
 
             if (this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name)) {
@@ -201,7 +201,7 @@ export default {
                     formData.append('array_search_text', arrayCookieData);
                     formData.append('condition', cookieCondition);
 
-                    this.$axios.post('/api/twitter/autoLikeSave', formData)
+                    await this.$axios.post('/api/twitter/autoLikeSave', formData)
                         .then((res) => {
                             this.add_flg = true;
                             this.db_text = cookieData;
@@ -219,13 +219,13 @@ export default {
                 alert('Keywordは1つ以上設定してください。');
             }
         },
-        searchAutoLikeStart: function () {
+        searchAutoLikeStart: async function () {
             if (this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name)) {
                 const formData = new FormData();
                 formData.append('user_id', this.user_id);
                 formData.append('screen_name', this.auth_screen_name);
 
-                this.$axios.post('/api/twitter/autoLikeStart', formData)
+                await this.$axios.post('/api/twitter/autoLikeStart', formData)
                     .then((res) => {
                         window.location.reload(false)
                     })
@@ -235,12 +235,12 @@ export default {
                 alert('Keywordを1つ以上設定する必要があります');
             }
         },
-        searchAutoLikeStop: function() {
+        searchAutoLikeStop: async function() {
             const formData = new FormData();
             formData.append('user_id', this.user_id);
             formData.append('screen_name', this.auth_screen_name);
 
-            this.$axios.post('/api/twitter/autoLikeStop', formData)
+            await this.$axios.post('/api/twitter/autoLikeStop', formData)
                 .then((res) => {
                     window.location.reload(false)
                 })

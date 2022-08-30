@@ -65,7 +65,7 @@ export default {
                 window.location.reload(false)
             } 
         },
-        autoTweet: function () {
+        autoTweet: async function () {
             if ((this.tweetText.length <= 140) && (this.tweetText.length > 0)) {
                 const formData = new FormData();
                 formData.append('user_id', this.user_id);
@@ -73,38 +73,37 @@ export default {
                 formData.append('tweet_text', this.tweetText);
                 formData.append('date_value', this.dateValue);
 
-                this.$axios.post('/api/twitter/autoTweet', formData)
+                await this.$axios.post('/api/twitter/autoTweet', formData)
                     .then((res) => {
                         this.add_keyword = this.add_keyword + 1;
                         this.dateValue = '';
                         this.tweetText = '';
                         alert('tweet内容を登録しました。');
                     })
-                    .catch((error) => {
-                    })
+                    .catch((error) => {alert('予期せぬシステムエラーです。')})
             } else if (this.tweetText.length > 140) {
                 alert('tweet内容は140文字以下でご入力ください');
             } else if(this.tweetText.length === 0) {
                 alert('textareaが空です');
             }
         },
-        autoTweetOn: function () {
+        autoTweetOn: async function () {
             const formData = new FormData();
             formData.append('user_id', this.user_id);
             formData.append('screen_name', this.auth_screen_name);
 
-            this.$axios.post('/api/twitter/autoTweetOn', formData)
+            await this.$axios.post('/api/twitter/autoTweetOn', formData)
                 .then((res) => {
                     window.location.reload(false)
                 })
                 .catch((error) => {alert('予期せぬシステムエラーです。')})
         },
-        autoTweetStop: function () {
+        autoTweetStop: async function () {
             const formData = new FormData();
             formData.append('user_id', this.user_id);
             formData.append('screen_name', this.auth_screen_name);
 
-            this.$axios.post('/api/twitter/autoTweetStop', formData)
+            await this.$axios.post('/api/twitter/autoTweetStop', formData)
                 .then((res) => {
                     window.location.reload(false)
                 })

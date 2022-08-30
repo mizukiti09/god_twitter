@@ -264,7 +264,7 @@ export default {
                 return;
             }
         },
-        searchAutoFollowSave: function() {
+        searchAutoFollowSave: async function() {
 
             this.$vueCookies.config(60 * 60 * 24 * 30, '');
 
@@ -294,7 +294,7 @@ export default {
                     formData.append('array_search_text', arrayCookieData);
                     formData.append('condition', cookieCondition);
 
-                    this.$axios.post('/api/twitter/autoFollowSave', formData)
+                    await this.$axios.post('/api/twitter/autoFollowSave', formData)
                         .then((res) => {
                             console.log(res);
                             if (res === 'keywordは140文字以内でご入力ください。') {
@@ -309,7 +309,7 @@ export default {
                 }
             }
         },
-        reset: function() {
+        reset: async function() {
             this.validAutoMode(this.auto_follow_flg, 'リセットする場合は自動フォローを止めてからリセットしてください。');
 
             if (!this.err_msg) {
@@ -319,7 +319,7 @@ export default {
                     const formData = new FormData();
                     formData.append('user_id', this.user_id);
                     formData.append('screen_name', this.auth_screen_name);
-                    this.$axios.post('/api/twitter/autoFollowReset', formData)
+                    await this.$axios.post('/api/twitter/autoFollowReset', formData)
                         .then((res) => {
                             console.log(res);
                             this.db_text = '';

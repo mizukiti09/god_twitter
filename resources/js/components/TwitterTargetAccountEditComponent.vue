@@ -84,7 +84,7 @@ export default {
             this.target_id = '';
             this.target_dom_key = '';
         },
-        okDelete: function () {
+        okDelete: async function () {
             const formData = new FormData();
             var reset_auto_follow_flg = false;
 
@@ -107,7 +107,7 @@ export default {
             formData.append('target_id', this.target_id);
             formData.append('reset_auto_follow_flg', reset_auto_follow_flg);
 
-            this.$axios.post('/api/twitter/deleteTargetAccount', formData)
+            await this.$axios.post('/api/twitter/deleteTargetAccount', formData)
                 .then((res) => {
                     if (this.target_accounts.length === 1) {
                         $cookies.remove('SearchText' + this.user_id + this.auth_screen_name);

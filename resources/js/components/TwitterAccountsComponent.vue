@@ -77,12 +77,12 @@ export default {
             this.deleteAction = false;
             this.deleteName = '';
         },
-        okDelete: function() {
+        okDelete: async function() {
             const formData = new FormData();
             
             formData.append('screen_name', this.deleteName);
 
-            this.$axios.post('/api/twitter/account/delete', formData)
+            await this.$axios.post('/api/twitter/account/delete', formData)
                 .then((res) => {
                     window.location.reload(false);
                 })

@@ -128,12 +128,12 @@ export default {
             this.target_key = '';
             this.target_tweet_id = '';
         },
-        okDelete: function() {
+        okDelete: async function() {
             const formData = new FormData();
             
             formData.append('tweet_id', this.target_id);
 
-            this.$axios.post('/api/twitter/tweetDelete', formData)
+            await this.$axios.post('/api/twitter/tweetDelete', formData)
                 .then((res) => {
                     const tweetDom = document.getElementById('tweet_data' + this.target_dom_key);
                     this.del_keys.push(this.target_dom_key);
@@ -146,7 +146,7 @@ export default {
                 })
                 .catch((error) => {alert('予期せぬシステムエラーです。')})
         },
-        okEdit: function () {
+        okEdit: async function () {
             var textareaValue = this.tt[this.target_key];
             var timeValue = this.dt[this.target_key];
             const formData = new FormData();
@@ -164,7 +164,7 @@ export default {
                 } else {
                     formData.append('tweet_id', this.target_tweet_id);
 
-                    this.$axios.post('/api/twitter/tweetDelete', formData)
+                    await this.$axios.post('/api/twitter/tweetDelete', formData)
                         .then((res) => {
                             const tweetDom = document.getElementById('tweet_data' + this.target_key);
                             tweetDom.remove();
@@ -189,7 +189,7 @@ export default {
                 formData.append('tweet_text', textareaValue);
                 formData.append('tweet_time', timeValue);
 
-                this.$axios.post('/api/twitter/tweetEdit', formData)
+                await this.$axios.post('/api/twitter/tweetEdit', formData)
                     .then((res) => {
                         this.tweet_list[this.target_key].tweetText = textareaValue;
                         this.tweet_list[this.target_key].tweetTime = timeValue;

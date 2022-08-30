@@ -47,7 +47,7 @@ export default {
         addCancel: function () {
             this.add_target = '';
         },
-        addAccount: function () {
+        addAccount: async function () {
             if (this.target_screen_name) {
                 const formData = new FormData();
 
@@ -56,8 +56,8 @@ export default {
                 formData.append('target_screen_name', this.target_screen_name);
 
                 this.loading = true;
-                
-                this.$axios.post('/api/twitter/addTargetAccount', formData)
+
+                await this.$axios.post('/api/twitter/addTargetAccount', formData)
                     .then((res) => {
                         this.loading = false;
                         this.target_screen_nam = '';
