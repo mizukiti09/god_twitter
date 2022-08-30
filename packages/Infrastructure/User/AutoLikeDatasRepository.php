@@ -65,4 +65,20 @@ class AutoLikeDatasRepository implements AutoLikeDatasRepositoryInterface
 
         return $data;
     }
+
+    public function reset($user_id, $screen_name)
+    {
+        $accountId = DB::table('user_twitter_accounts')
+            ->where('user_id', $user_id)
+            ->where('screen_name', $screen_name)
+            ->select([
+                'id'
+            ])
+            ->get()
+            ->first();
+
+        DB::table('auto_like_datas')
+            ->where('user_twitter_account_id', $accountId->id)
+            ->delete();
+    }
 }

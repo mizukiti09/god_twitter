@@ -18,4 +18,9 @@ interface TwitterAutoLikeUseCaseInterface
      * @param $user_id
      */
     public function stopAutoLikeHandle($user_id, $screen_name);
+
+    /**
+     * @param $user_id, $screen_name
+     */
+    public function autoLikeResetHandle($user_id, $screen_name);
 }

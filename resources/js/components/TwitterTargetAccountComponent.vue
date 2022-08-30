@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="c-appBtn">
-            <a class="c-appBtn--none" :class="{ 'c-appBtn--auto': auto_follow_flg }"
+            <a class="c-appBtn--none"
                 v-on:click="addAction('ターゲットアカウント登録')">
                 <span>ターゲットアカウント登録</span>
             </a>

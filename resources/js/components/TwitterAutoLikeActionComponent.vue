@@ -12,12 +12,14 @@
                             <tbody class="c-overlay__db__tbody">
                                 <tr class="c-overlay__db__tr">
                                     <th class="c-overlay__db__th">登録Keyword</th>
-
-                                    <td class="c-overlay__db__td">{{db_text}}</td>
+    
+                                    <td class="c-overlay__db__td">
+                                        <div class="c-overlay__db__td__text" v-for="(text, i) in db_text" :key="i">{{text}}</div>
+                                    </td>
                                 </tr>
                                 <tr class="c-overlay__db__tr">
                                     <th class="c-overlay__db__th">登録Condition</th>
-
+    
                                     <td class="c-overlay__db__td">{{db_condition}}</td>
                                 </tr>
                             </tbody>
@@ -25,6 +27,7 @@
                     </div>
                     <div class="c-overlay__btnContainer c-overlay__btnContainer--auto c-overlay__db__border">
                         <div class="c-search">
+                            <div class="c-overlay__errMsg" v-show="err_msg">{{err_msg}}</div>
                             <label class="ef">
                                 <input type="text" class="c-search__input" name="keyword" placeholder="Keyword"
                                     v-model="add_keyword" />
@@ -33,12 +36,16 @@
                             <div v-if="getCookie()" class="c-search__keywords">
                                 <nav class="c-solidMenu">
                                     <ul>
-                                        <li v-for="(keyword, i) in getCookie()" :key="i" :id="'like_' + keyword"><a
-                                                href="javascript:void(0)"
-                                                id="cookiesDom"><span>{{keyword}}</span></a><input
-                                                class="c-search__submit" type="submit" value="削除"
-                                                v-on:click="deleteSearchTextCookie(keyword)" /></li>
-
+                                        <li v-for="(keyword, i) in getCookie()" :key="i" :id="'like_' + keyword">
+                                            <a href="javascript:void(0)">
+                                                <span>{{keyword}}</span>
+                                            </a>
+                                            <input
+                                                class="c-search__submit" 
+                                                type="submit" 
+                                                value="削除"
+                                                v-on:click="deleteSearchTextCookie(keyword)" />
+                                        </li>
                                     </ul>
                                 </nav>
                             </div>
@@ -53,6 +60,7 @@
                             </option>
                         </select>
                         <button class="c-appBtn" v-on:click="searchAutoLikeSave()">更新</button>
+                        <button class="c-appBtn" v-on:click="reset()">リセット</button>
                         <button v-show="!auto_like_flg" class="c-appBtn" v-on:click="searchAutoLikeStart()">自動いいね
                             ON</button>
                         <button v-show="auto_like_flg" class="c-appBtn" v-on:click="searchAutoLikeStop()">自動いいね
@@ -76,29 +84,90 @@ export default {
     props: ['user_id', 'auth_screen_name', 'auto_like_flg', 'db_search_text_condition'],
     data: function() {
         return {
-            db_text: this.isDbSearchText(),
-            db_condition: this.isDbCondition(),
+            db_text: this.dbSearchText(),
+            db_condition: this.dbCondition(),
             autoTarget: '',
             add_keyword: '',
             keywords: '',
-            cookiesData: this.getCookie(),
             conditions: [
                 {label: "NOT", value: 'NOT'},
                 {label: "AND", value: 'AND'},
                 {label: "OR", value: 'OR'},
             ],
             isCookieCondition: this.$vueCookies.get('ConditionLike' + this.user_id + this.auth_screen_name),
+            err_msg: '',
         }
     },
     methods: {
-        isDbSearchText: function () {
+        validMaxText: function(num, msg) {
+            this.err_msg = '';
+            if (this.add_keyword.length > num) {
+                this.err_msg = msg;
+            } else {
+                this.err_msg = '';
+            }
+        },
+        validExist: function(data, keyword, msg) {
+            this.err_msg = '';
+            if (data.includes(keyword)) {
+                this.err_msg = msg;
+                this.add_keyword = '';
+            } else {
+                this.err_msg = '';
+            }
+        },
+        validCondition: function(condition, data, num, msg1, msg2) {
+            this.err_msg = '';
+            if (num === 0) {
+                if (condition.value === 'NOT') {
+                    if (data.length > 1) {
+                        this.err_msg = msg1;
+                    }
+                } else if ((condition.value === 'AND') || (condition.value === 'OR')) {
+                    if (data.length <= 1) {
+                        this.err_msg = msg2;
+                    }
+                }
+            } else if (num === 1) {
+                if (data.length > 1 && condition === 'NOT') {
+                    this.err_msg = msg1;
+                } else if ((condition === 'AND') || (condition === 'OR')) {
+                    if (data.length <= 1) {
+                        this.err_msg = msg2;
+                    }
+                }
+            }
+        },
+        validSelectedCondition: function(msg) {
+            this.err_msg = '';
+            var select = document.getElementById('condition-like-select');
+            if (select.value === 'NO') {
+                this.err_msg = msg;
+            }
+        },
+        validRequired: function(data, msg) {
+            this.err_msg = '';
+
+            if (!data) {
+                this.err_msg = msg;
+            }
+        },
+        validAutoMode: function(autoFlg, msg) {
+            this.err_msg = '';
+
+            if (autoFlg === 1) {
+                this.err_msg = msg;
+            }
+        },
+        dbSearchText: function () {
             if (this.db_search_text_condition) {
-                return this.db_search_text_condition.search_text;
+                var array_search_text = this.db_search_text_condition.search_text.split(',');
+                return array_search_text;
             } else {
                 return '';
             }
         },
-        isDbCondition: function () {
+        dbCondition: function () {
             if (this.db_search_text_condition) {
                 return this.db_search_text_condition.like_condition;
             } else {
@@ -113,15 +182,12 @@ export default {
             if (this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name)) {
                 var cookieData = this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name);
                 var arrayCookieData = cookieData.split( ',' );
-                if ( select.value === 'NOT') {
-                    if (arrayCookieData.length > 1) {
-                        alert('NOT の場合はKeywordを一つにする必要があります');
-                    }
-                } else if ( (select.value === 'AND') || (select.value === 'OR')) {
-                    if (arrayCookieData.length <= 1) {
-                        alert('AND か OR の場合はKeywordを複数にする必要があります');
-                    }
-                }
+                this.validCondition(
+                    select, arrayCookieData,
+                    0,
+                    'NOT の場合はKeywordを一つにする必要があります',
+                    'AND か OR の場合はKeywordを複数にする必要があります'
+                );
             }
         },
         autoAction: function(targetName) {
@@ -133,24 +199,28 @@ export default {
         addSearchText: function() {
             this.$vueCookies.config(60 * 60 * 24 * 30, '');
             if (this.add_keyword) {
-                if (this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name)) {
-                    var cookieData = this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name);
-                    var arrayCookieData = cookieData.split( ',' );
-                
-                    // 既にあるクッキーの中に入力した値があったら追加しない、なければ追加
-                    if (arrayCookieData.includes(this.add_keyword)) {
-                        alert(this.add_keyword + 'は既に追加されています');  // アラートされる
-                        this.add_keyword = '';
+
+                this.validMaxText(140, 'Keywordは140文字以下でご入力ください。');
+
+                if (!this.err_msg) {
+                    if (this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name)) {
+                        var cookieData = this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name);
+                        var arrayCookieData = cookieData.split(',');
+
+                        // 既にあるクッキーの中に入力した値があったら追加しない、なければ追加
+                        this.validExist(arrayCookieData, this.add_keyword, '既にあるKeywordは追加できません。');
+
+                        if (!this.err_msg) {
+                            arrayCookieData.push(this.add_keyword);
+                            this.keywords = arrayCookieData;
+                            this.add_keyword = '';
+                            this.$vueCookies.set('SearchLikeText' + this.user_id + this.auth_screen_name, arrayCookieData);
+                        }
                     } else {
-                        arrayCookieData.push(this.add_keyword);
-                        this.keywords = arrayCookieData;
+                        this.keywords = this.add_keyword;
+                        this.$vueCookies.set('SearchLikeText' + this.user_id + this.auth_screen_name, this.add_keyword);
                         this.add_keyword = '';
-                        this.$vueCookies.set('SearchLikeText' + this.user_id + this.auth_screen_name, arrayCookieData);
                     }
-                } else {
-                    this.keywords = this.add_keyword;
-                    this.$vueCookies.set('SearchLikeText' + this.user_id + this.auth_screen_name, this.add_keyword);
-                    this.add_keyword = '';
                 }
             }
         },
@@ -171,30 +241,39 @@ export default {
         },
         getCookie: function() {
             this.$vueCookies.config(60 * 60 * 24 * 30, '');
-           if ( this.$vueCookies.isKey('SearchLikeText' + this.user_id + this.auth_screen_name)) {
-            var cookieData = this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name);
-            var arrayCookieData = cookieData.split( ',' );
-            return arrayCookieData;
-           } else {
-            return ;
-           }
+            if ( this.$vueCookies.isKey('SearchLikeText' + this.user_id + this.auth_screen_name)) {
+                var cookieData = this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name);
+                var arrayCookieData = cookieData.split( ',' );
+                return arrayCookieData;
+            } else {
+                return ;
+            }
         },
         searchAutoLikeSave: async function() {
+            
             this.$vueCookies.config(60 * 60 * 24 * 30, '');
 
-            if (this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name)) {
+            if (!$cookies.isKey('SearchLikeText' + this.user_id + this.auth_screen_name)) {
+                this.err_msg = 'Keywordは1つ以上設定してください。';
+                return;
+            }
+            this.validSelectedCondition('選択の項目を選択してください。');
+
+            if (!this.err_msg) {
                 // Keyword 有り
                 var cookieData = this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name);
                 var arrayCookieData = cookieData.split(',');
                 var cookieCondition = this.$vueCookies.get('ConditionLike' + this.user_id + this.auth_screen_name);
 
-                if (arrayCookieData.length > 1 && this.$vueCookies.get('ConditionLike' + this.user_id + this.auth_screen_name) === 'NOT') {
-                    alert('NOT の場合はKeywordを一つにする必要があります');
-                } else if (arrayCookieData.length <= 1 && this.$vueCookies.get('ConditionLike' + this.user_id + this.auth_screen_name) === ('AND' || 'OR')) {
-                    if (arrayCookieData.length <= 1) {
-                        alert('AND か OR の場合はKeywordを複数にする必要があります');
-                    }
-                } else {
+                this.validCondition(
+                    this.$vueCookies.get('ConditionLike' + this.user_id + this.auth_screen_name),
+                    arrayCookieData,
+                    1,
+                    'NOT の場合はKeywordを一つにする必要があります',
+                    'AND か OR の場合はKeywordを複数にする必要があります'
+                );
+
+                if (!this.err_msg) {
                     const formData = new FormData();
                     formData.append('user_id', this.user_id);
                     formData.append('screen_name', this.auth_screen_name);
@@ -204,35 +283,49 @@ export default {
                     await this.$axios.post('/api/twitter/autoLikeSave', formData)
                         .then((res) => {
                             this.add_flg = true;
-                            this.db_text = cookieData;
+                            this.db_text = arrayCookieData;
                             this.db_condition = cookieCondition;
                             alert('いいねKeywordを更新しました。')
                         })
-                        .catch((error) => {
-                            console.log('searchAutoLikeSaveは正常に起動していません。')
-                            console.log(error)
-                        })
-                }   
+                        .catch((error) => { alert('予期せぬシステムエラーです。') })
+                }
+            }
+        },
+        reset: async function() {
+            this.validAutoMode(this.auto_like_flg, 'リセットする場合は自動いいねを止めてからリセットしてください。');
 
-            } else {
-                // Keyword 無し
-                alert('Keywordは1つ以上設定してください。');
+            if (!this.err_msg) {
+                if (!confirm('本当にリセットしますか？')) {
+                    return;
+                } else {
+                    const formData = new FormData();
+                    formData.append('user_id', this.user_id);
+                    formData.append('screen_name', this.auth_screen_name);
+                    await this.$axios.post('/api/twitter/autoLikeReset', formData)
+                        .then((res) => {
+                            console.log(res);
+                            this.db_text = '';
+                            this.db_condition = '';
+                            $cookies.remove('SearchLikeText' + this.user_id + this.auth_screen_name);
+                            
+                        })
+                        .catch((error) => { alert('予期せぬシステムエラーです。') })
+                }
             }
         },
         searchAutoLikeStart: async function () {
-            if (this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name)) {
+            this.validRequired((this.db_text.length || this.db_search_text_condition !== null), 'Keywordは1つ以上設定してください。');
+
+            if (!this.err_msg) {
                 const formData = new FormData();
                 formData.append('user_id', this.user_id);
                 formData.append('screen_name', this.auth_screen_name);
 
-                await this.$axios.post('/api/twitter/autoLikeStart', formData)
+                this.$axios.post('/api/twitter/autoLikeStart', formData)
                     .then((res) => {
                         window.location.reload(false)
                     })
-                    .catch((error) => {
-                    })
-            } else {
-                alert('Keywordを1つ以上設定する必要があります');
+                    .catch((error) => { alert('予期せぬシステムエラーです。') })
             }
         },
         searchAutoLikeStop: async function() {

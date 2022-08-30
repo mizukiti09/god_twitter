@@ -29,6 +29,7 @@ Route::namespace('Twitter')->group(function () {
     Route::post('twitter/autoUnFollowStart', 'TwitterFollowController@autoUnFollowStart')->name('twitter.autoUnFollowStart');
     Route::post('twitter/autoUnFollowStop', 'TwitterFollowController@autoUnFollowStop')->name('twitter.autoUnFollowStop');
     Route::post('twitter/autoLikeSave', 'TwitterLikeController@autoLikeSave')->name('twitter.autoLikeSave');
+    Route::post('twitter/autoLikeReset', 'TwitterLikeController@autoLikeReset')->name('twitter.autoLikeReset');
     Route::post('twitter/autoLikeStart', 'TwitterLikeController@autoLikeStart')->name('twitter.autoLikeStart');
     Route::post('twitter/autoLikeStop', 'TwitterLikeController@autoLikeStop')->name('twitter.autoLikeStop');
     Route::post('twitter/autoTweet', 'TwitterTweetController@autoTweet')->name('twitter.autoTweet');

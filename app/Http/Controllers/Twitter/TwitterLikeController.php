@@ -27,4 +27,14 @@ class TwitterLikeController extends Controller
     {
         $useCase->stopAutoLikeHandle($request->user_id, $request->screen_name);
     }
+
+    public function autoLikeReset(
+        Request $request,
+        TwitterAutoLikeUseCaseInterface $useCase
+    ) {
+        $useCase->autoLikeResetHandle(
+            $request->user_id,
+            $request->screen_name
+        );
+    }
 }

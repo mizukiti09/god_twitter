@@ -18,9 +18,15 @@
         <div class="c-structure__aside__item">
             <div class="c-structure__aside__item__head">TargetAccount</div>
             <div class="c-appBtn">
-                <a href="{{ route('twitter.targetAccounts') }}" class="c-appBtn--none">
-                    ターゲットアカウント一覧
-                </a>
+                @if (!$auth_account->auto_follow_flg)
+                    <a href="{{ route('twitter.targetAccounts') }}" class="c-appBtn--none">
+                        ターゲットアカウント一覧
+                    </a>
+                @else
+                    <a href="{{ route('twitter.targetAccounts') }}" class="c-appBtn--auto">
+                        ターゲットアカウント一覧
+                    </a>
+                @endif
             </div>
             <twitter-target-account :user_id="{{ $user_id }}"
                 :auth_screen_name="{{ json_encode($auth_account->screen_name) }}"

@@ -35,8 +35,16 @@
                             <div v-if="getCookie()" class="c-search__keywords">
                                 <nav class="c-solidMenu">
                                     <ul>
-                                        <li v-for="(keyword, i) in getCookie()" :key="i" :id="keyword"><a href="javascript:void(0)" id="cookiesDom"><span>{{keyword}}</span></a><input class="c-search__submit" type="submit" value="削除" v-on:click="deleteSearchTextCookie(keyword)" /></li>
-    
+                                        <li v-for="(keyword, i) in getCookie()" :key="i" :id="keyword">
+                                            <a href="javascript:void(0)">
+                                                <span>{{keyword}}</span>
+                                            </a>
+                                            <input 
+                                                class="c-search__submit" 
+                                                type="submit" 
+                                                value="削除" 
+                                                v-on:click="deleteSearchTextCookie(keyword)" />
+                                        </li>
                                     </ul>
                                 </nav>
                             </div>
@@ -296,11 +304,6 @@ export default {
 
                     await this.$axios.post('/api/twitter/autoFollowSave', formData)
                         .then((res) => {
-                            console.log(res);
-                            if (res === 'keywordは140文字以内でご入力ください。') {
-                                this.err_msg = res;
-                                return;
-                            }
                             this.db_text = arrayCookieData;
                             this.db_condition = cookieCondition;
                             alert('フォローKeywordを更新しました。')

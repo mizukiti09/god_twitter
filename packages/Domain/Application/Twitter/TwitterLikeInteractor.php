@@ -43,4 +43,9 @@ class TwitterLikeInteractor implements TwitterAutoLikeUseCaseInterface
     {
         $this->u_repository->offAutoLikeFlg($user_id, $screen_name);
     }
+
+    public function autoLikeResetHandle($user_id, $screen_name)
+    {
+        $this->l_repository->reset($user_id, $screen_name);
+    }
 }
