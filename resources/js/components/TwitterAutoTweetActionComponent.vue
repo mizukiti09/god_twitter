@@ -2,10 +2,11 @@
     <div>
         <div class="jsModal" v-show="autoTarget">
             <div class="c-overlay">
-                <div class="c-overlay__contents">
+                <div class="c-overlay__contents" style="padding-bottom: 78px;">
                     <div class="c-overlay__ttl">{{ autoTarget }}</div>
                     <div class="c-overlay__description"><span class="u-red">*</span>自動ツイートしたい内容を<br class="u-sp_br">特定の日時にツイートします。</div>
                     <div class="c-overlay__btnContainer c-overlay__btnContainer--auto">
+                        <div class="c-overlay__errMsg" v-show="err_msg">{{err_msg}}</div>
                         <div class="c-search">
                             <div class="c-search__keywords">
                                 <nav class="c-solidMenu">
@@ -52,9 +53,22 @@ export default {
             cookiesData: '',
             tweetText: '',
             dateValue: '',
+            err_msg: '',
         }
     },
     methods: {
+        validMaxText: function(num, msg) {
+            this.err_msg = '';
+            if (this.tweetText.length > num) {
+                this.err_msg = msg;
+            }
+        },
+        validRequired: function(data, msg) {
+            this.err_msg = '';
+            if (!data) {
+                this.err_msg = msg;
+            }
+        },
         autoAction: function (targetName) {
             this.autoTarget = targetName;
         },
@@ -66,25 +80,28 @@ export default {
             } 
         },
         autoTweet: async function () {
-            if ((this.tweetText.length <= 140) && (this.tweetText.length > 0)) {
-                const formData = new FormData();
-                formData.append('user_id', this.user_id);
-                formData.append('screen_name', this.auth_screen_name);
-                formData.append('tweet_text', this.tweetText);
-                formData.append('date_value', this.dateValue);
+            this.validRequired(this.tweetText, 'ツイート内容を入力してください。');
 
-                await this.$axios.post('/api/twitter/autoTweet', formData)
-                    .then((res) => {
+            if (!this.err_msg) {
+                this.validMaxText(140, 'Keywordは140文字以下でご入力ください。');
+
+                if (!this.err_msg) {
+                    const formData = new FormData();
+                    formData.append('user_id', this.user_id);
+                    formData.append('screen_name', this.auth_screen_name);
+                    formData.append('tweet_text', this.tweetText);
+                    formData.append('date_value', this.dateValue);
+
+                    try {
+                        await this.$axios.post('/api/twitter/autoTweet', formData);
                         this.add_keyword = this.add_keyword + 1;
                         this.dateValue = '';
                         this.tweetText = '';
-                        alert('tweet内容を登録しました。');
-                    })
-                    .catch((error) => {alert('予期せぬシステムエラーです。')})
-            } else if (this.tweetText.length > 140) {
-                alert('tweet内容は140文字以下でご入力ください');
-            } else if(this.tweetText.length === 0) {
-                alert('textareaが空です');
+                        alert('ツイート内容を登録しました。');
+                    } catch (error) {
+                        alert('予期せぬシステムエラーです。');
+                    }
+                }
             }
         },
         autoTweetOn: async function () {
@@ -92,22 +109,24 @@ export default {
             formData.append('user_id', this.user_id);
             formData.append('screen_name', this.auth_screen_name);
 
-            await this.$axios.post('/api/twitter/autoTweetOn', formData)
-                .then((res) => {
-                    window.location.reload(false)
-                })
-                .catch((error) => {alert('予期せぬシステムエラーです。')})
+            try {
+                await this.$axios.post('/api/twitter/autoTweetOn', formData);
+                window.location.reload(false);
+            } catch (error) {
+                alert('予期せぬシステムエラーです。');
+            }
         },
         autoTweetStop: async function () {
             const formData = new FormData();
             formData.append('user_id', this.user_id);
             formData.append('screen_name', this.auth_screen_name);
 
-            await this.$axios.post('/api/twitter/autoTweetStop', formData)
-                .then((res) => {
-                    window.location.reload(false)
-                })
-                .catch((error) => {alert('予期せぬシステムエラーです。')})
+            try {
+                await this.$axios.post('/api/twitter/autoTweetStop', formData);
+                window.location.reload(false);
+            } catch (error) {
+                alert('予期せぬシステムエラーです。');
+            }
         },
     },
 }

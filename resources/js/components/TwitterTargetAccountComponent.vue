@@ -57,23 +57,22 @@ export default {
 
                 this.loading = true;
 
-                await this.$axios.post('/api/twitter/addTargetAccount', formData)
-                    .then((res) => {
-                        this.loading = false;
-                        this.target_screen_nam = '';
-                        this.add_target = '';
-                        if (!alert('登録完了しました。')) {
-                            window.location.reload(false)
-                        }
-                    })
-                    .catch((error) => {
-                        this.loading = false;
-                        if (error.response.data.message.includes('timed out')) {
-                            alert('Twitter API制限の為、少し時間を開けてから登録お願いします。');
-                        } else {
-                            alert('正しく入力されていないのか、Twitterサービスに登録されていないアカウントかもしれません。登録されているアカウント名を正しくご入力ください。');
-                        }
-                    })
+                try {
+                    await this.$axios.post('/api/twitter/addTargetAccount', formData);
+                    this.loading = false;
+                    this.target_screen_nam = '';
+                    this.add_target = '';
+                    if (!alert('登録完了しました。')) {
+                        window.location.reload(false)
+                    }
+                } catch (error) {
+                    this.loading = false;
+                    if (error.response.data.message.includes('timed out')) {
+                        alert('Twitter API制限の為、少し時間を開けてから登録お願いします。');
+                    } else {
+                        alert('正しく入力されていないのか、Twitterサービスに登録されていないアカウントかもしれません。登録されているアカウント名を正しくご入力ください。');
+                    }
+                }
             }
         },
         

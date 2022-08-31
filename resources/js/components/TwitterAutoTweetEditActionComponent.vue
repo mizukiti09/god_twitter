@@ -133,18 +133,19 @@ export default {
             
             formData.append('tweet_id', this.target_id);
 
-            await this.$axios.post('/api/twitter/tweetDelete', formData)
-                .then((res) => {
-                    const tweetDom = document.getElementById('tweet_data' + this.target_dom_key);
-                    this.del_keys.push(this.target_dom_key);
-                    this.target_dom_key = '';
-                    this.deleteAction = false;
-                    tweetDom.remove();
-                    var tweetCount = $("#js-tweet-count").text();
-                    tweetCount = Number(tweetCount) - 1;
-                    $("#js-tweet-count").text(tweetCount);
-                })
-                .catch((error) => {alert('予期せぬシステムエラーです。')})
+            try {
+                await this.$axios.post('/api/twitter/tweetDelete', formData);
+                const tweetDom = document.getElementById('tweet_data' + this.target_dom_key);
+                this.del_keys.push(this.target_dom_key);
+                this.target_dom_key = '';
+                this.deleteAction = false;
+                tweetDom.remove();
+                var tweetCount = $("#js-tweet-count").text();
+                tweetCount = Number(tweetCount) - 1;
+                $("#js-tweet-count").text(tweetCount);
+            } catch (error) {
+                alert('予期せぬシステムエラーです。');
+            }
         },
         okEdit: async function () {
             var textareaValue = this.tt[this.target_key];
@@ -164,22 +165,22 @@ export default {
                 } else {
                     formData.append('tweet_id', this.target_tweet_id);
 
-                    await this.$axios.post('/api/twitter/tweetDelete', formData)
-                        .then((res) => {
-                            const tweetDom = document.getElementById('tweet_data' + this.target_key);
-                            tweetDom.remove();
-                            var tweetCount = $("#js-tweet-count").text();
-                            tweetCount = Number(tweetCount) - 1;
-                            $("#js-tweet-count").text(tweetCount);
+                    try {
+                        await this.$axios.post('/api/twitter/tweetDelete', formData);
+                        const tweetDom = document.getElementById('tweet_data' + this.target_key);
+                        tweetDom.remove();
+                        var tweetCount = $("#js-tweet-count").text();
+                        tweetCount = Number(tweetCount) - 1;
+                        $("#js-tweet-count").text(tweetCount);
 
-                            this.editAction = false;
-                            this.target_key = '';
-                            this.target_tweet_id = '';
-                            this.formal_text = '';
-                            this.formal_time = '';
-                        })
-                        .catch((error) => {
-                        })
+                        this.editAction = false;
+                        this.target_key = '';
+                        this.target_tweet_id = '';
+                        this.formal_text = '';
+                        this.formal_time = '';
+                    } catch (error) {
+                        alert('予期せぬシステムエラーです。');
+                    }
                 }
             } else if(textareaValue.length > 140) {
                 alert('tweet内容は140文字以下でご入力ください');
@@ -189,18 +190,18 @@ export default {
                 formData.append('tweet_text', textareaValue);
                 formData.append('tweet_time', timeValue);
 
-                await this.$axios.post('/api/twitter/tweetEdit', formData)
-                    .then((res) => {
-                        this.tweet_list[this.target_key].tweetText = textareaValue;
-                        this.tweet_list[this.target_key].tweetTime = timeValue;
-
-                        this.tt[this.target_key] = textareaValue;
-                        this.dt[this.target_key] = timeValue;
-                        this.editAction = false;
-                        this.target_key = '';
-                        this.target_tweet_id = '';
-                    })
-                    .catch((error) => {alert('予期せぬシステムエラーです。')})
+                try {
+                    await this.$axios.post('/api/twitter/tweetEdit', formData);
+                    this.tweet_list[this.target_key].tweetText = textareaValue;
+                    this.tweet_list[this.target_key].tweetTime = timeValue;
+                    this.tt[this.target_key] = textareaValue;
+                    this.dt[this.target_key] = timeValue;
+                    this.editAction = false;
+                    this.target_key = '';
+                    this.target_tweet_id = '';
+                } catch (error) {
+                    alert('予期せぬシステムエラーです。');
+                }
             }
         },
         dateTimes: function () {

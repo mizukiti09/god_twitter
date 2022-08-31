@@ -50,14 +50,17 @@
                                 </nav>
                             </div>
                         </div>
-                        <select v-on:blur="setCookieCondition()" style="text-align:center;" class="c-appBtn"
-                            name="like_conditions" id="condition-like-select">
-                            <option v-if="!isCookieCondition" selected disabled value="NO">選択してください</option>
-                            <option v-else selected disabled :value="isCookieCondition">{{ isCookieCondition }}</option>
-
-                            <option v-for="item in conditions" :value="item.value" :key="item.value">
-                                {{ item.label }}
-                            </option>
+                        <select v-on:blur="blurValidCondition()"
+                            style="text-align:center;" 
+                            class="c-appBtn"
+                            name="like_conditions" 
+                            id="condition-like-select"
+                            v-model="selectValue"
+                            >
+                            <option selected disabled value="">選択してください</option>
+                            <option value="NOT">NOT</option>
+                            <option value="AND">AND</option>
+                            <option value="OR">OR</option>
                         </select>
                         <button class="c-appBtn" v-on:click="searchAutoLikeSave()">更新</button>
                         <button class="c-appBtn" v-on:click="reset()">リセット</button>
@@ -89,13 +92,8 @@ export default {
             autoTarget: '',
             add_keyword: '',
             keywords: '',
-            conditions: [
-                {label: "NOT", value: 'NOT'},
-                {label: "AND", value: 'AND'},
-                {label: "OR", value: 'OR'},
-            ],
-            isCookieCondition: this.$vueCookies.get('ConditionLike' + this.user_id + this.auth_screen_name),
             err_msg: '',
+            selectValue: '',
         }
     },
     methods: {
@@ -103,8 +101,6 @@ export default {
             this.err_msg = '';
             if (this.add_keyword.length > num) {
                 this.err_msg = msg;
-            } else {
-                this.err_msg = '';
             }
         },
         validExist: function(data, keyword, msg) {
@@ -119,11 +115,11 @@ export default {
         validCondition: function(condition, data, num, msg1, msg2) {
             this.err_msg = '';
             if (num === 0) {
-                if (condition.value === 'NOT') {
+                if (condition === 'NOT') {
                     if (data.length > 1) {
                         this.err_msg = msg1;
                     }
-                } else if ((condition.value === 'AND') || (condition.value === 'OR')) {
+                } else if ((condition === 'AND') || (condition === 'OR')) {
                     if (data.length <= 1) {
                         this.err_msg = msg2;
                     }
@@ -138,23 +134,36 @@ export default {
                 }
             }
         },
+        blurValidCondition: function () {
+            var select = this.selectValue;
+            this.$vueCookies.config(60 * 60 * 24 * 30, '');
+
+            if (this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name)) {
+                var cookieData = this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name);
+                var arrayCookieData = cookieData.split( ',' );
+                this.validCondition(
+                    select, arrayCookieData,
+                    0,
+                    'NOT の場合はKeywordを一つにする必要があります。',
+                    'AND か OR の場合はKeywordを複数にする必要があります。'
+                );
+            }
+        },
         validSelectedCondition: function(msg) {
             this.err_msg = '';
-            var select = document.getElementById('condition-like-select');
-            if (select.value === 'NO') {
+            var select = this.selectValue;
+            if (select === '') {
                 this.err_msg = msg;
             }
         },
         validRequired: function(data, msg) {
             this.err_msg = '';
-
             if (!data) {
                 this.err_msg = msg;
             }
         },
         validAutoMode: function(autoFlg, msg) {
             this.err_msg = '';
-
             if (autoFlg === 1) {
                 this.err_msg = msg;
             }
@@ -172,22 +181,6 @@ export default {
                 return this.db_search_text_condition.like_condition;
             } else {
                 return '';
-            }
-        },
-        setCookieCondition: function () {
-            var select = document.getElementById('condition-like-select');
-            this.$vueCookies.config(60 * 60 * 24 * 30, '');
-            this.$vueCookies.set('ConditionLike' + this.user_id + this.auth_screen_name, select.value);
-
-            if (this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name)) {
-                var cookieData = this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name);
-                var arrayCookieData = cookieData.split( ',' );
-                this.validCondition(
-                    select, arrayCookieData,
-                    0,
-                    'NOT の場合はKeywordを一つにする必要があります',
-                    'AND か OR の場合はKeywordを複数にする必要があります'
-                );
             }
         },
         autoAction: function(targetName) {
@@ -263,14 +256,14 @@ export default {
                 // Keyword 有り
                 var cookieData = this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name);
                 var arrayCookieData = cookieData.split(',');
-                var cookieCondition = this.$vueCookies.get('ConditionLike' + this.user_id + this.auth_screen_name);
+                var condition = this.selectValue;
 
                 this.validCondition(
-                    this.$vueCookies.get('ConditionLike' + this.user_id + this.auth_screen_name),
+                    condition,
                     arrayCookieData,
                     1,
-                    'NOT の場合はKeywordを一つにする必要があります',
-                    'AND か OR の場合はKeywordを複数にする必要があります'
+                    'NOT の場合はKeywordを一つにする必要があります。',
+                    'AND か OR の場合はKeywordを複数にする必要があります。'
                 );
 
                 if (!this.err_msg) {
@@ -278,16 +271,17 @@ export default {
                     formData.append('user_id', this.user_id);
                     formData.append('screen_name', this.auth_screen_name);
                     formData.append('array_search_text', arrayCookieData);
-                    formData.append('condition', cookieCondition);
+                    formData.append('condition', condition);
 
-                    await this.$axios.post('/api/twitter/autoLikeSave', formData)
-                        .then((res) => {
-                            this.add_flg = true;
-                            this.db_text = arrayCookieData;
-                            this.db_condition = cookieCondition;
-                            alert('いいねKeywordを更新しました。')
-                        })
-                        .catch((error) => { alert('予期せぬシステムエラーです。') })
+                    try {
+                        await this.$axios.post('/api/twitter/autoLikeSave', formData);
+                        this.add_flg = true;
+                        this.db_text = arrayCookieData;
+                        this.db_condition = condition;
+                        alert('いいねKeywordを更新しました。');
+                    } catch (error) {
+                        alert('予期せぬシステムエラーです。');
+                    }
                 }
             }
         },
@@ -301,15 +295,15 @@ export default {
                     const formData = new FormData();
                     formData.append('user_id', this.user_id);
                     formData.append('screen_name', this.auth_screen_name);
-                    await this.$axios.post('/api/twitter/autoLikeReset', formData)
-                        .then((res) => {
-                            console.log(res);
-                            this.db_text = '';
-                            this.db_condition = '';
-                            $cookies.remove('SearchLikeText' + this.user_id + this.auth_screen_name);
-                            
-                        })
-                        .catch((error) => { alert('予期せぬシステムエラーです。') })
+
+                    try {
+                        await this.$axios.post('/api/twitter/autoLikeReset', formData);
+                        this.db_text = '';
+                        this.db_condition = '';
+                        $cookies.remove('SearchLikeText' + this.user_id + this.auth_screen_name);
+                    } catch (error) {
+                        alert('予期せぬシステムエラーです。');
+                    }
                 }
             }
         },
@@ -321,11 +315,12 @@ export default {
                 formData.append('user_id', this.user_id);
                 formData.append('screen_name', this.auth_screen_name);
 
-                this.$axios.post('/api/twitter/autoLikeStart', formData)
-                    .then((res) => {
-                        window.location.reload(false)
-                    })
-                    .catch((error) => { alert('予期せぬシステムエラーです。') })
+                try {
+                    await this.$axios.post('/api/twitter/autoLikeStart', formData);
+                    window.location.reload(false);
+                } catch (error) {
+                    alert('予期せぬシステムエラーです。');
+                }
             }
         },
         searchAutoLikeStop: async function() {
@@ -333,11 +328,12 @@ export default {
             formData.append('user_id', this.user_id);
             formData.append('screen_name', this.auth_screen_name);
 
-            await this.$axios.post('/api/twitter/autoLikeStop', formData)
-                .then((res) => {
-                    window.location.reload(false)
-                })
-                .catch((error) => {alert('予期せぬシステムエラーです。')})
+            try {
+                await this.$axios.post('/api/twitter/autoLikeStop', formData);
+                window.location.reload(false);
+            } catch (error) {
+                alert('予期せぬシステムエラーです。');
+            }
         },
     },
 }

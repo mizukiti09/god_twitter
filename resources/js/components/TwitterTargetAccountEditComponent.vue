@@ -107,14 +107,15 @@ export default {
             formData.append('target_id', this.target_id);
             formData.append('reset_auto_follow_flg', reset_auto_follow_flg);
 
-            await this.$axios.post('/api/twitter/deleteTargetAccount', formData)
-                .then((res) => {
-                    if (this.target_accounts.length === 1) {
-                        $cookies.remove('SearchText' + this.user_id + this.auth_screen_name);
-                    }
-                    window.location.reload(false)
-                })
-                .catch((error) => {alert('予期せぬシステムエラーです。')})
+            try {
+                await this.$axios.post('/api/twitter/deleteTargetAccount', formData);
+                if (this.target_accounts.length === 1) {
+                    $cookies.remove('SearchText' + this.user_id + this.auth_screen_name);
+                }
+                window.location.reload(false)
+            } catch (error) {
+                alert('予期せぬシステムエラーです。');
+            }
         },
     },
 }
