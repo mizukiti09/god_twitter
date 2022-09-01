@@ -46,9 +46,9 @@
             <div class="c-nav__list">
                 <ul>
                     @guest @if (Route::has('login'))
-                        <li class="c-nav__item"><a href="{{ route('login') }}">{{ __('Login') }}</a></li>
+                        <li class="c-nav__item"><a href="{{ route('login') }}">ログイン</a></li>
                         @endif @if (Route::has('register'))
-                            <li class="c-nav__item"><a href="{{ route('register') }}">{{ __('Register') }}</a>
+                            <li class="c-nav__item"><a href="{{ route('register') }}">ユーザー登録</a>
                             </li>
                         @endif
                     @else

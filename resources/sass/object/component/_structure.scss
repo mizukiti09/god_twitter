@@ -21,7 +21,7 @@
             border-radius: 8px;
             &__status {
                 position: absolute;
-                top: -34px;
+                top: -35px;
                 right: 38px;
                 border-radius: 4px;
                 padding: 6px;
@@ -88,6 +88,7 @@
     }
     &__aside {
         width: 25%;
+        max-height: 770px;
         background: #fff;
         padding: 30px 15px;
         box-sizing: border-box;

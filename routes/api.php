@@ -37,4 +37,5 @@ Route::namespace('Twitter')->group(function () {
     Route::post('twitter/autoTweetStop', 'TwitterTweetController@autoTweetStop')->name('twitter.autoTweetStop');
     Route::post('twitter/tweetDelete', 'TwitterTweetController@tweetDelete')->name('twitter.tweetDelete');
     Route::post('twitter/tweetEdit', 'TwitterTweetController@tweetEdit')->name('twitter.tweetEdit');
+    Route::post('twitter/tweetHistoryReset', 'TwitterTweetController@tweetHistoryReset')->name('twitter.tweetHistoryReset');
 });

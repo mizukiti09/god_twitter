@@ -1,3 +1,10 @@
+.p-reset__button {
+  margin: 20px 0 10px;
+  float: right;
+  padding: 6px;
+  border-radius: 10px;
+}
+
 @charset "UTF-8";
 .fa-adjust {
   color: darkred; }
@@ -268,7 +275,7 @@ body {
       border-radius: 8px; }
       .c-structure__article__panel__status {
         position: absolute;
-        top: -34px;
+        top: -35px;
         right: 38px;
         border-radius: 4px;
         padding: 6px;
@@ -322,6 +329,7 @@ body {
       font-size: 24px; }
   .c-structure__aside {
     width: 25%;
+    max-height: 770px;
     background: #fff;
     padding: 30px 15px;
     box-sizing: border-box;
@@ -1123,6 +1131,9 @@ body {
       position: absolute;
       right: 16px;
       bottom: 16px; }
+    .p-tweetList__item--tweeted {
+      background: -webkit-linear-gradient(to bottom, #2cdf92 0%, #00e433);
+      background: linear-gradient(to bottom, #2cdf92 0%, #00e433); }
   .p-tweetList__btn {
     text-align: center;
     background: salmon;

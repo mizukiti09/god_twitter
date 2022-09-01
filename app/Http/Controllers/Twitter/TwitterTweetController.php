@@ -14,6 +14,11 @@ class TwitterTweetController extends Controller
         CleanArchitectureMiddleware::$view = view('pages.tweet.list');
     }
 
+    public function history()
+    {
+        CleanArchitectureMiddleware::$view = view('pages.tweet.history');
+    }
+
     public function autoTweet(Request $request, TwitterAutoTweetUseCaseInterface $useCase)
     {
         $useCase->autoTweetSaveHandle(
@@ -45,6 +50,14 @@ class TwitterTweetController extends Controller
             $request->tweet_id,
             $request->tweet_text,
             $request->tweet_time
+        );
+    }
+
+    public function tweetHistoryReset(Request $request, TwitterAutoTweetUseCaseInterface $useCase)
+    {
+        $useCase->tweetHistoryResetHandle(
+            $request->user_id,
+            $request->screen_name
         );
     }
 }

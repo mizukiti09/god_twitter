@@ -42,6 +42,7 @@ class TwitterCommonComposer
             $target = array();
             $target_accounts = array();
             $tweetList = array();
+            $tweetedList = array();
             $followSearchTextAndCondition = array();
             $likeSearchTextAndCondition = array();
             $auth_screen_name = 'MyPage_auth_screen_name_null';
@@ -51,6 +52,7 @@ class TwitterCommonComposer
                     $auth_account = $account;
                     $auth_screen_name = $account->screen_name;
                     $tweetList = $this->t_repository->getAllUserTweets($account->id);
+                    $tweetedList = $this->t_repository->getAllUserTweeted($account->id);
                     $target_accounts = $this->ta_repository->getAllTargetAccounts($account->id);
                     $target = $this->a_repository->getTarget($account->id);
                     $followSearchTextAndCondition = $this->a_repository->getSearchTextAndCondition($account->id);
@@ -66,6 +68,7 @@ class TwitterCommonComposer
                     $target_accounts = array();
                     $target = array();
                     $tweetList = array();
+                    $tweetedList = array();
                     $followSearchTextAndCondition = array();
                     $likeSearchTextAndCondition = array();
                     $auth_screen_name = 'MyPage_auth_screen_name_null';
@@ -83,6 +86,7 @@ class TwitterCommonComposer
             'target_accounts'              => $target_accounts,
             'target'                       => $target,
             'tweetList'                    => $tweetList,
+            'tweetedList'                    => $tweetedList,
             'followSearchTextAndCondition' => $followSearchTextAndCondition,
             'likeSearchTextAndCondition'   => $likeSearchTextAndCondition
         ]);

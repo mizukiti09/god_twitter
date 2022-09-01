@@ -57,6 +57,11 @@
                     ツイート予定一覧
                 </a>
             </div>
+            <div class="c-appBtn">
+                <a href="{{ route('twitter.tweetHistory') }}" class="c-appBtn--none">
+                    ツイート履歴
+                </a>
+            </div>
             <twitter-auto-tweet-action :user_id="{{ $user_id }}"
                 :auth_screen_name="{{ json_encode($auth_account->screen_name) }}"
                 :auto_tweet_flg="{{ $auth_account->auto_tweet_flg }}"></twitter-auto-tweet-action>

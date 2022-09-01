@@ -24,6 +24,10 @@
             right: 16px;
             bottom: 16px;
         }
+        &--tweeted {
+            background: -webkit-linear-gradient(to bottom, #2cdf92 0%, #00e433);
+            background: linear-gradient(to bottom, #2cdf92 0%, #00e433);
+        }
     }
     &__btn {
         text-align: center;

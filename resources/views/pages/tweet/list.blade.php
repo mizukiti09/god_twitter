@@ -2,7 +2,7 @@
 
 <div class="c-structure u-inner u-m__contents">
     <div class="c-currentPage__title">
-        TweetList &nbsp;\&nbsp;<br class="u-sp_br"> 登録ツイート数 &nbsp;:&nbsp; <span
+        ツイート予定 &nbsp;\&nbsp;<br class="u-sp_br"> 登録ツイート数 &nbsp;:&nbsp; <span
             id="js-tweet-count">{{ count($tweetList) }}</span>
     </div>
     <div class="c-structure__container">

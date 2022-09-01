@@ -38,6 +38,7 @@ Vue.component('twitter-auto-follow-action', require('./components/TwitterAutoFol
 Vue.component('twitter-auto-like-action', require('./components/TwitterAutoLikeActionComponent.vue').default);
 Vue.component('twitter-auto-tweet-action', require('./components/TwitterAutoTweetActionComponent.vue').default);
 Vue.component('twitter-auto-tweet-edit-action', require('./components/TwitterAutoTweetEditActionComponent.vue').default);
+Vue.component('twitter-auto-tweet-history-action', require('./components/TwitterAutoTweetHistoryActionComponent.vue').default);
 Vue.component('twitter-target-account', require('./components/TwitterTargetAccountComponent.vue').default);
 Vue.component('twitter-target-account-edit', require('./components/TwitterTargetAccountEditComponent.vue').default);
 

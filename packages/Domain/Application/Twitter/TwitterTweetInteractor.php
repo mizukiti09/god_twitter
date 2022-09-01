@@ -76,18 +76,37 @@ class TwitterTweetInteractor implements TwitterAutoTweetUseCaseInterface
         }
 
         $halfDayUnixTime = 0;
+        $result = substr($time, 0, 16);
+        $date = new DateTime($result);
+        $unixTime = $date->format('U');
+        $halfDayUnixTime = 43200;
+
         if (!empty($time)) {
-            if (strpos($time, '午後') !== false) {
-                $halfDayUnixTime = 43200;
+            if (strpos($time, '午前') !== false) {
+                $time = substr($result, -5);
+                $hour = strstr($time, ':', true);
+                if ($hour == '12') {
+                    $unixTime = $unixTime - $halfDayUnixTime;
+                }
             }
-            $result = substr($time, 0, 16);
-            $date = new DateTime($result);
-            $unixTime = $date->format('U');
-            $unixTime = $unixTime + $halfDayUnixTime;
+            if (strpos($time, '午後') !== false) {
+                $time = substr($result, -5);
+                $hour = strstr($time, ':', true);
+
+                $unixTime = $unixTime + $halfDayUnixTime;
+                if ($hour == '12') {
+                    $unixTime = $unixTime - $halfDayUnixTime;
+                }
+            }
         } else {
             $unixTime = time();
         }
 
         $this->t_repository->editAutoTweetData($id, $text, $unixTime);
+    }
+
+    public function tweetHistoryResetHandle($user_id, $screen_name)
+    {
+        $this->t_repository->resetAutoTweetedData($user_id, $screen_name);
     }
 }

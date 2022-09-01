@@ -37,4 +37,9 @@ interface TwitterAutoTweetUseCaseInterface
         $text,
         $time
     );
+
+    /**
+     * @param $user_id, $screen_name
+     */
+    public function tweetHistoryResetHandle($user_id, $screen_name);
 }

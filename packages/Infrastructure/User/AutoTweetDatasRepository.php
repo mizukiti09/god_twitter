@@ -39,6 +39,7 @@ class AutoTweetDatasRepository implements AutoTweetDatasRepositoryInterface
     {
         $results = DB::table('auto_tweet_datas')
             ->where('user_twitter_account_id', $user_twitter_account_id)
+            ->where('tweeted_flg', 0)
             ->select([
                 'id',
                 'user_twitter_account_id',
@@ -67,10 +68,11 @@ class AutoTweetDatasRepository implements AutoTweetDatasRepositoryInterface
             ]);
     }
 
-    public function notExistDataResetAutoFlg($user_twitter_account_id)
+    public function existDataResetAutoFlg($user_twitter_account_id)
     {
         $results = DB::table('auto_tweet_datas')
             ->where('user_twitter_account_id', $user_twitter_account_id)
+            ->where('tweeted_flg', 0)
             ->select([
                 'id'
             ])
@@ -83,10 +85,6 @@ class AutoTweetDatasRepository implements AutoTweetDatasRepositoryInterface
                 ->update([
                     'auto_tweet_flg' => 0,
                 ]);
-
-            return true;
-        } else {
-            return false;
         }
     }
 
@@ -94,6 +92,7 @@ class AutoTweetDatasRepository implements AutoTweetDatasRepositoryInterface
     {
         $results = DB::table('auto_tweet_datas')
             ->where('user_twitter_account_id', $user_twitter_account_id)
+            ->where('tweeted_flg', 0)
             ->select([
                 'id',
                 'tweetText',
@@ -108,5 +107,52 @@ class AutoTweetDatasRepository implements AutoTweetDatasRepositoryInterface
         }
 
         return $results;
+    }
+
+    public function getAllUserTweeted($user_twitter_account_id)
+    {
+        $results = DB::table('auto_tweet_datas')
+            ->where('user_twitter_account_id', $user_twitter_account_id)
+            ->where('tweeted_flg', 1)
+            ->select([
+                'id',
+                'tweetText',
+                'tweetTime'
+            ])
+            ->orderBy('tweetTime', 'desc')
+            ->get();
+
+
+        foreach ($results as $key => $result) {
+            $result->tweetTime = date("Y-m-d H:i", $result->tweetTime);
+        }
+
+        return $results;
+    }
+
+    public function updateOnTweetedFlg($id)
+    {
+        DB::table('auto_tweet_datas')
+            ->where('id', $id)
+            ->update([
+                'tweeted_flg' => 1,
+            ]);
+    }
+
+    public function resetAutoTweetedData($user_id, $screen_name)
+    {
+        $user_twitter_account_id = DB::table('user_twitter_accounts')
+            ->where('user_id', $user_id)
+            ->where('screen_name', $screen_name)
+            ->select([
+                'id'
+            ])
+            ->get()
+            ->first();
+
+        DB::table('auto_tweet_datas')
+            ->where('user_twitter_account_id', $user_twitter_account_id->id)
+            ->where('tweeted_flg', 1)
+            ->delete();
     }
 }
