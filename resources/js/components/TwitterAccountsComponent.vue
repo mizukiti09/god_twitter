@@ -39,19 +39,19 @@
                     <p class="c-structure__article__panel__info">{{ account.follower }}</p>
                 </div>
                 <div class="c-structure__article__panel__follower c-structure__article__panel__item">
-                    <p class="c-structure__article__panel__head">本日の自動フォローした数</p>
+                    <p class="c-structure__article__panel__head">自動フォローした数</p>
                     <p class="c-structure__article__panel__info">{{ account.follow_count }}</p>
                 </div>
                 <div class="c-structure__article__panel__follower c-structure__article__panel__item">
-                    <p class="c-structure__article__panel__head">本日の自動アンフォロー数</p>
+                    <p class="c-structure__article__panel__head">自動アンフォロー数</p>
                     <p class="c-structure__article__panel__info">{{ account.unFollow_count }}</p>
                 </div>
                 <div class="c-structure__article__panel__follower c-structure__article__panel__item">
-                    <p class="c-structure__article__panel__head">本日の自動いいねした数</p>
+                    <p class="c-structure__article__panel__head">自動いいねした数</p>
                     <p class="c-structure__article__panel__info">{{ account.like_count }}</p>
                 </div>
                 <div class="c-structure__article__panel__follower c-structure__article__panel__item">
-                    <p class="c-structure__article__panel__head">本日の自動ツイート数</p>
+                    <p class="c-structure__article__panel__head">自動ツイート数</p>
                     <p class="c-structure__article__panel__info">{{ account.tweet_count }}</p>
                 </div>
             </div>

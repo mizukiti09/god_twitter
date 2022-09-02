@@ -226,7 +226,10 @@ export default {
             this.keywords = arrayCookieData;
             this.$vueCookies.set('SearchLikeText' + this.user_id + this.auth_screen_name, arrayCookieData);
             const keywordDom = document.getElementById('like_' + keyword);
-            keywordDom.remove();
+
+            setTimeout(() => {
+                keywordDom.remove();
+            },0)
 
             if (this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name) === null) {
                 $cookies.remove('SearchLikeText' + this.user_id + this.auth_screen_name);

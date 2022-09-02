@@ -105,9 +105,6 @@ class AutoUnFollowCommand extends Command
                                             $unf_repository->saveUnFollowedAccount($user_twitter_account_id, $followed_data->twitterId);
                                             Log::info('アンフォロ-リストへ:' . $followed_data->twitterId);
 
-                                            $u_repository->unFollowCountSave($user_twitter_account_id);
-                                            Log::info('アンフォローカウントアップ');
-
                                             $fed_repository->deleteFollowedAccount($followed_data->id);
                                             Log::info('フォローリストから削除:' . $followed_data->id);
                                             Log::info('=============================');
@@ -118,6 +115,17 @@ class AutoUnFollowCommand extends Command
                                                 Log::info('自動アンフォローアクション: メール通知');
                                                 $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
                                                 Mail::to($user->email)->send(new AutoUnFollowMail($user));
+
+                                                $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->get('users/show', array(
+                                                    "screen_name" => $account->screen_name,
+                                                ));
+
+                                                if (isset($response->error) && $response->error != '') {
+                                                    return $response->error;
+                                                } else {
+                                                    $u_repository->followOrUnFollowCountSave($user_twitter_account_id, $response->friends_count, $response->followers_count);
+                                                    Log::info('アンフォローカウントアップ');
+                                                }
                                             }
                                         }
                                     } else if ($lastTweetUnixTime + (60 * 60 * 24 * 15) > $currentUnixTime) {
@@ -139,9 +147,6 @@ class AutoUnFollowCommand extends Command
                                                     $unf_repository->saveUnFollowedAccount($user_twitter_account_id, $followed_data->twitterId);
                                                     Log::info('アンフォロ-リストへ:' . $followed_data->twitterId);
 
-                                                    $u_repository->unFollowCountSave($user_twitter_account_id);
-                                                    Log::info('アンフォローカウントアップ');
-
                                                     $fed_repository->deleteFollowedAccount($followed_data->id);
                                                     Log::info('フォローリストから削除:' . $followed_data->id);
                                                 }
@@ -151,6 +156,17 @@ class AutoUnFollowCommand extends Command
                                                     Log::info('自動アンフォローアクション: メール通知');
                                                     $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
                                                     Mail::to($user->email)->send(new AutoUnFollowMail($user));
+
+                                                    $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->get('users/show', array(
+                                                        "screen_name" => $account->screen_name,
+                                                    ));
+
+                                                    if (isset($response->error) && $response->error != '') {
+                                                        return $response->error;
+                                                    } else {
+                                                        $u_repository->followOrUnFollowCountSave($user_twitter_account_id, $response->friends_count, $response->followers_count);
+                                                        Log::info('アンフォローカウントアップ');
+                                                    }
                                                 }
                                             } else {
                                                 Log::info('フォローされています。');
@@ -175,9 +191,6 @@ class AutoUnFollowCommand extends Command
                                                 $unf_repository->saveUnFollowedAccount($user_twitter_account_id, $followed_data->twitterId);
                                                 Log::info('アンフォロ-リストへ:' . $followed_data->twitterId);
 
-                                                $u_repository->unFollowCountSave($user_twitter_account_id);
-                                                Log::info('アンフォローカウントアップ');
-
                                                 $fed_repository->deleteFollowedAccount($followed_data->id);
                                                 Log::info('フォローリストから削除:' . $followed_data->id);
                                             }
@@ -186,6 +199,17 @@ class AutoUnFollowCommand extends Command
                                             Log::info('自動アンフォローアクション: メール通知');
                                             $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
                                             Mail::to($user->email)->send(new AutoUnFollowMail($user));
+
+                                            $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->get('users/show', array(
+                                                "screen_name" => $account->screen_name,
+                                            ));
+
+                                            if (isset($response->error) && $response->error != '') {
+                                                return $response->error;
+                                            } else {
+                                                $u_repository->followOrUnFollowCountSave($user_twitter_account_id, $response->friends_count, $response->followers_count);
+                                                Log::info('アンフォローカウントアップ');
+                                            }
                                         } else {
                                             Log::info('フォローされています。');
                                         }

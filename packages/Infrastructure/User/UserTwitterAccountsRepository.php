@@ -438,22 +438,50 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
         }
     }
 
-    public function followCountSave($id)
+    public function followOrUnFollowCountSave($id, $follow, $follower)
     {
-        DB::table('user_twitter_accounts')
+        $result0 = DB::table('user_twitter_accounts')
             ->where('id', $id)
-            ->increment('follow_count');
+            ->select(
+                'follow',
+                'follow_count',
+                'unFollow_count'
+            )
+            ->get()
+            ->first();
 
         DB::table('user_twitter_accounts')
             ->where('id', $id)
-            ->increment('follow');
-    }
+            ->upDate([
+                'follow' => $follow,
+                'follower' => $follower
+            ]);
 
-    public function unFollowCountSave($id)
-    {
-        DB::table('user_twitter_accounts')
+        $result1 = DB::table('user_twitter_accounts')
             ->where('id', $id)
-            ->increment('unFollow_count');
+            ->select('follow')
+            ->get()
+            ->first();
+
+        $result = $result1->follow - $result0->follow;
+
+        if ($result > 0) {
+            $result = $result0->follow_count + $result;
+
+            DB::table('user_twitter_accounts')
+                ->where('id', $id)
+                ->upDate([
+                    'follow_count' => $result
+                ]);
+        } else {
+            $result = $result0->unFollow_count + abs($result);
+
+            DB::table('user_twitter_accounts')
+                ->where('id', $id)
+                ->upDate([
+                    'unFollow_count' => $result
+                ]);
+        }
     }
 
     public function tweetCountSave($id)

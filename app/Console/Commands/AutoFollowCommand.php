@@ -80,21 +80,19 @@ class AutoFollowCommand extends Command
                         if ($u_repository->followCountUpperCheck($user_twitter_account_id) === true) {
                             Log::info('followCountUpperCheck 1000件未満OK');
 
-                            $selectedTenAccounts = $f_repository->getTenAccounts($user_twitter_account_id);
+                            $selectedTenAccounts = $f_repository->getEightAccounts($user_twitter_account_id);
 
                             if (!empty($selectedTenAccounts)) {
                                 // 一回に最高5件フォロー
                                 Log::info('selectedFiveAccounts 有り');
                                 foreach ($selectedTenAccounts as $key => $selectedAccount) {
                                     $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->post('friendships/create', array(
-                                        "screen_name" => $selectedAccount->screen_name,
+                                        "user_id" => $selectedAccount->twitterId,
                                     ));
 
                                     if (isset($response->error) && $response->error != '') {
                                         return $response->error;
                                     } else {
-                                        $u_repository->followCountSave($user_twitter_account_id);
-                                        Log::info('フォローカウントアップ');
                                         $f_repository->deleteFollowAccount($selectedAccount->id);
                                         Log::info('DBフォローアカウント削除ID:' . $selectedAccount->id);
                                         $fed_repository->saveFollowedAccount($user_twitter_account_id, $selectedAccount->twitterId);
@@ -127,6 +125,17 @@ class AutoFollowCommand extends Command
                                             Log::info('自動フォローアクション: メール通知');
                                             $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
                                             Mail::to($user->email)->send(new AutoFollowMail($user));
+
+                                            $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->get('users/show', array(
+                                                "screen_name" => $account->screen_name,
+                                            ));
+
+                                            if (isset($response->error) && $response->error != '') {
+                                                return $response->error;
+                                            } else {
+                                                $u_repository->followOrUnFollowCountSave($user_twitter_account_id, $response->friends_count, $response->followers_count);
+                                                Log::info('フォローカウントアップ');
+                                            }
                                         }
                                     }
                                 }

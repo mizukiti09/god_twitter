@@ -17,7 +17,7 @@ class FollowAccountsRepository implements FollowAccountsRepositoryInterface
             ]);
     }
 
-    public function getTenAccounts($user_twitter_account_id)
+    public function getEightAccounts($user_twitter_account_id)
     {
         $param = [
             'user_twitter_account_id' => $user_twitter_account_id
@@ -31,7 +31,7 @@ class FollowAccountsRepository implements FollowAccountsRepositoryInterface
             FROM
                 follow_accounts
             WHERE user_twitter_account_id = :user_twitter_account_id
-            LIMIT 0, 10",
+            LIMIT 0, 8",
             $param
         );
 

@@ -12,7 +12,7 @@ interface FollowAccountsRepositoryInterface
     /**
      * @param $user_twitter_account_id
      */
-    public function getTenAccounts($user_twitter_account_id);
+    public function getEightAccounts($user_twitter_account_id);
 
     /**
      * @param $id
