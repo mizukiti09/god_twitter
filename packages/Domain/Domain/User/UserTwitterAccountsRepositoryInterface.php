@@ -99,6 +99,16 @@ interface UserTwitterAccountsRepositoryInterface
      */
     public function unFollowCountUpperCheck($id);
 
+    /**
+     * @param $id
+     */
+    public function followCountSave($id);
+
+    /**
+     * @param $id
+     */
+    public function unFollowCountSave($id);
+
 
     /**
      * @param $id

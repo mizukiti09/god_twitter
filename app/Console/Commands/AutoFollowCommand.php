@@ -133,8 +133,6 @@ class AutoFollowCommand extends Command
                         $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
                         Mail::to($user->email)->send(new AutoFollowMail($user));
 
-
-
                         try {
                             $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->get('users/show', array(
                                 "screen_name" => $account->screen_name,
