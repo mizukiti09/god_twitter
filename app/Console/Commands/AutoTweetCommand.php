@@ -7,6 +7,7 @@ use App\Mail\AutoTweetMail;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Abraham\TwitterOAuth\TwitterOAuthException;
 use packages\Domain\Domain\User\AutoTweetDatasRepositoryInterface;
 use packages\Domain\Domain\User\UserTwitterAccountsRepositoryInterface;
 
@@ -67,19 +68,21 @@ class AutoTweetCommand extends Command
                         // 登録unixTimeは現在のunixTimeから見て前後60秒以内
                         $account = $u_repository->getAccount($userTwitterAccountId);
 
-                        $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->post("statuses/update", array(
-                            "status" => $autoTweetData->tweetText,
-                        ));
-
-                        if (isset($response->errors[0])) {
-                            break;
-                        } else {
+                        try {
+                            $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->post("statuses/update", array(
+                                "status" => $autoTweetData->tweetText,
+                            ));
                             // ツイートカウントアップ
                             $u_repository->tweetCountSave($userTwitterAccountId);
                             $t_repository->updateOnTweetedFlg($autoTweetData->id);
                             // 自動ツイートアクション: メール通知
                             $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
                             Mail::to($user->email)->send(new AutoTweetMail($user));
+                        } catch (TwitterOAuthException $e) {
+                            Log::info('|======================|');
+                            Log::info($e);
+                            Log::info('|======================|');
+                            continue;
                         }
                     }
                 }

@@ -6,7 +6,9 @@ use App\Facades\Twitter;
 use App\Mail\AutoFollowMail;
 use Illuminate\Console\Command;
 use App\Mail\AutoFollowOverMail;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Abraham\TwitterOAuth\TwitterOAuthException;
 use packages\Domain\Domain\User\FollowAccountsRepositoryInterface;
 use packages\Domain\Domain\User\AutoFollowDatasRepositoryInterface;
 use packages\Domain\Domain\User\FollowedAccountsRepositoryInterface;
@@ -98,14 +100,11 @@ class AutoFollowCommand extends Command
             }
 
             foreach ($selectedEightAccounts as $key => $selectedAccount) {
-                $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->post('friendships/create', array(
-                    "user_id" => $selectedAccount->twitterId,
-                ));
 
-                if (isset($response->errors[0])) {
-                    continue;
-                } elseif (isset($response->screen_name)) {
-
+                try {
+                    $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->post('friendships/create', array(
+                        "user_id" => $selectedAccount->twitterId,
+                    ));
                     // 'DBフォローアカウント削除
                     $f_repository->deleteFollowAccount($selectedAccount->id);
                     // フォロー済みリストとしてアカウントをfollowed_accountsテーブルへ保存
@@ -134,17 +133,26 @@ class AutoFollowCommand extends Command
                         $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
                         Mail::to($user->email)->send(new AutoFollowMail($user));
 
-                        $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->get('users/show', array(
-                            "screen_name" => $account->screen_name,
-                        ));
 
-                        if (isset($response->errors[0])) {
-                            break;
-                        } else {
+
+                        try {
+                            $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->get('users/show', array(
+                                "screen_name" => $account->screen_name,
+                            ));
                             // カウントアップ
                             $u_repository->followOrUnFollowCountSave($user_twitter_account_id, $response->friends_count, $response->followers_count);
+                        } catch (TwitterOAuthException $e) {
+                            Log::info('|======================|');
+                            Log::info($e);
+                            Log::info('|======================|');
+                            continue;
                         }
                     }
+                } catch (TwitterOAuthException $e) {
+                    Log::info('======================');
+                    Log::info($e);
+                    Log::info('======================');
+                    continue;
                 }
             }
         }

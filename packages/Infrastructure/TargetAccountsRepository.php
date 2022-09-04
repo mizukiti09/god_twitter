@@ -134,7 +134,6 @@ class TargetAccountsRepository implements TargetAccountsRepositoryInterface
                     // 4
                 }
             } else {
-                Log::info('target_account_id と target_id は同じ値ではありません');
                 DB::table('target_accounts')
                     ->where('id', $target_id)
                     ->delete();

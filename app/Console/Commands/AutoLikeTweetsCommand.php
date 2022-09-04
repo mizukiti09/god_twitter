@@ -5,7 +5,9 @@ namespace App\Console\Commands;
 use App\Facades\Twitter;
 use App\Mail\AutoLikeMail;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Abraham\TwitterOAuth\TwitterOAuthException;
 use packages\Domain\Domain\User\AutoLikeDatasRepositoryInterface;
 use packages\Domain\Domain\User\UserTwitterAccountsRepositoryInterface;
 
@@ -79,26 +81,36 @@ class AutoLikeTweetsCommand extends Command
 
             // 取得オプション
             $options = array('q' => $searchKey, 'lang' => 'ja', 'count' => 5, 'result_type' => 'recent');
-            $tweetsData = Twitter::getAuthConnection($account->user_id, $account->screen_name)
-                ->get("search/tweets", $options);
+
+            try {
+                $tweetsData = Twitter::getAuthConnection($account->user_id, $account->screen_name)
+                    ->get("search/tweets", $options);
+            } catch (TwitterOAuthException $e) {
+                Log::info('|======================|');
+                Log::info($e);
+                Log::info('|======================|');
+                continue;
+            }
 
             foreach ($tweetsData->statuses as $key => $data) {
-                $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)
-                    ->post("favorites/create", array(
-                        'id' => $data->id,
-                    ));
+                try {
+                    $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)
+                        ->post("favorites/create", array(
+                            'id' => $data->id,
+                        ));
 
-                if (isset($response->errors[0])) {
-                    break;
-                } else {
                     // カウントアップ
                     $u_repository->likeCountSave($user_twitter_account_id);
-                }
-
-                if ($key === array_key_last($tweetsData->statuses)) {
-                    // 自動いいねアクション: メール通知
-                    $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
-                    Mail::to($user->email)->send(new AutoLikeMail($user));
+                    if ($key === array_key_last($tweetsData->statuses)) {
+                        // 自動いいねアクション: メール通知
+                        $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
+                        Mail::to($user->email)->send(new AutoLikeMail($user));
+                    }
+                } catch (TwitterOAuthException $e) {
+                    Log::info('|======================|');
+                    Log::info($e);
+                    Log::info('|======================|');
+                    continue;
                 }
             }
         }
