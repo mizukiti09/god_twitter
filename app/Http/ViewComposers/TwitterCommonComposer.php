@@ -34,19 +34,17 @@ class TwitterCommonComposer
 
     public function compose(View $view)
     {
-        $accounts = $this->u_repository->find();
+        $auth_account = array();
+        $target = array();
+        $target_accounts = array();
+        $tweetList = array();
+        $tweetedList = array();
+        $followSearchTextAndCondition = array();
+        $likeSearchTextAndCondition = array();
+        $auth_screen_name = 'MyPage_auth_screen_name_null';
 
-        if (empty($accounts[0])) {
-            $accounts = array();
-            $auth_account = array();
-            $target = array();
-            $target_accounts = array();
-            $tweetList = array();
-            $tweetedList = array();
-            $followSearchTextAndCondition = array();
-            $likeSearchTextAndCondition = array();
-            $auth_screen_name = 'MyPage_auth_screen_name_null';
-        } else {
+        $accounts = $this->u_repository->find();
+        if (!empty($accounts[0])) {
             foreach ($accounts as $account) {
                 if ($account->auth_flg) {
                     $auth_account = $account;
@@ -62,18 +60,11 @@ class TwitterCommonComposer
                     } else {
                         $target_accounts = [];
                     }
-                    break;
-                } else {
-                    $auth_account = array();
-                    $target_accounts = array();
-                    $target = array();
-                    $tweetList = array();
-                    $tweetedList = array();
-                    $followSearchTextAndCondition = array();
-                    $likeSearchTextAndCondition = array();
-                    $auth_screen_name = 'MyPage_auth_screen_name_null';
+                    continue;
                 }
             }
+        } else {
+            $accounts = array();
         }
 
         $user_id = Auth::id();

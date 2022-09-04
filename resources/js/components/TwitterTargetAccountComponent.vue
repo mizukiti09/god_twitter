@@ -67,10 +67,11 @@ export default {
                     }
                 } catch (error) {
                     this.loading = false;
-                    if (error.response.data.message.includes('timed out')) {
-                        alert('Twitter API制限の為、少し時間を開けてから登録お願いします。');
-                    } else {
+
+                    if (error.response.data === 'User not found.') {
                         alert('正しく入力されていないのか、Twitterサービスに登録されていないアカウントかもしれません。登録されているアカウント名を正しくご入力ください。');
+                    } else {
+                        alert('Twitter API制限の為、少し時間を開けてから登録お願いします。');
                     }
                 }
             }

@@ -45,65 +45,45 @@ class AutoTweetCommand extends Command
         UserTwitterAccountsRepositoryInterface $u_repository,
         AutoTweetDatasRepositoryInterface $t_repository
     ) {
-        Log::info('=============================');
-        Log::info('AutoTweetCommand Start');
-        Log::info('=============================');
         $userTwitterAccountIds = $u_repository->getOnAutoTweetAccounts();
 
-        if (!empty($userTwitterAccountIds[0])) {
-            Log::info('user_twitter_account 有り');
+        if (empty($userTwitterAccountIds[0])) {
+            return;
+        }
 
-            // 現在のunixTime
-            $currentUnixTime = time();
-            Log::info($currentUnixTime);
+        // 現在のunixTime
+        $currentUnixTime = time();
 
-            foreach ($userTwitterAccountIds as $userTwitterAccountId) {
-                $t_repository->existDataResetAutoFlg($userTwitterAccountId);
+        foreach ($userTwitterAccountIds as $userTwitterAccountId) {
+            $t_repository->existDataResetAutoFlg($userTwitterAccountId);
+            $autoTweetDatas = $t_repository->getAutoTweetDatas($userTwitterAccountId);
 
-                Log::info('実行user_twitter_account_id:' . $userTwitterAccountId);
-                $autoTweetDatas = $t_repository->getAutoTweetDatas($userTwitterAccountId);
+            if (!empty($autoTweetDatas)) {
+                foreach ($autoTweetDatas as $autoTweetData) {
+                    $highTime = $autoTweetData->tweetTime + 60;
+                    $lowTime = $autoTweetData->tweetTime - 60;
 
-                if (!empty($autoTweetDatas)) {
-                    foreach ($autoTweetDatas as $autoTweetData) {
-                        $highTime = $autoTweetData->tweetTime + 60;
-                        $lowTime = $autoTweetData->tweetTime - 60;
-                        Log::info('登録unixTime:' . $autoTweetData->tweetTime);
+                    if (($lowTime <= $currentUnixTime) && ($currentUnixTime <= $highTime)) {
+                        // 登録unixTimeは現在のunixTimeから見て前後60秒以内
+                        $account = $u_repository->getAccount($userTwitterAccountId);
 
-                        if (($lowTime <= $currentUnixTime) && ($currentUnixTime <= $highTime)) {
-                            Log::info('登録unixTimeは現在のunixTimeから見て前後60秒以内です');
-                            $account = $u_repository->getAccount($userTwitterAccountId);
+                        $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->post("statuses/update", array(
+                            "status" => $autoTweetData->tweetText,
+                        ));
 
-                            Log::info('user_id:' . $account->user_id);
-                            Log::info('screen_name:' . $account->screen_name);
-
-                            $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->post("statuses/update", array(
-                                "status" => $autoTweetData->tweetText,
-                            ));
-
-                            if (isset($response->error) && $response->error != '') {
-                                return $response->error;
-                            } else {
-                                Log::info('ツイート成功');
-                                $u_repository->tweetCountSave($userTwitterAccountId);
-                                Log::info('ツイートカウントアップ');
-                                $t_repository->updateOnTweetedFlg($autoTweetData->id);
-                                // Log::info('autoTweetDataのID:' . $autoTweetData->id . 'をDBから削除します');
-                                // $t_repository->deleteAutoTweetData($autoTweetData->id);
-                                Log::info('=============================');
-                                Log::info('自動ツイートアクション: メール通知');
-                                Log::info('=============================');
-                                $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
-                                Mail::to($user->email)->send(new AutoTweetMail($user));
-                            }
+                        if (isset($response->errors[0])) {
+                            break;
+                        } else {
+                            // ツイートカウントアップ
+                            $u_repository->tweetCountSave($userTwitterAccountId);
+                            $t_repository->updateOnTweetedFlg($autoTweetData->id);
+                            // 自動ツイートアクション: メール通知
+                            $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
+                            Mail::to($user->email)->send(new AutoTweetMail($user));
                         }
-                        Log::info('登録unixTimeは現在のunixTimeから見て前後60秒以内ではありません');
                     }
                 }
             }
         }
-
-        Log::info('=============================');
-        Log::info('AutoTweetCommand END');
-        Log::info('=============================');
     }
 }

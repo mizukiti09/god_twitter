@@ -75,14 +75,11 @@ class TargetAccountsRepository implements TargetAccountsRepositoryInterface
         // auto_follow_datasにユーザーのデータが存在したら
 
         if ($result) {
-            Log::info('auto_follow_datasにユーザーのデータが存在します');
+            // auto_follow_datasにユーザーのデータが存在します
             $auto_follow_data = DB::table('auto_follow_datas')
                 ->where('user_twitter_account_id', $user_twitter_account_id)
                 ->get()
                 ->first();
-
-            Log::info('auto_follow_data->target_account_id :' . $auto_follow_data->target_account_id);
-            Log::info('target_id :' . $target_id);
 
             if ($auto_follow_data->target_account_id === $target_id) {
                 Log::info('target_account_id と target_id は同じ値です');
@@ -117,7 +114,7 @@ class TargetAccountsRepository implements TargetAccountsRepositoryInterface
                                 'target_account_id' => $targets[$target_array_key]->id,
                                 'cursor_count' => 0,
                             ]);
-                        Log::info('1');
+                        // 1
                     } else {
                         DB::table('auto_follow_datas')
                             ->where('user_twitter_account_id', $user_twitter_account_id)
@@ -125,31 +122,31 @@ class TargetAccountsRepository implements TargetAccountsRepositoryInterface
                                 'target_account_id' => $targets[0]->id,
                                 'cursor_count' => 0,
                             ]);
-                        Log::info('2');
+                        // 2
                     }
                     DB::table('target_accounts')
                         ->where('id', $target_id)
                         ->delete();
-                    Log::info('3');
+                    // 3
                 } else {
                     DB::table('target_accounts')
                         ->where('id', $target_id)
                         ->delete();
-                    Log::info('4');
+                    // 4
                 }
             } else {
                 Log::info('target_account_id と target_id は同じ値ではありません');
                 DB::table('target_accounts')
                     ->where('id', $target_id)
                     ->delete();
-                Log::info('5');
+                // 5
             }
         } else {
-            Log::info('auto_follow_datasにユーザーのデータが存在しません');
+            // auto_follow_datasにユーザーのデータが存在しません'
             DB::table('target_accounts')
                 ->where('id', $target_id)
                 ->delete();
-            Log::info('6');
+            // 6
         }
     }
 }

@@ -33,10 +33,10 @@
                                     v-model="add_keyword" />
                                 <input class="c-search__submit" type="submit" value="追加" v-on:click="addSearchText()" />
                             </label>
-                            <div v-if="getCookie()" class="c-search__keywords">
+                            <div v-if="cookieData" class="c-search__keywords">
                                 <nav class="c-solidMenu">
                                     <ul>
-                                        <li v-for="(keyword, i) in getCookie()" :key="i" :id="'like_' + keyword">
+                                        <li v-for="(keyword, i) in cookieData" :key="i" :id="'like_' + keyword">
                                             <a href="javascript:void(0)">
                                                 <span>{{keyword}}</span>
                                             </a>
@@ -94,6 +94,7 @@ export default {
             keywords: '',
             err_msg: '',
             selectValue: '',
+            cookieData: this.getCookie(),
         }
     },
     methods: {
@@ -216,8 +217,10 @@ export default {
                     }
                 }
             }
+            this.cookieData = this.getCookie();
         },
-        deleteSearchTextCookie: function(keyword) {
+        deleteSearchTextCookie: function (keyword) {
+
             this.$vueCookies.config(60 * 60 * 24 * 30, '');
             var cookieData = this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name);
             var arrayCookieData = cookieData.split( ',' );
@@ -225,15 +228,12 @@ export default {
             arrayCookieData.splice(index, 1);
             this.keywords = arrayCookieData;
             this.$vueCookies.set('SearchLikeText' + this.user_id + this.auth_screen_name, arrayCookieData);
-            const keywordDom = document.getElementById('like_' + keyword);
-
-            setTimeout(() => {
-                keywordDom.remove();
-            },0)
 
             if (this.$vueCookies.get('SearchLikeText' + this.user_id + this.auth_screen_name) === null) {
                 $cookies.remove('SearchLikeText' + this.user_id + this.auth_screen_name);
             }
+
+            this.cookieData = this.getCookie();
         },
         getCookie: function() {
             this.$vueCookies.config(60 * 60 * 24 * 30, '');

@@ -3,7 +3,9 @@
 namespace packages\Domain\Application\Twitter;
 
 use App\Facades\Twitter;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use packages\Domain\Domain\TargetAccountsRepositoryInterface;
 use packages\Domain\Domain\User\AutoFollowDatasRepositoryInterface;
 use packages\UseCase\Twitter\Follow\TwitterAutoFollowUseCaseInterface;
@@ -33,8 +35,15 @@ class TwitterFollowInteractor implements TwitterAutoFollowUseCaseInterface, Twit
             'screen_name' => $target_screen_name
         ));
 
-        if (isset($response->error) && $response->error != '') {
-            return $response->error;
+
+
+        if (isset($response->errors[0])) {
+            $error = $response->errors[0]->message;
+
+            throw new HttpResponseException(response(
+                $error,
+                404
+            ));
         } else {
             $this->ta_repository->saveTargetAccount($user_id, $auth_screen_name, $target_screen_name, $response->followers_count);
         }

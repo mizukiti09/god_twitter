@@ -13,21 +13,21 @@
             </div>
         </div>
         <div class="p-targetAccount__current">
-            【Current Target: {{target.screen_name}}】
+            【現在のターゲット: {{target.screen_name}}】
         </div>
         <div class="p-targetAccount__current">
-            【Follower: {{target.follower}}】
+            【フォロワー: {{target.follower}}】
         </div>
         <div class="p-targetAccount__current">
-            【Load : {{load_count}}%】
+            【{{load_count}}%】
         </div>
         <ul class="p-targetAccount__list">
             <li v-for="(account, i) in target_accounts" :key="i" class="p-targetAccount__list__item"
                 :id="'target_data' + i" :class="{ 'p-targetAccount__list__item--on': checkLoad(account.screen_name)}">
                 <i v-on:click="deleteOpen(account.id, account.screen_name,i)"
                     class="fas fa-trash-restore u-trash p-targetAccount__list__item__trash"></i>
-                <p class="p-targetAccount__list__item__text">【AccountName: <a class="u-twitter-link"
-                        :href="'https://twitter.com/' + account.screen_name">{{account.screen_name}}</a>】,<br class="u-sp_br">【Follower:
+                <p class="p-targetAccount__list__item__text">【アカウント名: <a class="u-twitter-link"
+                        :href="'https://twitter.com/' + account.screen_name">{{account.screen_name}}</a>】,<br class="u-sp_br">【フォロワー:
                     {{account.follower}}】</p>
             </li>
         </ul>
