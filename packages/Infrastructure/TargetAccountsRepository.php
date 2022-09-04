@@ -4,7 +4,6 @@ namespace packages\Infrastructure;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 use packages\Domain\Domain\TargetAccountsRepositoryInterface;
 
 class TargetAccountsRepository implements TargetAccountsRepositoryInterface

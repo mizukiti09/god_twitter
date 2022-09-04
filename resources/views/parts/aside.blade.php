@@ -27,7 +27,6 @@
                     ドキュメント
                 </a>
             </div>
-
             <div class="c-appBtn">
                 @if (!$auth_account->auto_follow_flg)
                     <a href="{{ route('twitter.targetAccounts') }}" class="c-appBtn--none">

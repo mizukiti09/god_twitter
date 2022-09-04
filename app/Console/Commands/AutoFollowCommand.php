@@ -103,8 +103,9 @@ class AutoFollowCommand extends Command
                 ));
 
                 if (isset($response->errors[0])) {
-                    break;
-                } else {
+                    continue;
+                } elseif (isset($response->screen_name)) {
+
                     // 'DBフォローアカウント削除
                     $f_repository->deleteFollowAccount($selectedAccount->id);
                     // フォロー済みリストとしてアカウントをfollowed_accountsテーブルへ保存

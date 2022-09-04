@@ -407,13 +407,9 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
             ->first();
         $followCount = $result->follow_count;
 
-        Log::info('現状のDBフォローカウント' . $followCount);
-
         if ($followCount < 1000) {
-            Log::info('現状のDBフォローカウントは1000件未満 OK');
             return true;
         } else {
-            Log::info('現状のDBフォローカウントは1000件以上');
             return false;
         }
     }
@@ -427,13 +423,9 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
             ->first();
         $unFollowCount = $result->unFollow_count;
 
-        Log::info('現状のDBアンフォローカウント' . $unFollowCount);
-
         if ($unFollowCount < 1000) {
-            Log::info('現状のDBアンフォローカウントは1000件未満 OK');
             return true;
         } else {
-            Log::info('現状のDBアンフォローカウントは1000件以上');
             return false;
         }
     }

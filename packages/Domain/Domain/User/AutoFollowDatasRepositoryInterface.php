@@ -88,5 +88,8 @@ interface AutoFollowDatasRepositoryInterface
      */
     public function changeFirstTargetAccountId($user_twitter_account_id);
 
+    /**
+     * @param $user_id, $screen_name
+     */
     public function reset($user_id, $screen_name);
 }

@@ -35,8 +35,6 @@ class TwitterFollowInteractor implements TwitterAutoFollowUseCaseInterface, Twit
             'screen_name' => $target_screen_name
         ));
 
-
-
         if (isset($response->errors[0])) {
             $error = $response->errors[0]->message;
 
