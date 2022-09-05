@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Facades\Twitter;
 use App\Mail\AutoTweetMail;
 use Illuminate\Console\Command;
+use App\Mail\AutoActionStopMail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Abraham\TwitterOAuth\TwitterOAuthException;
@@ -59,31 +60,40 @@ class AutoTweetCommand extends Command
             $t_repository->existDataResetAutoFlg($userTwitterAccountId);
             $autoTweetDatas = $t_repository->getAutoTweetDatas($userTwitterAccountId);
 
-            if (!empty($autoTweetDatas)) {
-                foreach ($autoTweetDatas as $autoTweetData) {
-                    $highTime = $autoTweetData->tweetTime + 60;
-                    $lowTime = $autoTweetData->tweetTime - 60;
+            if (empty($autoTweetDatas)) {
+                continue;
+            }
+            foreach ($autoTweetDatas as $autoTweetData) {
+                $highTime = $autoTweetData->tweetTime + 60;
+                $lowTime = $autoTweetData->tweetTime - 60;
 
-                    if (($lowTime <= $currentUnixTime) && ($currentUnixTime <= $highTime)) {
-                        // 登録unixTimeは現在のunixTimeから見て前後60秒以内
-                        $account = $u_repository->getAccount($userTwitterAccountId);
+                if (($lowTime <= $currentUnixTime) && ($currentUnixTime <= $highTime)) {
+                    // 登録unixTimeは現在のunixTimeから見て前後60秒以内
+                    $account = $u_repository->getAccount($userTwitterAccountId);
 
-                        try {
-                            $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->post("statuses/update", array(
-                                "status" => $autoTweetData->tweetText,
-                            ));
+                    try {
+                        $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->post("statuses/update", array(
+                            "status" => $autoTweetData->tweetText,
+                        ));
+
+                        if (isset($response->id)) {
                             // ツイートカウントアップ
                             $u_repository->tweetCountSave($userTwitterAccountId);
                             $t_repository->updateOnTweetedFlg($autoTweetData->id);
                             // 自動ツイートアクション: メール通知
                             $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
                             Mail::to($user->email)->send(new AutoTweetMail($user));
-                        } catch (TwitterOAuthException $e) {
-                            Log::info('|======================|');
-                            Log::info($e);
-                            Log::info('|======================|');
-                            continue;
+                        } else {
+                            Log::info('リセット');
+                            $u_repository->allResetAutoFlg($userTwitterAccountId);
+                            $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
+                            Mail::to($user->email)->send(new AutoActionStopMail($user));
                         }
+                    } catch (TwitterOAuthException $e) {
+                        Log::info('|======================|');
+                        Log::info($e);
+                        Log::info('|======================|');
+                        continue;
                     }
                 }
             }

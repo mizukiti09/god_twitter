@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Facades\Twitter;
 use App\Mail\AutoLikeMail;
 use Illuminate\Console\Command;
+use App\Mail\AutoActionStopMail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Abraham\TwitterOAuth\TwitterOAuthException;
@@ -65,18 +66,19 @@ class AutoLikeTweetsCommand extends Command
             // user_twitter_account
             $account = $u_repository->getAccount($user_twitter_account_id);
 
-            if ($condition === ('AND' || 'NOT')) {
-                $searchKey = '';
-                foreach ($array_search_text as $text) {
-                    $searchKey = $searchKey . $text . ' ';
-                }
-            } else if ($condition === 'OR') {
-                $searchKey = '';
+            $searchKey = '';
+
+            if ($condition === 'OR') {
+
                 $or = ' OR ';
                 foreach ($array_search_text as $text) {
                     $searchKey = $searchKey . $text . $or;
                 }
                 $searchKey = substr($searchKey, 0, strlen($searchKey) - 4);
+            } else {
+                foreach ($array_search_text as $text) {
+                    $searchKey = $searchKey . $text . ' ';
+                }
             }
 
             // 取得オプション
@@ -85,33 +87,30 @@ class AutoLikeTweetsCommand extends Command
             try {
                 $tweetsData = Twitter::getAuthConnection($account->user_id, $account->screen_name)
                     ->get("search/tweets", $options);
-            } catch (TwitterOAuthException $e) {
-                Log::info('|======================|');
-                Log::info($e);
-                Log::info('|======================|');
-                continue;
-            }
 
-            foreach ($tweetsData->statuses as $key => $data) {
-                try {
+
+                foreach ($tweetsData->statuses as $key => $data) {
+
                     $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)
                         ->post("favorites/create", array(
                             'id' => $data->id,
                         ));
 
-                    // カウントアップ
-                    $u_repository->likeCountSave($user_twitter_account_id);
-                    if ($key === array_key_last($tweetsData->statuses)) {
-                        // 自動いいねアクション: メール通知
-                        $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
-                        Mail::to($user->email)->send(new AutoLikeMail($user));
+                    if (isset($response->id)) {
+                        // カウントアップ
+                        $u_repository->likeCountSave($user_twitter_account_id);
+                        if ($key === array_key_last($tweetsData->statuses)) {
+                            // 自動いいねアクション: メール通知
+                            $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
+                            Mail::to($user->email)->send(new AutoLikeMail($user));
+                        }
                     }
-                } catch (TwitterOAuthException $e) {
-                    Log::info('|======================|');
-                    Log::info($e);
-                    Log::info('|======================|');
-                    continue;
                 }
+            } catch (TwitterOAuthException $e) {
+                Log::info('|======================|');
+                Log::info($e);
+                Log::info('|======================|');
+                continue;
             }
         }
     }

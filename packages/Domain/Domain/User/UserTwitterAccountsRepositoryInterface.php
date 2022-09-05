@@ -161,4 +161,9 @@ interface UserTwitterAccountsRepositoryInterface
      * @param $id
      */
     public function checkRestartLikeUnixTime($id);
+
+    /**
+     * @param $id
+     */
+    public function allResetAutoFlg($id);
 }

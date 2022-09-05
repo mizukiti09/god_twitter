@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Facades\Twitter;
 use App\Mail\AutoUnFollowMail;
 use Illuminate\Console\Command;
+use App\Mail\AutoActionStopMail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Abraham\TwitterOAuth\TwitterOAuthException;
@@ -94,118 +95,63 @@ class AutoUnFollowCommand extends Command
                     continue;
                 }
 
-                if (isset($result->status)) {
+                try {
                     // ツイート履歴あり
-                    $created_at = $result->status->created_at;
-                    $lastTweetUnixTime = strtotime($created_at);
-                    $currentUnixTime = time();
+                    if (isset($result->status)) {
+                        $created_at = $result->status->created_at;
+                        $lastTweetUnixTime = strtotime($created_at);
+                        $currentUnixTime = time();
 
-                    if ($lastTweetUnixTime + (60 * 60 * 24 * 15) < $currentUnixTime) {
-                        // 最後のツイートから15日経っています。非アクティブユーザーです。アンフォローします。
-
-                        try {
-                            $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->post("friendships/destroy", array(
-                                "user_id" => $followed_data->twitterId,
-                            ));
-                            // アンフォロ-リストへ:
-                            $unf_repository->saveUnFollowedAccount($user_twitter_account_id, $followed_data->twitterId);
-                            // フォローリストから削除
-                            $fed_repository->deleteFollowedAccount($followed_data->id);
-
-                            if ($key === array_key_last($followed_datas)) {
-                                // 自動アンフォローアクション: メール通知
-                                $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
-                                Mail::to($user->email)->send(new AutoUnFollowMail($user));
-
-                                $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->get('users/show', array(
-                                    "screen_name" => $account->screen_name,
-                                ));
-
-                                if (isset($response->errors[0])) {
-                                    return $response->error;
-                                } else {
-                                    // アンフォローカウントアップ
-                                    $u_repository->followOrUnFollowCountSave($user_twitter_account_id, $response->friends_count, $response->followers_count);
-                                }
-                            }
-                        } catch (TwitterOAuthException $e) {
-                            Log::info('|======================|');
-                            Log::info($e);
-                            Log::info('|======================|');
-                            continue;
-                        }
-                    } else if ($lastTweetUnixTime + (60 * 60 * 24 * 15) > $currentUnixTime) {
-                        // 最後のツイートから15日以内です。アクティブユーザーです。
-                        try {
+                        // 最後のツイートから15日以内です。アクティブユーザー。
+                        if ($lastTweetUnixTime + (60 * 60 * 24 * 15) > $currentUnixTime) {
                             $result = Twitter::getAuthConnection($account->user_id, $account->screen_name)->get("friendships/lookup", array(
                                 "user_id" => $followed_data->twitterId,
                             ));
 
                             if (!empty($result[0])) {
-                                if (in_array('followed_by', $result[0]->connections) === false) {
-                                    // フォローされていない
-                                    $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->post("friendships/destroy", array(
-                                        "user_id" => $followed_data->twitterId,
-                                    ));
-                                    // アンフォロ-リストへ
-                                    $unf_repository->saveUnFollowedAccount($user_twitter_account_id, $followed_data->twitterId);
-                                    // フォローリストから削除
+                                // フォローされている
+                                if (in_array('followed_by', $result[0]->connections) === true) {
+                                    // フォローリストから削除し、ループをスキップ
                                     $fed_repository->deleteFollowedAccount($followed_data->id);
-                                    if ($key === array_key_last($followed_datas)) {
-                                        // 自動アンフォローアクション: メール通知
-                                        $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
-                                        Mail::to($user->email)->send(new AutoUnFollowMail($user));
-
-                                        $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->get('users/show', array(
-                                            "screen_name" => $account->screen_name,
-                                        ));
-                                        // アンフォローカウントアップ
-                                        $u_repository->followOrUnFollowCountSave($user_twitter_account_id, $response->friends_count, $response->followers_count);
-                                    }
+                                    continue;
                                 }
                             }
-                        } catch (TwitterOAuthException $e) {
-                            Log::info('|======================|');
-                            Log::info($e);
-                            Log::info('|======================|');
-                            continue;
                         }
                     }
-                } else {
-                    try {
-                        // ツイート履歴なし
-                        $result = Twitter::getAuthConnection($account->user_id, $account->screen_name)->get("friendships/lookup", array(
-                            "user_id" => $followed_data->twitterId,
+
+                    $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->post("friendships/destroy", array(
+                        "user_id" => $followed_data->twitterId,
+                    ));
+
+                    // アンフォロ-リストへ:
+                    $unf_repository->saveUnFollowedAccount($user_twitter_account_id, $followed_data->twitterId);
+                    // フォローリストから削除
+                    $fed_repository->deleteFollowedAccount($followed_data->id);
+
+                    if ($key === array_key_last($followed_datas)) {
+                        // 自動アンフォローアクション: メール通知
+                        $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
+                        Mail::to($user->email)->send(new AutoUnFollowMail($user));
+
+                        $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->get('users/show', array(
+                            "screen_name" => $account->screen_name,
                         ));
-                        if (!empty($result[0])) {
-                            if (in_array('followed_by', $result[0]->connections) === false) {
-                                // フォローはされていない
-                                $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->post("friendships/destroy", array(
-                                    "user_id" => $followed_data->twitterId,
-                                ));
-                                // アンフォロ-リストへ
-                                $unf_repository->saveUnFollowedAccount($user_twitter_account_id, $followed_data->twitterId);
-                                // フォローリストから削除
-                                $fed_repository->deleteFollowedAccount($followed_data->id);
 
-                                // 自動アンフォローアクション: メール通知
-                                $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
-                                Mail::to($user->email)->send(new AutoUnFollowMail($user));
-
-                                $response = Twitter::getAuthConnection($account->user_id, $account->screen_name)->get('users/show', array(
-                                    "screen_name" => $account->screen_name,
-                                ));
-
-                                // アンフォローカウントアップ
-                                $u_repository->followOrUnFollowCountSave($user_twitter_account_id, $response->friends_count, $response->followers_count);
-                            }
+                        if (isset($response->id)) {
+                            // アンフォローカウントアップ
+                            $u_repository->followOrUnFollowCountSave($user_twitter_account_id, $response->friends_count, $response->followers_count);
+                        } else {
+                            Log::info('リセット');
+                            $u_repository->allResetAutoFlg($user_twitter_account_id);
+                            $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
+                            Mail::to($user->email)->send(new AutoActionStopMail($user));
                         }
-                    } catch (TwitterOAuthException $e) {
-                        Log::info('|======================|');
-                        Log::info($e);
-                        Log::info('|======================|');
-                        continue;
                     }
+                } catch (TwitterOAuthException $e) {
+                    Log::info('|======================|');
+                    Log::info($e);
+                    Log::info('|======================|');
+                    continue;
                 }
             }
         }

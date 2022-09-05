@@ -29,26 +29,26 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('command:autoTweet')
-        //     ->everyMinute()
-        //     ->onSuccess(function () {
-        //         Log::debug('自動ツイート:確認OK');
-        //     })
-        //     ->onFailure(function () {
-        //         Log::error('自動ツイート:確認失敗');
-        //     });
+        $schedule->command('command:autoTweet')
+            ->everyMinute()
+            ->onSuccess(function () {
+                Log::debug('自動ツイート:確認OK');
+            })
+            ->onFailure(function () {
+                Log::error('自動ツイート:確認失敗');
+            });
 
-        // $schedule->command('command:autoFollowAccounts')
-        //     ->everyMinute()
-        //     ->onSuccess(function () {
-        //         Log::debug('自動フォローアカウンツ保存:確認OK');
-        //     })
-        //     ->onFailure(function () {
-        //         Log::error('自動フォローアカウンツ保存:確認失敗');
-        //     });
+        $schedule->command('command:autoFollowAccounts')
+            ->everyTenMinutes()
+            ->onSuccess(function () {
+                Log::debug('自動フォローアカウンツ保存:確認OK');
+            })
+            ->onFailure(function () {
+                Log::error('自動フォローアカウンツ保存:確認失敗');
+            });
 
         $schedule->command('command:autoFollow')
-            ->everyMinute()
+            ->everyTenMinutes()
             ->onSuccess(function () {
                 Log::debug('自動フォロー:確認成功');
             })
@@ -56,62 +56,62 @@ class Kernel extends ConsoleKernel
                 Log::error('自動フォロー:確認失敗');
             });
 
-        // // アンフォロー
-        // $schedule->command('command:autoUnFollow')
-        //     ->cron('15 * * * *')
-        //     ->onSuccess(function () {
-        //         Log::debug('自動アンフォロー:確認成功');
-        //     })
-        //     ->onFailure(function () {
-        //         Log::error('自動アンフォロー:確認失敗');
-        //     });
+        // アンフォロー
+        $schedule->command('command:autoUnFollow')
+            ->cron('15 * * * *')
+            ->onSuccess(function () {
+                Log::debug('自動アンフォロー:確認成功');
+            })
+            ->onFailure(function () {
+                Log::error('自動アンフォロー:確認失敗');
+            });
 
-        // $schedule->command('command:autoUnFollow')
-        //     ->cron('35 * * * *')
-        //     ->onSuccess(function () {
-        //         Log::debug('自動アンフォロー:確認成功');
-        //     })
-        //     ->onFailure(function () {
-        //         Log::error('自動アンフォロー:確認失敗');
-        //     });
+        $schedule->command('command:autoUnFollow')
+            ->cron('35 * * * *')
+            ->onSuccess(function () {
+                Log::debug('自動アンフォロー:確認成功');
+            })
+            ->onFailure(function () {
+                Log::error('自動アンフォロー:確認失敗');
+            });
 
-        // $schedule->command('command:autoUnFollow')
-        //     ->cron('55 * * * *')
-        //     ->onSuccess(function () {
-        //         Log::debug('自動アンフォロー:確認成功');
-        //     })
-        //     ->onFailure(function () {
-        //         Log::error('自動アンフォロー:確認失敗');
-        //     });
+        $schedule->command('command:autoUnFollow')
+            ->cron('55 * * * *')
+            ->onSuccess(function () {
+                Log::debug('自動アンフォロー:確認成功');
+            })
+            ->onFailure(function () {
+                Log::error('自動アンフォロー:確認失敗');
+            });
 
 
-        // // いいね
-        // $schedule->command('command:autoLikeTweets')
-        //     ->cron('5 * * * *')
-        //     ->onSuccess(function () {
-        //         Log::debug('自動いいねツイート保存:確認OK');
-        //     })
-        //     ->onFailure(function () {
-        //         Log::error('自動いいねツイート保存:確認失敗');
-        //     });
+        // いいね
+        $schedule->command('command:autoLikeTweets')
+            ->cron('5 * * * *')
+            ->onSuccess(function () {
+                Log::debug('自動いいねツイート保存:確認OK');
+            })
+            ->onFailure(function () {
+                Log::error('自動いいねツイート保存:確認失敗');
+            });
 
-        // $schedule->command('command:autoLikeTweets')
-        //     ->cron('25 * * * *')
-        //     ->onSuccess(function () {
-        //         Log::debug('自動いいねツイート保存:確認OK');
-        //     })
-        //     ->onFailure(function () {
-        //         Log::error('自動いいねツイート保存:確認失敗');
-        //     });
+        $schedule->command('command:autoLikeTweets')
+            ->cron('25 * * * *')
+            ->onSuccess(function () {
+                Log::debug('自動いいねツイート保存:確認OK');
+            })
+            ->onFailure(function () {
+                Log::error('自動いいねツイート保存:確認失敗');
+            });
 
-        // $schedule->command('command:autoLikeTweets')
-        //     ->cron('45 * * * *')
-        //     ->onSuccess(function () {
-        //         Log::debug('自動いいねツイート保存:確認OK');
-        //     })
-        //     ->onFailure(function () {
-        //         Log::error('自動いいねツイート保存:確認失敗');
-        //     });
+        $schedule->command('command:autoLikeTweets')
+            ->cron('45 * * * *')
+            ->onSuccess(function () {
+                Log::debug('自動いいねツイート保存:確認OK');
+            })
+            ->onFailure(function () {
+                Log::error('自動いいねツイート保存:確認失敗');
+            });
     }
 
     /**

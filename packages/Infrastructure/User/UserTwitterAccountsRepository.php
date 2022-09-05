@@ -701,4 +701,16 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
             return true;
         }
     }
+
+    public function allResetAutoFlg($id)
+    {
+        DB::table('user_twitter_accounts')
+            ->where('id', $id)
+            ->upDate([
+                'auto_follow_flg' => 0,
+                'auto_unFollow_flg' => 0,
+                'auto_tweet_flg' => 0,
+                'auto_like_flg' => 0,
+            ]);
+    }
 }

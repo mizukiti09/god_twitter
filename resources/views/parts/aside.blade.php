@@ -12,7 +12,8 @@
         <div class="c-structure__aside__item__head">Twitter認証</div>
         <div class="c-appBtn">
             <a href="{{ route('document.first') }}" class="c-appBtn--none">
-                ドキュメント
+                <span><i class="fas fa-book"></i>
+                    機能説明ページ</span>
             </a>
         </div>
         <div class="c-appBtn"><a class="c-appBtn--auth" href="{{ route('login.twitter') }}">アカウント認証</a></div>
@@ -24,7 +25,8 @@
             <div class="c-structure__aside__item__head">ターゲットアカウント</div>
             <div class="c-appBtn">
                 <a href="{{ route('document.autoFollow') }}" class="c-appBtn--none">
-                    ドキュメント
+                    <span><i class="fas fa-book"></i>
+                        機能説明ページ</span>
                 </a>
             </div>
             <div class="c-appBtn">
@@ -56,7 +58,8 @@
             <div class="c-structure__aside__item__head">いいね</div>
             <div class="c-appBtn">
                 <a href="{{ route('document.autoLike') }}" class="c-appBtn--none">
-                    ドキュメント
+                    <span><i class="fas fa-book"></i>
+                        機能説明ページ</span>
                 </a>
             </div>
             <twitter-auto-like-action :user_id="{{ $user_id }}"
@@ -69,7 +72,8 @@
             <div class="c-structure__aside__item__head">ツイート</div>
             <div class="c-appBtn">
                 <a href="{{ route('document.autoTweet') }}" class="c-appBtn--none">
-                    ドキュメント
+                    <span><i class="fas fa-book"></i>
+                        機能説明ページ</span>
                 </a>
             </div>
             <div class="c-appBtn">

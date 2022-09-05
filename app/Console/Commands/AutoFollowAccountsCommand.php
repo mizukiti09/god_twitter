@@ -4,6 +4,10 @@ namespace App\Console\Commands;
 
 use App\Facades\Twitter;
 use Illuminate\Console\Command;
+use App\Mail\AutoActionStopMail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Abraham\TwitterOAuth\TwitterOAuthException;
 use packages\Domain\Domain\User\FollowAccountsRepositoryInterface;
 use packages\Domain\Domain\User\AutoFollowDatasRepositoryInterface;
 use packages\Domain\Domain\User\UnFollowedAccountsRepositoryInterface;
@@ -80,19 +84,32 @@ class AutoFollowAccountsCommand extends Command
             $account = $u_repository->getAccount($user_twitter_account_id);
             $listGetCount = 200;
 
-            if (empty($next_cursor)) {
-                $followers_list = Twitter::getAuthConnection($account->user_id, $account->screen_name)
-                    ->get('followers/list', array(
-                        "screen_name" => $target_account_screen_name,
-                        "count"       => $listGetCount,
-                    ));
-            } else {
-                $followers_list = Twitter::getAuthConnection($account->user_id, $account->screen_name)
-                    ->get('followers/list', array(
-                        "screen_name" => $target_account_screen_name,
-                        "count"       => $listGetCount,
-                        "cursor" => $next_cursor,
-                    ));
+            try {
+                if (empty($next_cursor)) {
+                    $followers_list = Twitter::getAuthConnection($account->user_id, $account->screen_name)
+                        ->get('followers/list', array(
+                            "screen_name" => $target_account_screen_name,
+                            "count"       => $listGetCount,
+                        ));
+                } else {
+                    $followers_list = Twitter::getAuthConnection($account->user_id, $account->screen_name)
+                        ->get('followers/list', array(
+                            "screen_name" => $target_account_screen_name,
+                            "count"       => $listGetCount,
+                            "cursor" => $next_cursor,
+                        ));
+                }
+                if (!isset($followers_list->users)) {
+                    Log::info('リセット');
+                    $u_repository->allResetAutoFlg($user_twitter_account_id);
+                    $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
+                    Mail::to($user->email)->send(new AutoActionStopMail($user));
+                }
+            } catch (TwitterOAuthException $e) {
+                Log::info('======================');
+                Log::info($e);
+                Log::info('======================');
+                continue;
             }
 
             // 次のフォロワーリストがあったらnext_cursorをDBに保存
