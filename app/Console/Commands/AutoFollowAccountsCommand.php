@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Facades\Twitter;
 use Illuminate\Console\Command;
 use App\Mail\AutoActionStopMail;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Abraham\TwitterOAuth\TwitterOAuthException;
 use packages\Domain\Domain\User\FollowAccountsRepositoryInterface;
@@ -100,15 +99,11 @@ class AutoFollowAccountsCommand extends Command
                         ));
                 }
                 if (!isset($followers_list->users)) {
-                    Log::info('リセット');
                     $u_repository->allResetAutoFlg($user_twitter_account_id);
                     $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
                     Mail::to($user->email)->send(new AutoActionStopMail($user));
                 }
             } catch (TwitterOAuthException $e) {
-                Log::info('======================');
-                Log::info($e);
-                Log::info('======================');
                 continue;
             }
 
@@ -121,7 +116,11 @@ class AutoFollowAccountsCommand extends Command
 
 
             foreach ($followers_list->users as $user) {
-                // 日本語文字列が含まれている
+                // アンフォローリストに該当のtwitterIdが存在したらスキップ
+                if ($unf_repository->checkUnFollowedExist($user_twitter_account_id, $user->id) === true) {
+                    continue;
+                }
+                // 日本語文字列が含まれていなかったらスキップ
                 if (!preg_match("/[ぁ-ん]+|[ァ-ヴー]+|[一-龠]/u", $user->description)) {
                     continue;
                 }
@@ -131,24 +130,21 @@ class AutoFollowAccountsCommand extends Command
                     // $array_search_textの値の数とインクリメントされた$check_countが
                     // 同じ数になればデータベースに保存する。
 
-                    // ユーザー都度のアンフォローリストに該当のtwitterIdが存在しなければフォローリストへ追加する
-                    if ($unf_repository->checkUnFollowedExist($user_twitter_account_id, $user->id) === false) {
-                        $check_count = 0;
-                        if ($user->following === false) {
-                            foreach ($array_search_text as $text) {
-                                if ($condition !== 'OR') {
-                                    if (strpos($user->description, $text) !== false) {
-                                        $check_count += 1;
-                                    }
-                                    if (count($array_search_text) === $check_count) {
-                                        array_push($listNames, $user->screen_name);
-                                        array_push($listIds, $user->id);
-                                    }
-                                } else {
-                                    if (strpos($user->description, $text) !== false) {
-                                        array_push($listNames, $user->screen_name);
-                                        array_push($listIds, $user->id);
-                                    }
+                    $check_count = 0;
+                    if ($user->following === false) {
+                        foreach ($array_search_text as $text) {
+                            if ($condition !== 'OR') {
+                                if (strpos($user->description, $text) !== false) {
+                                    $check_count += 1;
+                                }
+                                if (count($array_search_text) === $check_count) {
+                                    array_push($listNames, $user->screen_name);
+                                    array_push($listIds, $user->id);
+                                }
+                            } else {
+                                if (strpos($user->description, $text) !== false) {
+                                    array_push($listNames, $user->screen_name);
+                                    array_push($listIds, $user->id);
                                 }
                             }
                         }

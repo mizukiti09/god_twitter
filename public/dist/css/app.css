@@ -854,6 +854,8 @@ body {
   line-height: 50px; }
   .c-navbar li {
     padding-left: 30px; }
+    .c-navbar li:first-child {
+      padding-left: initial; }
   .c-navbar-sp {
     display: none; }
 
@@ -874,6 +876,8 @@ body {
     height: 100vh;
     overflow: auto;
     -webkit-overflow-scrolling: touch; }
+  .c-nav__item {
+    font-size: 14px; }
   .c-nav.panelactive {
     right: 0; }
     .c-nav.panelactive .c-nav__list {

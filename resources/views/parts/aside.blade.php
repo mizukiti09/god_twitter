@@ -83,7 +83,7 @@
             </div>
             <div class="c-appBtn">
                 <a href="{{ route('twitter.tweetHistory') }}" class="c-appBtn--none">
-                    ツイート履歴
+                    ツイート履歴一覧
                 </a>
             </div>
             <twitter-auto-tweet-action :user_id="{{ $user_id }}"

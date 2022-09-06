@@ -4,8 +4,7 @@
             <div class="c-overlay">
                 <div class="c-overlay__contents">
                     <div class="c-overlay__ttl">{{ autoTarget }}</div>
-                    <div class="c-overlay__description"><span class="u-red">*</span>Keywordを入力するとそのKeyword<br
-                            class="u-sp_br">をもとにいいねします。
+                    <div class="c-overlay__description"><span class="u-red">*</span>Keywordを入力するとそのKeyword<br>をもとにいいねします。
                     </div>
                     <div class="c-overlay__db">
                         <table class="c-overlay__db__table">

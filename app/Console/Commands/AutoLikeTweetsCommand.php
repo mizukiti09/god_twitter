@@ -5,8 +5,6 @@ namespace App\Console\Commands;
 use App\Facades\Twitter;
 use App\Mail\AutoLikeMail;
 use Illuminate\Console\Command;
-use App\Mail\AutoActionStopMail;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Abraham\TwitterOAuth\TwitterOAuthException;
 use packages\Domain\Domain\User\AutoLikeDatasRepositoryInterface;
@@ -107,9 +105,6 @@ class AutoLikeTweetsCommand extends Command
                     }
                 }
             } catch (TwitterOAuthException $e) {
-                Log::info('|======================|');
-                Log::info($e);
-                Log::info('|======================|');
                 continue;
             }
         }

@@ -40,6 +40,18 @@
                         <button type="submit" class="c-form__button">
                             {{ __('Login') }}
                         </button>
+                        <div class="row mb-3" style="margin-bottom: 20px;">
+                            <div class="col-md-6 offset-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="remember" id="remember"
+                                        {{ old('remember') ? 'checked' : '' }}>
+
+                                    <label class="form-check-label" for="remember">
+                                        {{ __('Remember Me') }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                         @if (Route::has('password.request'))
                             <a class="c-link" href="{{ route('password.request') }}">
                                 {{ __('Forgot Your Password?') }}

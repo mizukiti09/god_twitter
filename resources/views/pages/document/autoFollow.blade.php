@@ -4,7 +4,7 @@
 
     <div class="p-document__contents">
         <h1 class="p-document__title">
-            Auto Follow Document <br>(自動フォロー)
+            ターゲットアカウント <br><br>自動フォロー
         </h1>
         <div class="p-document__contents__item">
             <div class="p-document__contents__item__img u-device__pc">
@@ -17,8 +17,8 @@
             <div class="p-document__contents__item__description">
 
                 <p>
-                    TargetAccount登録 buttonをクリックするとこのようなモーダルウィンドが展開されます。
-                    @を抜いたTwitterアカウント名を正しく入力してターゲットアカウントリストに登録を行います。
+                    ターゲットアカウント登録 buttonをクリックするとこのようなモーダルウィンドが展開されます。
+                    twitterアカウント名を正しく入力してターゲットアカウントリストに登録を行います。
                 </p>
             </div>
         </div>
@@ -34,28 +34,9 @@
 
             <div class="p-document__contents__item__description">
                 <p>
-                    登録ができたら現在のTargetAccount一覧 か TargetAccounts をクリックすると、登録したターゲットアカウント一覧が表示されます。
-                    登録ターゲットアカウントが一つ以上あると、Followモード(自動フォロー、自動アンフォロー)が展開されます。
+                    登録してからターゲットアカウント一覧をクリックすると、登録したターゲットアカウントが一覧として表示されます。
+                    ターゲットアカウントを一つ以上登録すると、フォローモード(自動フォロー、自動アンフォロー)が展開されます。
                 </p>
-            </div>
-        </div>
-
-        <div class="p-document__contents__item">
-            <div class="p-document__contents__item__img u-device__pc">
-                <img src="{{ asset('images/document/autoFollow_pc_04.png') }}" alt="">
-            </div>
-
-            <div class="p-document__contents__item__img u-device__sp">
-                <img src="{{ asset('images/document/autoFollow_sp_04.png') }}" alt="">
-            </div>
-
-            <div class="p-document__contents__item__description">
-                自動フォローするbuttonをクリックすると、このようなモーダルウィンドが展開されます。
-                Keywordを入力して追加buttonをクリックすると入力したKeywordが下に表示されます。
-                Keywordを設定して更新buttonをクリックするとデータベースに設定が反映されます。
-                データベースに反映されたKeywordを基にTwitterアカウントのプロフィールにそのKeywordが入ったアカウントを
-                ターゲットアカウントのフォロワーから探します。<br><br><br><br>
-                ※Keywordの設定の仕方は下記3種類になります。<br><br>
             </div>
         </div>
 
@@ -69,7 +50,41 @@
             </div>
 
             <div class="p-document__contents__item__description">
+                自動フォローするbuttonをクリックすると、このようなモーダルウィンドが展開されます。
+                Keywordを入力して追加buttonをクリックすると入力したKeywordが下に表示されます。
+                Keywordを設定して更新buttonをクリックするとデータベースに設定が反映されます。
+                データベースに反映されたKeywordを基にTwitterアカウントのプロフィールにそのKeywordが入ったアカウントを
+                ターゲットアカウントのフォロワーから探します。<br><br>
+                ※リセットbuttonをクリックするとデータベースに登録した内容及び追加したKeywordがリセットされます。<br><br><br>
+                ※Keywordの設定の仕方は下記3種類になります。<br><br>
+            </div>
+        </div>
+
+        <div class="p-document__contents__item">
+            <div class="p-document__contents__item__img u-device__pc">
+                <img src="{{ asset('images/document/autoFollow_pc_04.png') }}" alt="">
+            </div>
+
+            <div class="p-document__contents__item__img u-device__sp">
+                <img src="{{ asset('images/document/autoFollow_sp_04.png') }}" alt="">
+            </div>
+
+            <div class="p-document__contents__item__description">
                 ・1つだけのKeywordがプロフィールに含まれているアカウントをフォローしたい場合は NOT を選択してください。<br>
+            </div>
+        </div>
+
+        <div class="p-document__contents__item">
+            <div class="p-document__contents__item__img u-device__pc">
+                <img src="{{ asset('images/document/autoFollow_pc_05.png') }}" alt="">
+            </div>
+
+            <div class="p-document__contents__item__img u-device__sp">
+                <img src="{{ asset('images/document/autoFollow_sp_05.png') }}" alt="">
+            </div>
+
+            <div class="p-document__contents__item__description">
+                ・2つ以上Keywordが設定されていて、全部のKeywordがプロフィールに含まれているアカウントをフォローしたい場合は AND を選択してください。<br>
             </div>
         </div>
 
@@ -80,20 +95,6 @@
 
             <div class="p-document__contents__item__img u-device__sp">
                 <img src="{{ asset('images/document/autoFollow_sp_06.png') }}" alt="">
-            </div>
-
-            <div class="p-document__contents__item__description">
-                ・2つ以上Keywordが設定されていて、全部のKeywordがプロフィールに含まれているアカウントをフォローしたい場合は AND を選択してください。<br>
-            </div>
-        </div>
-
-        <div class="p-document__contents__item">
-            <div class="p-document__contents__item__img u-device__pc">
-                <img src="{{ asset('images/document/autoFollow_pc_07.png') }}" alt="">
-            </div>
-
-            <div class="p-document__contents__item__img u-device__sp">
-                <img src="{{ asset('images/document/autoFollow_sp_07.png') }}" alt="">
             </div>
 
             <div class="p-document__contents__item__description">
@@ -109,19 +110,19 @@
 
         <div class="p-document__contents__item">
             <div class="p-document__contents__item__img u-device__pc">
-                <img src="{{ asset('images/document/autoFollow_pc_08.png') }}" alt="">
+                <img src="{{ asset('images/document/autoFollow_pc_07.png') }}" alt="">
             </div>
 
             <div class="p-document__contents__item__img u-device__sp">
-                <img src="{{ asset('images/document/autoFollow_sp_08.png') }}" alt="">
+                <img src="{{ asset('images/document/autoFollow_sp_07.png') }}" alt="">
             </div>
 
             <div class="p-document__contents__item__description">
-                自動ONをクリックすると現在のTargetAccounts一覧ページ内はこのように表示されます。<br><br>
-                Current Target の項目に現在フォローアクションが行われているTwitterアカウント名が表示されます。<br><br>
-                Follower の項目には現在フォローアクションが行われているTwitterアカウントのフォロワー数が表示されます。<br><br>
-                Load の項目にはCurrent Targetのフォロワーをどれぐらいチェック出来たかのパーセンテージが表示されます。<br><br>
-                Load の項目が 100% になったら全てのフォロワーのチェックが終わり、自動フォローが行われます。<br><br>
+                自動ONをクリックするとターゲットアカウント一覧ページはこのように表示されます。<br><br>
+                現在のターゲット の項目に現在フォローアクションが行われているTwitterアカウント名が表示されます。<br><br>
+                フォロワー の項目には現在フォローアクションが行われているTwitterアカウントのフォロワー数が表示されます。<br><br>
+                % の項目には現在のターゲットのフォロワーをどれぐらいチェック出来たかパーセンテージで表示されます。<br><br>
+                % の項目が 100% になったら全てのフォロワーのチェックが終わり、自動フォローが行われます。<br><br>
             </div>
         </div>
     </div><br><br>
@@ -129,7 +130,7 @@
 
     <div class="p-document__contents">
         <h1 class="p-document__title">
-            Auto Follow Document <br>(自動アンフォロー)
+            自動アンフォロー
         </h1>
         <div class="p-document__contents__item">
             <div class="p-document__contents__item__img u-device__pc">

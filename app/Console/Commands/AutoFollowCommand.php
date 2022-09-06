@@ -7,7 +7,6 @@ use App\Mail\AutoFollowMail;
 use Illuminate\Console\Command;
 use App\Mail\AutoActionStopMail;
 use App\Mail\AutoFollowOverMail;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Abraham\TwitterOAuth\TwitterOAuthException;
 use packages\Domain\Domain\User\FollowAccountsRepositoryInterface;
@@ -142,16 +141,12 @@ class AutoFollowCommand extends Command
                             // カウントアップ
                             $u_repository->followOrUnFollowCountSave($user_twitter_account_id, $response->friends_count, $response->followers_count);
                         } else {
-                            Log::info('リセット');
                             $u_repository->allResetAutoFlg($user_twitter_account_id);
                             $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
                             Mail::to($user->email)->send(new AutoActionStopMail($user));
                         }
                     }
                 } catch (TwitterOAuthException $e) {
-                    Log::info('======================');
-                    Log::info($e);
-                    Log::info('======================');
                     continue;
                 }
             }

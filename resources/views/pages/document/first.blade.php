@@ -1,7 +1,7 @@
 @section('title', 'God Twitter / Document first')@extends('app') @section('content')
 <div class="p-document u-inner u-m__contents">
     <h1 class="p-document__title">
-        First Document
+        Twitter認証
     </h1>
     <div class="p-document__contents">
         <div class="p-document__contents__item">
@@ -12,7 +12,7 @@
             <div class="p-document__contents__item__description">
 
                 <p>
-                    TwitterAuthのアカウント登録buttonをクリックし、Twitterログインします。
+                    Twitter認証のアカウント認証buttonをクリックし、Twitterログインします。
                 </p>
             </div>
         </div>

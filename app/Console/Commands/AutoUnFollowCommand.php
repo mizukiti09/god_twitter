@@ -6,7 +6,6 @@ use App\Facades\Twitter;
 use App\Mail\AutoUnFollowMail;
 use Illuminate\Console\Command;
 use App\Mail\AutoActionStopMail;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Abraham\TwitterOAuth\TwitterOAuthException;
 use packages\Domain\Domain\User\FollowedAccountsRepositoryInterface;
@@ -89,9 +88,6 @@ class AutoUnFollowCommand extends Command
                             "user_id" => $followed_data->twitterId,
                         ));
                 } catch (TwitterOAuthException $e) {
-                    Log::info('|======================|');
-                    Log::info($e);
-                    Log::info('|======================|');
                     continue;
                 }
 
@@ -115,6 +111,19 @@ class AutoUnFollowCommand extends Command
                                     $fed_repository->deleteFollowedAccount($followed_data->id);
                                     continue;
                                 }
+                            }
+                        }
+                    } else {
+                        $result = Twitter::getAuthConnection($account->user_id, $account->screen_name)->get("friendships/lookup", array(
+                            "user_id" => $followed_data->twitterId,
+                        ));
+
+                        if (!empty($result[0])) {
+                            // フォローされている
+                            if (in_array('followed_by', $result[0]->connections) === true) {
+                                // フォローリストから削除し、ループをスキップ
+                                $fed_repository->deleteFollowedAccount($followed_data->id);
+                                continue;
                             }
                         }
                     }
@@ -141,16 +150,12 @@ class AutoUnFollowCommand extends Command
                             // アンフォローカウントアップ
                             $u_repository->followOrUnFollowCountSave($user_twitter_account_id, $response->friends_count, $response->followers_count);
                         } else {
-                            Log::info('リセット');
                             $u_repository->allResetAutoFlg($user_twitter_account_id);
                             $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);
                             Mail::to($user->email)->send(new AutoActionStopMail($user));
                         }
                     }
                 } catch (TwitterOAuthException $e) {
-                    Log::info('|======================|');
-                    Log::info($e);
-                    Log::info('|======================|');
                     continue;
                 }
             }

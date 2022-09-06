@@ -1,7 +1,7 @@
 @section('title', 'God Twitter / Document autoLike')@extends('app') @section('content')
 <div class="p-document u-inner u-m__contents">
     <h1 class="p-document__title">
-        Auto Like Document
+        自動いいね
     </h1>
 
     <div class="p-document__contents__item">
@@ -17,7 +17,8 @@
             自動いいねするbuttonをクリックすると、このようなモーダルウィンドが展開されます。
             Keywordを入力して追加buttonをクリックすると入力したKeywordが下に表示されます。
             Keywordを設定して更新buttonをクリックするとデータベースに設定が反映されます。
-            データベースに反映されたKeywordを基にそのKeywordが入ったツイートを探します。<br><br><br><br>
+            データベースに反映されたKeywordを基にそのKeywordが入ったツイートを探します。<br><br>
+            ※リセットbuttonをクリックするとデータベースに登録した内容及び追加したKeywordがリセットされます。<br><br><br>
             ※Keywordの設定の仕方は下記3種類になります。<br><br>
         </div>
     </div>

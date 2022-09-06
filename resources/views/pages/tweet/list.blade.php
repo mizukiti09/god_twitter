@@ -9,7 +9,7 @@
         @include('parts.aside')
 
         <article class="c-structure__article">
-            <h1 class="c-structure__article__title"><i class="fas fa-adjust"></i>&nbsp;予定一覧</h1>
+            <h1 class="c-structure__article__title"><i class="fas fa-adjust"></i>&nbsp;ツイート予定一覧</h1>
             @if ($auth_account)
                 <twitter-auto-tweet-edit-action :user_id="{{ $user_id }}"
                     :auth_screen_name="{{ json_encode($auth_account->screen_name) }}"

@@ -6,6 +6,9 @@
     line-height: 50px;
     & li {
         padding-left: 30px;
+        &:first-child {
+            padding-left: initial;
+        }
     }
     &-sp {
         display: none;
@@ -27,6 +30,9 @@
         height: 100vh;
         overflow: auto;
         -webkit-overflow-scrolling: touch;
+    }
+    &__item {
+        font-size: $font-size_m;
     }
     &.panelactive {
         right: 0;

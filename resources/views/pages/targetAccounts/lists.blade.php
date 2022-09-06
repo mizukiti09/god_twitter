@@ -2,7 +2,7 @@
 
 <div class="c-structure u-inner u-m__contents">
     <div class="c-currentPage__title">
-        TargetAccounts &nbsp;\&nbsp;<br class="u-sp_br"> 登録ターゲットアカウント数 &nbsp;:&nbsp;<span
+        ターゲットアカウント &nbsp;\&nbsp;<br class="u-sp_br"> 登録アカウント数 &nbsp;:&nbsp;<span
             id="js-target-account-count">{{ count($target_accounts) }}</span>
     </div>
     <div class="c-structure__container">

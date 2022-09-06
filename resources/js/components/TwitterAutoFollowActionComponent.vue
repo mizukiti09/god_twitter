@@ -4,7 +4,7 @@
             <div class="c-overlay">
                 <div class="c-overlay__contents">
                     <div class="c-overlay__ttl">{{ autoFollow }}</div>
-                    <div class="c-overlay__description"><span class="u-red">*</span>Keywordを入力するとそのKeyword<br class="u-sp_br">をもとにフォローします。
+                    <div class="c-overlay__description"><span class="u-red">*</span>Keywordを入力するとそのKeyword<br>をもとにフォローします。
                     </div>
                     <div class="c-overlay__db">
                         <table class="c-overlay__db__table">
