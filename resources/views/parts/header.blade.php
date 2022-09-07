@@ -54,7 +54,7 @@
                         @endif
                     @else
                         @if ($auth_account)
-                            <li class="c-nav__item"><a href="{{ route('twitter.tweetHistory') }}">ツイート予定一覧</a></li>
+                            <li class="c-nav__item"><a href="{{ route('twitter.tweetHistory') }}">ツイート履歴一覧</a></li>
                             <li class="c-nav__item"><a href="{{ route('twitter.tweetList') }}">ツイート予定一覧</a></li>
                             <li class="c-nav__item"><a
                                     href="{{ route('twitter.targetAccounts') }}">ターゲットアカウント一覧</a></li>
