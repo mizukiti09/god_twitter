@@ -303,6 +303,7 @@ export default {
                         this.db_text = '';
                         this.db_condition = '';
                         $cookies.remove('SearchLikeText' + this.user_id + this.auth_screen_name);
+                        this.cookieData = this.getCookie();
                     } catch (error) {
                         alert('予期せぬシステムエラーです。');
                     }
