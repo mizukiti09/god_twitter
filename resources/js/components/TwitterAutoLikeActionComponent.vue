@@ -34,7 +34,7 @@
                             </label>
                             <div v-if="cookieData" class="c-search__keywords">
                                 <nav class="c-solidMenu">
-                                    <ul>
+                                    <ul id="like-keyword-ul">
                                         <li v-for="(keyword, i) in cookieData" :key="i" :id="'like_' + keyword">
                                             <a href="javascript:void(0)">
                                                 <span>{{keyword}}</span>
@@ -303,7 +303,8 @@ export default {
                         this.db_text = '';
                         this.db_condition = '';
                         $cookies.remove('SearchLikeText' + this.user_id + this.auth_screen_name);
-                        this.cookieData = [];
+                        const ul = document.getElementById('like-keyword-ul');
+                        ul.innerHTML = '';
                     } catch (error) {
                         alert('予期せぬシステムエラーです。');
                     }
