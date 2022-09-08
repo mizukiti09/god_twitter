@@ -324,7 +324,7 @@ export default {
                         this.db_text = '';
                         this.db_condition = '';
                         $cookies.remove('SearchText' + this.user_id + this.auth_screen_name);
-                        this.cookieData = this.getCookie();
+                        this.cookieData = [];
                     } catch (error) {
                         alert('予期せぬシステムエラーです。');
                     }
