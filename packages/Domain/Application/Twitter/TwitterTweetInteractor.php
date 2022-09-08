@@ -43,7 +43,7 @@ class TwitterTweetInteractor implements TwitterAutoTweetUseCaseInterface
             if (strpos($time, '午前') !== false) {
                 $time = substr($result, -5);
                 $hour = strstr($time, ':', true);
-                if ($hour == '12') {
+                if ($hour === '12') {
                     $unixTime = $unixTime - $halfDayUnixTime;
                 }
             }
@@ -52,7 +52,7 @@ class TwitterTweetInteractor implements TwitterAutoTweetUseCaseInterface
                 $hour = strstr($time, ':', true);
 
                 $unixTime = $unixTime + $halfDayUnixTime;
-                if ($hour == '12') {
+                if ($hour === '12') {
                     $unixTime = $unixTime - $halfDayUnixTime;
                 }
             }
@@ -100,7 +100,7 @@ class TwitterTweetInteractor implements TwitterAutoTweetUseCaseInterface
             if (strpos($time, '午前') !== false) {
                 $time = substr($result, -5);
                 $hour = strstr($time, ':', true);
-                if ($hour == '12') {
+                if ($hour === '12') {
                     $unixTime = $unixTime - $halfDayUnixTime;
                 }
             }
@@ -109,7 +109,7 @@ class TwitterTweetInteractor implements TwitterAutoTweetUseCaseInterface
                 $hour = strstr($time, ':', true);
 
                 $unixTime = $unixTime + $halfDayUnixTime;
-                if ($hour == '12') {
+                if ($hour === '12') {
                     $unixTime = $unixTime - $halfDayUnixTime;
                 }
             }
