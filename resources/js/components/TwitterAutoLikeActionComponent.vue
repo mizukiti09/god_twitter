@@ -303,8 +303,7 @@ export default {
                         this.db_text = '';
                         this.db_condition = '';
                         $cookies.remove('SearchLikeText' + this.user_id + this.auth_screen_name);
-                        const ul = document.getElementById('like-keyword-ul');
-                        ul.innerHTML = '';
+                        window.location.reload(false);
                     } catch (error) {
                         alert('予期せぬシステムエラーです。');
                     }
