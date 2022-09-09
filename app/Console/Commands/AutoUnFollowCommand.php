@@ -148,7 +148,7 @@ class AutoUnFollowCommand extends Command
 
                         if (isset($response->id)) {
                             // アンフォローカウントアップ
-                            $u_repository->followOrUnFollowCountSave($user_twitter_account_id, $response->friends_count, $response->followers_count);
+                            $u_repository->unFollowCountSave($user_twitter_account_id, $response->friends_count, $response->followers_count);
                         } else {
                             $u_repository->allResetAutoFlg($user_twitter_account_id);
                             $user = $u_repository->cronFindUser($account->user_id, $account->screen_name);

@@ -430,34 +430,77 @@ class UserTwitterAccountsRepository implements UserTwitterAccountsRepositoryInte
         }
     }
 
-    public function followCountSave($id)
+    public function followCountSave($id, $follow, $follower)
     {
-        DB::table('user_twitter_accounts')
-            ->where('id', $id)
-            ->increment('follow_count');
-
-        DB::table('user_twitter_accounts')
-            ->where('id', $id)
-            ->increment('follow');
-    }
-
-    public function unFollowCountSave($id)
-    {
-        DB::table('user_twitter_accounts')
-            ->where('id', $id)
-            ->increment('unFollow_count');
-
         $result0 = DB::table('user_twitter_accounts')
             ->where('id', $id)
             ->select(
-                'follow'
+                'follow',
+                'follow_count'
             )
             ->get()
             ->first();
-        if ($result0->follow > 0) {
+
+        DB::table('user_twitter_accounts')
+            ->where('id', $id)
+            ->upDate([
+                'follow' => $follow,
+                'follower' => $follower
+            ]);
+
+        $result1 = DB::table('user_twitter_accounts')
+            ->where('id', $id)
+            ->select('follow')
+            ->get()
+            ->first();
+
+        $result = $result1->follow - $result0->follow;
+
+        if ($result > 0) {
+            $result = $result0->follow_count + $result;
+
             DB::table('user_twitter_accounts')
                 ->where('id', $id)
-                ->decrement('follow');
+                ->upDate([
+                    'follow_count' => $result
+                ]);
+        }
+    }
+
+    public function unFollowCountSave($id, $follow, $follower)
+    {
+        $result0 = DB::table('user_twitter_accounts')
+            ->where('id', $id)
+            ->select(
+                'follow',
+                'follow_count'
+            )
+            ->get()
+            ->first();
+
+        DB::table('user_twitter_accounts')
+            ->where('id', $id)
+            ->upDate([
+                'follow' => $follow,
+                'follower' => $follower
+            ]);
+
+        $result1 = DB::table('user_twitter_accounts')
+            ->where('id', $id)
+            ->select('follow')
+            ->get()
+            ->first();
+
+        $result = $result1->follow - $result0->follow;
+
+        if ($result < 0) {
+            $result = $result0->unFollow_count + abs($result);
+
+            DB::table('user_twitter_accounts')
+                ->where('id', $id)
+                ->upDate([
+                    'unFollow_count' => $result
+                ]);
         }
     }
 

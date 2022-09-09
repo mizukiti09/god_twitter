@@ -102,12 +102,12 @@ interface UserTwitterAccountsRepositoryInterface
     /**
      * @param $id
      */
-    public function followCountSave($id);
+    public function followCountSave($id, $follow, $follower);
 
     /**
      * @param $id
      */
-    public function unFollowCountSave($id);
+    public function unFollowCountSave($id, $follow, $follower);
 
 
     /**
