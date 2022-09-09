@@ -99,7 +99,6 @@ export default {
                         this.tweetText = '';
                         alert('ツイート内容を登録しました。');
                     } catch (error) {
-                        console.log(error);
                         alert('予期せぬシステムエラーです。');
                     }
                 }
