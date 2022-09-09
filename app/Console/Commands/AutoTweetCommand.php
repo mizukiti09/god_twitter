@@ -64,10 +64,10 @@ class AutoTweetCommand extends Command
             }
             foreach ($autoTweetDatas as $autoTweetData) {
                 $highTime = $autoTweetData->tweetTime + 60;
-                $lowTime = $autoTweetData->tweetTime - 60;
+                $lowTime = $autoTweetData->tweetTime;
 
                 if (($lowTime <= $currentUnixTime) && ($currentUnixTime <= $highTime)) {
-                    // 登録unixTimeは現在のunixTimeから見て前後60秒以内
+                    // 登録unixTimeは現在のunixTimeから見て60秒以内
                     $account = $u_repository->getAccount($userTwitterAccountId);
 
                     try {
